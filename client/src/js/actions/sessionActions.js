@@ -8,12 +8,12 @@ export function loginRequested(user) {
 
 /**
  * Action emited whenever user was successfully logged in
- * @param {Object} user 
+ * @param {Object} data 
  */
-export function loginSuccess(user) {
+export function loginSuccess(data) {
   return {
     type: 'LOGIN_SUCCESS',
-    user
+    data
   }
 }
 

@@ -6,7 +6,7 @@ var express = require('express')
 
 // router
 var users = require('./routes/users')
-  , login = require('./routes/login')
+  , auth = require('./routes/auth')
   , tasks = require('./routes/tasks');
 
 // Configuration
@@ -25,7 +25,7 @@ app.use(session({
 }))
 
 // Configure routes
-app.use('/api/login', login);
+app.use('/api/auth', auth);
 /*
 app.use(function(req, res, next) {
   if(req.session.user)

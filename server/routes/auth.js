@@ -11,15 +11,19 @@ router.post('/', function(req, res, next) {
       req.session.regenerate(function(err) {
         if(err) return next(err);
 
+        // Check database for given username and password
+
         req.session.user = {
           username: req.body.username,
           password: req.body.password
         }
 
-        console.log(req.session.user);
-
         res.json({
-          success: true
+          success: true,
+          user: {
+            id: 1,
+            username: req.session.user.username
+          }
         })
       })
       break;

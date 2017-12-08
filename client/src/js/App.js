@@ -8,7 +8,6 @@ import axios from 'axios';
 
 // Components
 import Navbar from './components/navigation/Navbar';
-
 import AuthRequiredRoute from './components/auth/AuthRequiredRoute';
 
 // Containers
@@ -17,40 +16,6 @@ import Login from './containers/Login';
 import Tasks from './containers/Tasks';
 
 export default class App extends Component {
-  state = {users: []}
-
-  login() {
-    axios.post('/api/login', {
-      action: 'LOGIN',
-      username: 'mariusz',
-      password: 'zaq1@WSX'
-    })
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-  }
-
-  logout() {
-    axios.post('/api/login', {
-      action: 'LOGOUT'
-    })
-  }
-
-/*  render() {
-    return (
-      <div>
-        <h1>Application</h1>
-        <h2>Users</h2>
-        <button onClick={() => this.fetch()}>Fetch</button>
-        <button onClick={() => this.login()}>Login</button>
-        <button onClick={() => this.logout()}>Logout</button>
-        {
-          this.state.users.map((user) =>
-            <div key={user.id}>{user.username}</div>
-          )
-        }
-      </div>
-    )
-  } */
   render() {
     return (
       <Router>
