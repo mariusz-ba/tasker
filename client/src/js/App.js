@@ -19,19 +19,6 @@ import Tasks from './containers/Tasks';
 export default class App extends Component {
   state = {users: []}
 
-  fetch() {
-    axios.get('/api/users')
-      .then(res => {
-        if(res.data.error)
-          console.log(res.data.error)
-        else
-          this.setState({ users: res.data })
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }
-
   login() {
     axios.post('/api/login', {
       action: 'LOGIN',
