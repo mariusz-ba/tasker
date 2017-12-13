@@ -36,16 +36,33 @@ class Login extends Component {
     const { errors } = this.props.auth;
 
     return (
-      <div>
-        <h1>Login page</h1>
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <div className="text-center">
+              <img className="logo-image" src="img/favicon.png" />
+              <p className="login-header text-center">Sign in to Tasker</p>
+            </div>
+            <form method="post" className="login-form">
 
-        { errors.form && <div className="alert alert-danger" style={{color: 'red'}}>{errors.form}</div> }
+              { errors.form && <div className="alert alert-danger" style={{color: 'red'}}>{errors.form}</div> }
 
-        <form method="post">
-          <label>Username or email: <input type="text" name="identifier" placeholder="Type your username or password" value={this.state.identifier} onChange={this.onIdentifierChange.bind(this)}/></label>
-          <label>Password: <input type="password" name="password" placeholder="Type your password" value={this.state.password} onChange={this.onPasswordChange.bind(this)}/></label>
-          <button onClick={(e) => this.onSubmit(e)}>Sign in</button>
-        </form>
+              <div className="form-group">
+                <label htmlFor="username">Username or email address</label>
+                <input id="username" name="identifier" type="text" className="form-control" value={this.state.identifier} onChange={this.onIdentifierChange.bind(this)} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input id="password" name="password" type="password" className="form-control" value={this.state.password} onChange={this.onPasswordChange.bind(this)} />
+                <small className="form-text text-muted"><a href="#">Forgot your password?</a></small>
+              </div>
+              <button type="submit" className="btn btn-success btn-login" onClick={(e) => this.onSubmit(e)}>Sign in</button>
+            </form>
+            <div className="login-form text-center">
+              New to tasker? <a href="register.html">Create an account</a>.
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

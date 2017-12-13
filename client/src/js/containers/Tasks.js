@@ -1,45 +1,22 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import * as TasksActions from '../actions/tasksActions';
+import Tabs from '../components/tabs/Tabs';
+import Tab from '../components/tabs/Tab';
+import TasksTable from '../components/tasks/TasksTable';
 
-class Tasks extends Component {
-
-  componentDidMount() {
-    this.props.actions.fetchTasks({completed: false});
-  }
-
+export default class Tasks extends Component {
   render() {
     return (
-      <div>
-        <h1>Things need to be done!</h1>
-        {
-          this.props.tasks.map(task =>
-            <div key={task.id} style={{border: '1px solid black', marginBottom: '10px', padding: '10px'}}>
-              <h2>{task.text}</h2>
-              <p>{ task.completed ? 'Completed' : 'Not completed' }</p>
-            </div>
-          )
-        }
+      <div className="container">
+        <div className="col-md-6">
+        <Tabs
+          tabs={[
+            { name: 'Recent', component: <TasksTable/> },
+            { name: 'Completed', component: <TasksTable/> }
+          ]}
+        />
+        </div>
       </div>
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    tasks: state.tasks
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(TasksActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tasks);
