@@ -2,29 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as SessionActions from '../actions/sessionActions';
+import * as AuthActions from '../actions/authActions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      identifier: '',
       password: ''
     }
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const { username, password } = this.state;
+    const { identifier, password } = this.state;
     this.props.actions.requestLogin({
-      username,
+      identifier,
       password
     });
   }
 
-  onUsernameChange(e) {
-    const username = e.target.value;
-    this.setState({username});
+  onIdentifierChange(e) {
+    const identifier = e.target.value;
+    this.setState({identifier});
   }
 
   onPasswordChange(e) {
@@ -33,12 +33,17 @@ class Login extends Component {
   }
 
   render() {
+    const { errors } = this.props.auth;
+
     return (
       <div>
         <h1>Login page</h1>
+
+        { errors.form && <div className="alert alert-danger" style={{color: 'red'}}>{errors.form}</div> }
+
         <form method="post">
-          <label>Username: <input type="text" name="username" placeholder="Type your username" value={this.state.username} onChange={this.onUsernameChange.bind(this)}/></label>
-          <label>Username: <input type="password" name="password" placeholder="Type your password" value={this.state.password} onChange={this.onPasswordChange.bind(this)}/></label>
+          <label>Username or email: <input type="text" name="identifier" placeholder="Type your username or password" value={this.state.identifier} onChange={this.onIdentifierChange.bind(this)}/></label>
+          <label>Password: <input type="password" name="password" placeholder="Type your password" value={this.state.password} onChange={this.onPasswordChange.bind(this)}/></label>
           <button onClick={(e) => this.onSubmit(e)}>Sign in</button>
         </form>
       </div>
@@ -48,13 +53,13 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   return {
-    session: state.session
+    auth: state.auth
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(SessionActions, dispatch)
+    actions: bindActionCreators(AuthActions, dispatch)
   }
 }
 

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import sessionReducer from './sessionReducer';
+import authReducer from './authReducer';
 import tasksReducer from './tasksReducer';
 
 export default combineReducers({
-  session: sessionReducer,
+  auth: authReducer,
   tasks: tasksReducer
 });

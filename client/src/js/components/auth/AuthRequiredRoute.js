@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 class AuthRequiredRoute extends Route {
   render() {
     const { match } = this.state;
-    const isAuthenticated = this.props.session.isLoggedIn;
+    const { isAuthenticated } = this.props.auth;
     if(match) {
       // Check session for authentication
       if(isAuthenticated)
@@ -25,7 +25,7 @@ class AuthRequiredRoute extends Route {
 
 function mapStateToProps(state) {
   return {
-    session: state.session
+    auth: state.auth
   }
 }
 

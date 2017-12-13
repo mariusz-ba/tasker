@@ -1,8 +1,11 @@
 // Module dependencies
 var express = require('express')
-  , session = require('express-session')
   , bodyParser = require('body-parser')
+  , mongoose = require('mongoose')
   , app = express();
+
+// Database
+mongoose.connect('mongodb://127.0.0.1:27017/tasker');
 
 // router
 var users = require('./routes/users')
@@ -18,21 +21,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-app.use(session({
-  secret: 'verysecretString123!',
-  resave: true,
-  saveUninitialized: true
-}))
 
 // Configure routes
 app.use('/api/auth', auth);
-/*
-app.use(function(req, res, next) {
-  if(req.session.user)
-    return next()
-  return next(new Error('Nie jestes zalogowany'))
-});
-*/
 app.use('/api/users', users);
 app.use('/api/tasks', tasks);
 

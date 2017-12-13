@@ -1,38 +1,47 @@
 // Module dependencies
 var express = require('express')
-  , router = express.Router();
+  , router = express.Router()
+  , bcrypt = require('bcrypt')
+  , User = require('../models/user')
+  , jwt = require('jsonwebtoken')
+  , config = require('../config');
 
 // Middleware
 // Routes
-router.post('/', function(req, res, next) {
+router
+.post('/', function(req, res, next) {
 
-  switch(req.body.action) {
-    case 'LOGIN': {
-      req.session.regenerate(function(err) {
-        if(err) return next(err);
+  const { identifier, password } = req.body;
+  console.log({
+    identifier,
+    password
+  });
 
-        // Check database for given username and password
-
-        req.session.user = {
-          username: req.body.username,
-          password: req.body.password
-        }
-
-        res.json({
-          success: true,
-          user: {
-            id: 1,
-            username: req.session.user.username
-          }
-        })
-      })
-      break;
+  User.findOne({
+    $or: [
+      { 'username': identifier },
+      { 'email': identifier }
+    ]
+  }, function(error, user) {
+    // if(error) return next(error);
+    if(user) {
+      if(bcrypt.compareSync(password, user.password)) {
+        const token = jwt.sign({
+          id: user._id,
+          username: user.username,
+          email: user.email
+        }, config.jwtSecret);
+        res.json({ token });
+      } else {
+        res.status(401).json({ errors: { form: 'Invalid Credentials' } });
+      }
+    } else {
+      res.status(401).json({ errors: { form: 'Invalid Credentials' } });
     }
-    case 'LOGOUT': {
-      req.session.destroy();
-      break;
-    }
-  }
+  })
+
+})
+.get('/', function(req, res, next) {
 
 });
 
