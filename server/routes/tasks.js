@@ -2,21 +2,19 @@
 var express = require('express')
   , router = express.Router();
 
+const authenticate = require('../utils/authenticate');
+const Task = require('../models/task');
 // Routes
 
-router.get('/', function(req, res) {
+router.get('/', authenticate, function(req, res) {
 
-  const tasks = [
-    { id: 1234, text: 'Some Task', completed: false },
-    { id: 1334, text: 'Other Task', completed: false }
-  ];
+  console.log('fetching tasks for user ', req.user);
+  
+  Task.find({ author: req.user._id }, function(err, tasks) {
+    if(err) throw err;
 
-  const result = tasks.filter(function(element) {
-    const completed = (req.query.completed === 'true' ? true : false);
-    return element.completed == completed;
+    res.json(tasks);
   })
-
-  res.json(result);
 })
 
 module.exports = router;

@@ -3,6 +3,7 @@
  */
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 /**
  * Task Schema
@@ -11,7 +12,9 @@ const mongoose = require('mongoose');
 const TaskSchema = new Schema({
   description: { type: String, required: true },
   completed: { type: Boolean, required: true },
-  author: { type: ObjectId, required: true },
+  author: { type: Schema.Types.ObjectId, required: true },
+  createdAt: { type: Date, default: Date.now() },
+  updatedAt: { type: Date, default: Date.now() },
   users: [Schema.Types.ObjectId],
   subtasks: [Schema.Types.ObjectId],
   comments: [Schema.Types.ObjectId]

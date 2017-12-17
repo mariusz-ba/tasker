@@ -26,7 +26,7 @@ class TasksTable extends Component {
         {
           tasks.map(task => (
             <tr key={task.id}>
-              <td>{task.text}</td>
+              <td>{task.description}</td>
               <td>{task.completed ? 'Completed' : 'Not completed'}</td>
               <td>Actions</td>
             </tr>
