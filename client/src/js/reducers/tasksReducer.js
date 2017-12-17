@@ -1,20 +1,23 @@
 export default function reducer(state = [], action) {
   console.log(action.type);
   switch(action.type) {
-    case 'CREATE_TASK': {
-      const { text, completed } = action;
+    case 'RECEIVE_TASKS': {
+      state = action.tasks;
+      break;
+    }
+    case 'CREATED_TASK': {
+      const { task } = action;
       state = [
         ...state,
         {
-          id: Date.now(),
-          text,
-          completed
+          ...task
         }
       ]
       break;
     }
-    case 'RECEIVE_TASKS': {
-      state = action.tasks;
+    case 'DELETED_TASK': {
+      const { id } = action.data;
+      state = state.filter(task => task._id != id);
       break;
     }
     default: {}
