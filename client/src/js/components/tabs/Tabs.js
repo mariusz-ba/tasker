@@ -19,22 +19,26 @@ export default class Tabs extends Component {
     console.log(tabs);
 
     return (
-      <div>
-        <ul className="nav nav-tabs">
-          {
-            tabs.map((tab, index) => (
-              <Tab
-                key={index}
-                name={tab.name}
-                active={index == this.state.current}
-                onClick={() => this.openTab(index)}
-              />
-            ))
-          }
-        </ul>
+      <div className="card">
+        <div className="card-header">
+          <ul className="nav nav-tabs card-header-tabs">
+            {
+              tabs.map((tab, index) => (
+                <Tab
+                  key={index}
+                  name={tab.name}
+                  active={index == this.state.current}
+                  onClick={() => this.openTab(index)}
+                />
+              ))
+            }
+          </ul>
+        </div>
+        <div className="card-body">
         {
           tabs[this.state.current].component
         }
+        </div>
       </div>
     )
   }

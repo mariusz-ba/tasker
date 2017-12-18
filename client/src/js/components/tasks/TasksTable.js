@@ -45,12 +45,13 @@ class TasksTable extends Component {
         {
           tasks.map((task, index) => (
             <tr key={task._id ? task._id : index}>
-              <td>{task._id}</td>
+              <td><span className="badge badge-info">{task._id}</span></td>
               <td>{task.description}</td>
-              <td>{task.completed ? 'Completed' : 'Not completed'}</td>
+              <td><span className="badge badge-success">{task.completed ? 'Completed' : 'Not completed'}</span></td>
               <td>
-                <a className="btn btn-primary" href="#" onClick={(e) => this.onUpdate(e, task._id)}>Edit</a>
-                <a className="btn btn-danger" href="#" onClick={(e) => this.onDelete(e, task._id)}>Delete</a>
+                <a className="btn btn-primary btn-sm" href="#" onClick={(e) => this.onUpdate(e, task._id)}>Edit</a>
+                &nbsp;
+                <a className="btn btn-danger btn-sm" href="#" onClick={(e) => this.onDelete(e, task._id)}>Delete</a>
               </td>
             </tr>
           ))
