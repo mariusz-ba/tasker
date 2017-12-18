@@ -17,10 +17,12 @@ module.exports = function(req, res, next) {
         res.status(401).json({ error: 'Failed to authenticate' });
       } else {
         User.findOne({ _id: decoded.id }, function(err, user) {
-          if(err) res.status(404).json({ errro: 'No such user' });
-
-          req.user = user;
-          next();
+          if(err) {
+            res.status(404).json({ errro: 'No such user' });
+          } else {
+            req.user = user;
+            next();
+          }
         })
       }
     })
