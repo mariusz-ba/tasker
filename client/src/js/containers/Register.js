@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  Link
+} from 'react-router-dom';
 import axios from 'axios';
 
 export default class Register extends Component {
@@ -57,18 +60,6 @@ export default class Register extends Component {
     const { username, password, confirm, email } = this.state.user;
     const { errors } = this.state;
     console.log(password, confirm);
-      // <div>
-      //   <form method="post" action="/api/users">
-      //     <label>Username: <input type="text" name="username" value={username} onChange={this.onUsernameChanged}/></label>
-      //     { errors.username && <p>This username already exists in database</p> }
-      //     <label>Password: <input type="text" name="password" value={password} onChange={this.onPasswordChanged}/></label>
-      //     <label>Confirm password: <input type="text" name="confirm" value={confirm} onChange={this.onConfirmChanged}/></label>
-      //     { password != confirm ? <p>Incorrect password</p> : null }
-      //     <label>E-Mail: <input type="email" name="email" value={email} onChange={this.onEmailChanged}/></label>
-      //     { errors.email && <p>This email already exists in database</p> }
-      //     <button type="submit" onClick={this.onSubmit}>Register</button>
-      //   </form>
-      // </div>
 
     const usernameValid = errors.username ? 'is-invalid' : '';
     const emailValid = errors.email ? 'is-invalid' : '';
@@ -114,7 +105,7 @@ export default class Register extends Component {
               <button type="submit" className="btn btn-success btn-login" onClick={this.onSubmit}>Sign up</button>
             </form>
             <div className="login-form text-center">
-              Already have an account? <a href="login.html">Sign in</a>.
+              Already have an account? <Link to="/login">Sign in</Link>.
             </div>
           </div>
         </div>

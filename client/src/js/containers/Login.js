@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {
+  Link
+} from 'react-router-dom';
 
 import * as AuthActions from '../actions/authActions';
 
@@ -59,7 +62,7 @@ class Login extends Component {
               <button type="submit" className="btn btn-success btn-login" onClick={(e) => this.onSubmit(e)}>Sign in</button>
             </form>
             <div className="login-form text-center">
-              New to tasker? <a href="register.html">Create an account</a>.
+              New to tasker? <Link to="/register">Create an account</Link>.
             </div>
           </div>
         </div>

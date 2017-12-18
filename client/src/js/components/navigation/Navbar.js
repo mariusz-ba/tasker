@@ -10,12 +10,21 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      dropdown: false
     }
+
+    this.toggleCollapse = this.toggleCollapse.bind(this);
+    this.toggleDropdown = this.toggleDropdown.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   toggleCollapse() {
     this.setState({ collapsed: !this.state.collapsed });
+  }
+
+  toggleDropdown() {
+    this.setState({ dropdown: !this.state.dropdown });
   }
 
   logout(e) {
@@ -25,6 +34,7 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
+    const { username } = this.props.auth.user;
     const renderNavbar = !(this.props.location.pathname == '/login' || this.props.location.pathname =='/register');
 
     if(!renderNavbar)
@@ -36,12 +46,12 @@ class Navbar extends Component {
       <ul className="navbar-nav navbar-right">
         <li className="nav-item"><a className="nav-link" href="#"><i className="fa fa-plus" aria-hidden="true"></i></a></li>
         <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="navbar-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a className="nav-link dropdown-toggle" href="#" id="navbar-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={this.toggleDropdown}>
             Profile
           </a>
-          <div className="dropdown-menu dropdown-menu-right dropdown" aria-labelledby="navbar-dropdown">
+          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-dropdown" style={ this.state.dropdown ? {display: 'block'} : {display: 'none'}}>
             <span className="dropdown-header">Signed in as</span>
-            <h6 className="dropdown-header"><b>mariusz-ba</b></h6>
+            <h6 className="dropdown-header"><b>{username}</b></h6>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Your profile</a>
             <a className="dropdown-item" href="#">Your tasks</a>
@@ -49,10 +59,9 @@ class Navbar extends Component {
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Help</a>
             <a className="dropdown-item" href="#">Settings</a>
-            <a className="dropdown-item" href="#">Sign out</a>
+            <a className="dropdown-item" href="#" onClick={this.logout}>Sign out</a>
           </div>
         </li>
-        <li className="nav-item"><a className="nav-link" href="#" onClick={this.logout.bind(this)}>Sign out</a></li>
       </ul>
     );
 
@@ -66,7 +75,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-md navbar-dark bg-dark">
         <div className="container">
-          <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" onClick={this.toggleCollapse.bind(this)}>
+          <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" onClick={this.toggleCollapse}>
             <span className="navbar-toggler-icon"></span>
           </button>
           <Link className="navbar-brand" to="/">Tasker</Link>
