@@ -59,6 +59,7 @@ class Navbar extends Component {
     const guestLinks = (
       <ul className="navbar-nav navbar-right">
         <li className="nav-item"><Link className="nav-link" to="/login">Sign in</Link></li>
+        <li className="nav-item"><Link className="nav-link" to="/register">Sign up</Link></li>
       </ul>
     );
 
