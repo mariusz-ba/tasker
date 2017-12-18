@@ -25,7 +25,7 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
-    const renderNavbar = !(this.props.location.pathname == '/login');
+    const renderNavbar = !(this.props.location.pathname == '/login' || this.props.location.pathname =='/register');
 
     if(!renderNavbar)
       return null;
@@ -64,7 +64,7 @@ class Navbar extends Component {
     );
 
     return (
-      <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+      <nav className="navbar navbar-expand-md navbar-dark bg-dark">
         <div className="container">
           <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" onClick={this.toggleCollapse.bind(this)}>
             <span className="navbar-toggler-icon"></span>

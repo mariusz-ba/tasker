@@ -37,7 +37,9 @@ router
         email: email
       }, function(err, user) {
         //if(err) throw err;
-        res.status(201).json(user);
+        res.status(201).json({
+          info: 'New user created'      
+        });
       })
     }
   })
