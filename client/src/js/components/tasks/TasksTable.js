@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {
   Link
 } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { deleteTask } from '../../actions/tasksActions';
 
-export default class TasksTable extends Component {
+class TasksTable extends Component {
 
   constructor(props) {
     super(props);
@@ -20,7 +22,7 @@ export default class TasksTable extends Component {
   onDelete(e, id) {
     e.preventDefault();
     console.log(id);
-    this.props.actions.deleteTask(id);
+    this.props.deleteTask(id);
   }
 
   render() {
@@ -56,3 +58,5 @@ export default class TasksTable extends Component {
     )
   }
 }
+
+export default connect(null, { deleteTask })(TasksTable);

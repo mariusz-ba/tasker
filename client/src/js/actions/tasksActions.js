@@ -93,12 +93,11 @@ export function createdTask(task) {
  */
 export function updateTask(id, task) {
   return dispatch => {
-    return axios.post('/api/tasks', {
-      id,
+    return axios.post('/api/tasks/' + id, {
       task
     })
     .then(
-      response => resposne.data,
+      response => response.data,
       error => console.log('An error occurred.', error)
     )
     .then(data => dispatch(updatedTask(id, data)))

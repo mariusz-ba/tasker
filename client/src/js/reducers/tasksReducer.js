@@ -20,6 +20,11 @@ export default function reducer(state = [], action) {
       state = state.filter(task => task._id != id);
       break;
     }
+    case 'UPDATED_TASK': {
+      const { id, task } = action;
+      state = state.map(item => (item._id == id ? task : item));
+      break;
+    }
     default: {}
   }
   console.log(state);
