@@ -16,7 +16,6 @@ import Login from './containers/Login';
 import Register from './containers/Register';
 import Tasks from './containers/Tasks';
 
-
 export default class App extends Component {
   render() {
     return (
@@ -24,9 +23,9 @@ export default class App extends Component {
         <div>
           <Navbar />
           <Route exact path="/" component={Home} />
-          <AuthRequiredRoute path="/tasks" component={Tasks} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <AuthRequiredRoute path="/tasks" component={Tasks}/>
         </div>
       </Router>
     )

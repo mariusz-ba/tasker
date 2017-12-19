@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {
+  Link
+} from 'react-router-dom';
 
-import * as TasksActions from '../../actions/tasksActions';
-
-class TasksTable extends Component {
+export default class TasksTable extends Component {
 
   constructor(props) {
     super(props);
 
     this.onUpdate = this.onUpdate.bind(this);
     this.onDelete = this.onDelete.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.actions.fetchTasks({ completed: false });
   }
 
   onUpdate(e, id) {
@@ -42,14 +37,14 @@ class TasksTable extends Component {
           </tr>
         </thead>
         <tbody>
-        {
+        { tasks &&
           tasks.map((task, index) => (
             <tr key={task._id ? task._id : index}>
               <td><span className="badge badge-info">{task._id}</span></td>
               <td>{task.description}</td>
               <td><span className="badge badge-success">{task.completed ? 'Completed' : 'Not completed'}</span></td>
               <td>
-                <a className="btn btn-primary btn-sm" href="#" onClick={(e) => this.onUpdate(e, task._id)}>Edit</a>
+                <Link className="btn btn-primary btn-sm" to={"/tasks/" + task._id}>View</Link>
                 &nbsp;
                 <a className="btn btn-danger btn-sm" href="#" onClick={(e) => this.onDelete(e, task._id)}>Delete</a>
               </td>
@@ -61,20 +56,3 @@ class TasksTable extends Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    tasks: state.tasks
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(TasksActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TasksTable);
