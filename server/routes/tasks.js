@@ -33,7 +33,7 @@ router
 .post('/:id', authenticate, function(req, res) {
   console.log('Post:');
   console.log(req.body);
-  Task.findOneAndUpdate({_id: req.params.id}, {$set: {completed: req.body.task.completed}}, {new: true}, function(err, task) {
+  Task.findOneAndUpdate({_id: req.params.id}, {$set: req.body.task}, {new: true}, function(err, task) {
     if(err) throw err;
     res.status(200).json(task);
   })

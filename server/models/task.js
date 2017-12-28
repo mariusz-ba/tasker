@@ -10,8 +10,8 @@ const Schema = mongoose.Schema;
  */
 
 const TaskSchema = new Schema({
-  description: { type: String, required: true },
-  completed: { type: Boolean, required: true },
+  description: { type: String, required: true, default: 'No description' },
+  completed: { type: Boolean, required: true, default: false },
   author: { type: Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Tabs from '../tabs/Tabs';
 import Tab from '../tabs/Tab';
 import TasksTable from './TasksTable';
 
-import { createTask, fetchTasks } from '../../actions/tasksActions';
+import { fetchTasks } from '../../actions/tasksActions';
 
 class TasksHome extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class TasksHome extends Component {
 
   onCreate(e) {
     e.preventDefault();
-    this.props.createTask({description: 'New task', completed: false });
+    this.props.history.push('/tasks/new');
   }
 
   render() {
@@ -57,4 +58,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { createTask, fetchTasks })(TasksHome);
+export default withRouter(connect(mapStateToProps, { fetchTasks })(TasksHome));
