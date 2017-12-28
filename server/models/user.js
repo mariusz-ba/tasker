@@ -14,7 +14,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  email: { type: String, required: true, index: { unique: true } }
+  email: { type: String, required: true, index: { unique: true } },
+  teams: [Schema.Types.ObjectId]
 });
 
 /**
@@ -48,8 +49,28 @@ UserSchema.methods = {
  */
 
 UserSchema.statics = {
+  
+  /**
+   * Add user to a specified team
+   * @param {ObjectId} user - Id of a user that will be assigned to a team
+   * @param {ObjectId} team - Id of a team user will be assigned to
+   * @param {function} callback - Callback function
+   */
+  assignToTeam: function(user, team, callback) {
+    return this.findOneAndUpdate({ _id: user }, { $push: {teams: team} }, callback).exec();
+  },
 
-}
+  /**
+   * Remove user from a specified team
+   * @param {ObjectId} user - Id of a user that will be removed from a team
+   * @param {ObjectId} team - Id of a team user will be removed from
+   * @param {function} callback - Callback function
+   */
+  removeFromTeam: function(user, team, callback) {
+    return this.findOneAndUpdate({ _id: user }, { $pull: {teams: team} }, callback).exec();
+  }
+
+};
 
 let User = mongoose.model('User', UserSchema);
 

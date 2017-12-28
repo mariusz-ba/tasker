@@ -15,7 +15,7 @@ const TaskSchema = new Schema({
   author: { type: Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
-  users: [Schema.Types.ObjectId],
+  users: [Schema.Types.ObjectId], // Do I really need that ?
   subtasks: [Schema.Types.ObjectId],
   comments: [Schema.Types.ObjectId]
 });
@@ -26,7 +26,7 @@ const TaskSchema = new Schema({
 
 TaskSchema.methods = {
 
-  assignUsers: function(users) {
+  assignUsers: function(users) { // Do I really need that?
 
   },
 

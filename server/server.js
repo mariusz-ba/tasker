@@ -10,7 +10,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/tasker');
 // router
 var users = require('./routes/users')
   , auth = require('./routes/auth')
-  , tasks = require('./routes/tasks');
+  , tasks = require('./routes/tasks')
+  , teams = require('./routes/teams');
 
 // Configuration
 app.disable('x-powered-by');
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({
 app.use('/api/auth', auth);
 app.use('/api/users', users);
 app.use('/api/tasks', tasks);
+app.use('/api/teams', teams);
 
 // Run server
 app.listen(app.get('port'), function(error) {

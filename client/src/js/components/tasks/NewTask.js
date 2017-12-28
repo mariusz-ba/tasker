@@ -44,6 +44,16 @@ class NewTask extends Component {
                       Completed
                     </label>
                   </div>
+                  <div class="form-group">
+                    <label for="target">Target</label>
+                    <select class="form-control" id="target">
+                      <option>Team 1</option>
+                      <option>Team 2</option>
+                      <option>Team 3</option>
+                      <option>User 1</option>
+                      <option>User 2</option>
+                    </select>
+                  </div>
                 </form>
               </div>
               <div className="card-footer">
