@@ -10,7 +10,7 @@ import TasksHome from '../components/tasks/TasksHome';
 import NewTask from '../components/tasks/NewTask';
 
 class Tasks extends Component {
-    render() {
+  render() {
     return (
       <Switch>
         <Route exact path={this.props.match.path} component={TasksHome}/>

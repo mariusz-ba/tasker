@@ -73,3 +73,54 @@ body {
 .card {
   margin-bottom: 10px;
 }
+
+/* Badges */
+h1, h2, h3, h4, h5, h6 {
+  vertical-align: middle;
+}
+h1 .badge,
+h2 .badge,
+h3 .badge,
+h4 .badge,
+h5 .badge,
+h6 .badge {
+  vertical-align: middle;
+  margin-top: -0.5em;
+}
+
+.group-card {
+  border: none;
+  box-shadow: 0 0 3px #bababa;
+  margin-bottom: 15px;
+}
+.simple-button {
+  font-size: 1em;
+  color: #0084ff;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.simple-button:hover {
+  background: none;
+  color: #2db2ff
+}
+
+.task-row {
+  margin-top: 16px;
+}
+.task-row input {
+  vertical-align: middle;
+}
+.task-row span {
+  margin-left: 10px;
+  border-radius: 0;
+}
+
+.card-tags span,
+.card-tags a {
+  border-radius: 0;
+  margin-right: 10px;
+  padding: 8px;
+}

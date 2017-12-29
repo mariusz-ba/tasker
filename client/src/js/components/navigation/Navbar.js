@@ -106,9 +106,9 @@ class Navbar extends Component {
 
           <div className={"navbar-collapse " + collapseClass} id="navigation">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item"><Link className="nav-link" to="/"><i className="fa fa-bars" aria-hidden="true"></i> Projects</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/projects"><i className="fa fa-bars" aria-hidden="true"></i> Projects</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/tasks"><i className="fa fa-users" aria-hidden="true"></i> Team</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/login"><i className="fa fa-user" aria-hidden="true"></i> Me</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/profile"><i className="fa fa-user" aria-hidden="true"></i> Me</Link></li>
             </ul>
             { isAuthenticated ? userLinks : guestLinks }
           </div>
