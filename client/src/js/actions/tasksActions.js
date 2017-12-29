@@ -46,11 +46,9 @@ export function fetchTasks(filter) {
       }
     })
     .then(
-      response => response.data,
+      response => dispatch(receiveTasks(filter, response.data)),
       error => console.log('An error occurred.', error)
-    )
-    .then(data => dispatch(receiveTasks(filter, data)))
-
+    );
   }
 }
 
@@ -64,10 +62,9 @@ export function createTask(task) {
     console.log('Creating task');
     return axios.put('/api/tasks', task)
     .then(
-      response => response.data,
+      response => dispatch(createdTask(response.data)),
       error => console.log('An error occurred.', error)
-    )
-    .then(data => dispatch(createdTask(data)));
+    );
   }
 }
 
@@ -97,10 +94,9 @@ export function updateTask(id, task) {
       task
     })
     .then(
-      response => response.data,
+      response => dispatch(updatedTask(id, response.data)),
       error => console.log('An error occurred.', error)
-    )
-    .then(data => dispatch(updatedTask(id, data)))
+    );
   }
 }
 
@@ -122,12 +118,9 @@ export function deleteTask(id) {
   return dispatch => {
     return axios.delete('/api/tasks/' + id)
     .then(
-      response => response.data,
+      response => dispatch(deletedTask(response.data)),
       error => console.log('An error occurred.', error)
-    )
-    .then(
-      data => dispatch(deletedTask(data))
-    )
+    );
   }
 }
 

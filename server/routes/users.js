@@ -11,7 +11,7 @@ router
     res.json(users);
   })
 })
-.post('/', function(req, res) {
+.post('/', function(req, res, next) {
   // Create new user
   const username = req.body.username;
   const password = req.body.password;
@@ -36,7 +36,7 @@ router
         password: password,
         email: email
       }, function(err, user) {
-        //if(err) throw err;
+        if(err) return next(err);
         res.status(201).json({
           info: 'New user created'      
         });

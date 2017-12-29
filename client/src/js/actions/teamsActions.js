@@ -4,7 +4,7 @@ import axios from 'axios';
 export function fetchTeams() {
   return dispatch => {
     console.log('Fetching teams');
-    axios.get('/api/teams').then(response => response.data, error => console.log('An error occurred', error)).then(data => dispatch(receiveTeams(data)));
+    axios.get('/api/teams').then(response => dispatch(receiveTeams(response.data)), error => console.log('An error occurred', error));
   }
 }
 
@@ -19,7 +19,7 @@ export function receiveTeams(teams) {
 export function createTeam(team) {
   return dispatch => {
     console.log('Creating team');
-    axios.put('/api/teams', team).then(response => response.data, error => console.log('An error occurred', error)).then(data => dispatch(teamCreated(data)));
+    axios.put('/api/teams', team).then(response => dispatch(teamCreated(response.data)), error => console.log('An error occurred', error));
   }
 }
 
@@ -34,7 +34,7 @@ export function teamCreated(team) {
 export function removeTeam(id) {
   return dispatch => {
     console.log('Creating team');
-    axios.delete(`/api/teams/${id}`).then(response => response.data, error => console.log('An error occurred', error)).then(data => dispatch(teamRemoved(data)));
+    axios.delete(`/api/teams/${id}`).then(response => dispatch(teamRemoved(response.data)), error => console.log('An error occurred', error));
   }
 }
 

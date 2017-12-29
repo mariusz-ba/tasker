@@ -37,7 +37,7 @@ app.listen(app.get('port'), function(error) {
 
 // Error handling middleware
 app.use(function(err, req, res, next) {
-  res.json({
+  res.status(500).json({
     error: err.message
   })
 })
