@@ -1,12 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchTasks } from '../../actions/tasksActions';
+import { fetchCards, createCard } from '../../actions/cardsActions';
+import { withRouter } from 'react-router-dom';
 
-export default class Project extends Component {
+class Project extends Component {
+  componentWillMount() {
+    this.props.fetchCards(this.props.match.params.id);
+    //this.props.fetchTasks();
+  }
+
+  onCreateCard = (e) => {
+    e.preventDefault();
+    this.props.createCard(this.props.match.params.id, 'new cards heheh');
+  }
+
   render() {
+    /*
     const cards = [
       { _id: 1, name: 'First card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']},
       { _id: 2, name: 'Second card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']},
       { _id: 3, name: 'Third card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']}
     ]
+    */
+    
+    const { cards } = this.props;
+
     return (
       <div className="container">
         <div className="row">
@@ -18,7 +37,7 @@ export default class Project extends Component {
         <hr/>
         <div className="row" style={{margin: '16px 0'}}>
           <div className="col" style={{padding: '0'}}>
-            <a href="#" className="btn simple-button">ADD NEW CARD</a>
+            <a href="#" className="btn simple-button" onClick={this.onCreateCard}>ADD NEW CARD</a>
             <input style={{width: '200px'}} type="text" placeholder="Filter cards by label" className="form-control pull-right"/>
           </div>
         </div>  
@@ -53,3 +72,12 @@ export default class Project extends Component {
     )
   }
 }
+
+function mapStateToProps({ cards, tasks }) {
+  return {
+    cards,
+    tasks
+  }
+}
+
+export default withRouter(connect(mapStateToProps, { fetchTasks, fetchCards, createCard })(Project));

@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 import {
   Link
 } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchProjects, createProject } from '../../actions/projectsActions';
 
-export default class ProjectsHome extends Component {
+class ProjectsHome extends Component {
+  componentWillMount() {
+    this.props.fetchProjects();
+  }
+
+  onCreate = () => {
+    this.props.createProject('new project');
+  }
+
   render() {
-    const projects = [
-      { _id: 1, name: 'First Project', description: 'lorem ipsum dolor sit amet...' },
-      { _id: 2, name: 'Second Project', description: 'lorem ipsum dolor sit amet...' },
-      { _id: 3, name: 'Third Project', description: 'lorem ipsum dolor sit amet...' },
-      { _id: 4, name: 'Fourth Project', description: 'lorem ipsum dolor sit amet...' }
-    ];
+    const { projects } = this.props;
 
     return (
       <div className="container">
+        <button className="btn btn-primary" onClick={this.onCreate}>Create Project</button>
         <div className="row">
         {
           projects.map(project => (
@@ -34,3 +40,11 @@ export default class ProjectsHome extends Component {
     )
   }
 }
+
+function mapStateToProps({ projects }) {
+  return {
+    projects
+  }
+}
+
+export default connect(mapStateToProps, { fetchProjects, createProject })(ProjectsHome);

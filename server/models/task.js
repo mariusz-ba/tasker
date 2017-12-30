@@ -13,9 +13,11 @@ const TaskSchema = new Schema({
   description: { type: String, required: true, default: 'No description' },
   completed: { type: Boolean, required: true, default: false },
   author: { type: Schema.Types.ObjectId, required: true },
+  project: { type: Schema.Types.ObjectId, required: true },
+  card: { type: Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
-  users: [Schema.Types.ObjectId], // Do I really need that ?
+  //users: [Schema.Types.ObjectId], // Do I really need that ?
   subtasks: [Schema.Types.ObjectId],
   comments: [Schema.Types.ObjectId]
 });
