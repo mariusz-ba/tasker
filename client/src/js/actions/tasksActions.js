@@ -4,12 +4,12 @@ import axios from 'axios';
  * Action dispatched every time user wants to get tasks
  * from server api
  * 
- * @param {Object} filter 
+ * @param {ObjectId} project 
  */
-export function requestTasks(filter) {
+export function requestTasks(project) {
   return {
     type: 'REQUEST_TASKS',
-    filter
+    project
   }
 }
 
@@ -17,36 +17,30 @@ export function requestTasks(filter) {
  * This action is dispatched when tasks are successfully received
  * from the server
  * 
- * @param {Object} filter 
  * @param {Object} tasks 
  */
-export function receiveTasks(filter, tasks) {
+export function receiveTasks(project, tasks) {
   return {
     type: 'RECEIVE_TASKS',
-    filter,
     tasks
   }
 }
 
 /**
- * This is a thunk action that uses ajax request to get
- * tasks from the server using specified filter
+ * Fetch tasks based on project id
  * 
- * @param {Object} filter 
+ * @param {ObjectId} project 
  */
-export function fetchTasks(filter) {
+export function fetchTasks(project) {
 
   return function (dispatch) {
 
-    dispatch(requestTasks(filter));
+    dispatch(requestTasks(project));
 
-    return axios.get('/api/tasks', {
-      params: {
-        ...filter
-      }
-    })
+    console.log('fetching for project: ', project);
+    return axios.get(`/api/projects/${project}/tasks`)
     .then(
-      response => dispatch(receiveTasks(filter, response.data)),
+      response => dispatch(receiveTasks(project, response.data)),
       error => console.log('An error occurred.', error)
     );
   }
@@ -55,12 +49,13 @@ export function fetchTasks(filter) {
 /**
  * Thunk action responsible for creating new tasks
  * 
+ * @param {ObjectId} project
  * @param {Object} task 
  */
-export function createTask(task) {
+export function createTask(project, task) {
   return dispatch => {
     console.log('Creating task');
-    return axios.put('/api/tasks', task)
+    return axios.put(`/api/projects/${project}/tasks`, task)
     .then(
       response => dispatch(createdTask(response.data)),
       error => console.log('An error occurred.', error)

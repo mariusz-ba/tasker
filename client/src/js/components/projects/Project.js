@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTasks } from '../../actions/tasksActions';
+import { fetchTasks, createTask } from '../../actions/tasksActions';
 import { fetchCards, createCard } from '../../actions/cardsActions';
 import { withRouter } from 'react-router-dom';
 
 class Project extends Component {
   componentWillMount() {
-    this.props.fetchCards(this.props.match.params.id);
-    //this.props.fetchTasks();
+    const { id } = this.props.match.params;
+    this.props.fetchCards(id);
+    this.props.fetchTasks(id);
   }
 
   onCreateCard = (e) => {
     e.preventDefault();
     this.props.createCard(this.props.match.params.id, 'new cards heheh');
+  }
+
+  onCreateTask = (e, card) => {
+    e.preventDefault();
+    this.props.createTask(this.props.match.params.id, {
+      description: 'Noweeee',
+      completed: false,
+      card
+    });
   }
 
   render() {
@@ -23,8 +33,14 @@ class Project extends Component {
       { _id: 3, name: 'Third card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']}
     ]
     */
-    
-    const { cards } = this.props;
+    const cards = this.props.cards.map(card => {
+      const tasks = this.props.tasks.filter(task => task.card === card._id);
+      return {
+        _id: card._id,
+        name: card.name,
+        tasks
+      }
+    });
 
     return (
       <div className="container">
@@ -56,12 +72,12 @@ class Project extends Component {
                   card.tasks.map((task, index) => 
                   <div key={index} className="task-row">
                     <input type="checkbox"/>
-                    <span>{task}</span>
+                    <span>{task.description}</span>
                     <span className="badge badge-secondary"><i className="fa fa-comment-o" aria-hidden="true"></i> 3</span>
                     <span className="badge badge-primary">Mariusz Baran - Sun, Jul 10</span>
                   </div>)
                 }
-                <a href="#" className="btn simple-button">Add a task</a>
+                <a href="#" className="btn simple-button" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
               </div>
             </div> 
           </div>
@@ -80,4 +96,4 @@ function mapStateToProps({ cards, tasks }) {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { fetchTasks, fetchCards, createCard })(Project));
+export default withRouter(connect(mapStateToProps, { fetchTasks, createTask, fetchCards, createCard })(Project));
