@@ -77,9 +77,9 @@ class Navbar extends Component {
             <span className="dropdown-header">Signed in as</span>
             <h6 className="dropdown-header"><b>{username}</b></h6>
             <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Your profile</a>
-            <a className="dropdown-item" href="#">Your tasks</a>
-            <a className="dropdown-item" href="#">Your friends</a>
+            <Link className="dropdown-item" to={"/profile/" + username}>Your profile</Link>
+            <Link className="dropdown-item" to="/projects">Your projects</Link>
+            <Link className="dropdown-item" to="/teams">Your teams</Link>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Help</a>
             <a className="dropdown-item" href="#">Settings</a>
@@ -107,7 +107,7 @@ class Navbar extends Component {
           <div className={"navbar-collapse " + collapseClass} id="navigation">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item"><Link className="nav-link" to="/projects"><i className="fa fa-bars" aria-hidden="true"></i> Projects</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/tasks"><i className="fa fa-users" aria-hidden="true"></i> Team</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/teams"><i className="fa fa-users" aria-hidden="true"></i> Team</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/profile"><i className="fa fa-user" aria-hidden="true"></i> Me</Link></li>
             </ul>
             { isAuthenticated ? userLinks : guestLinks }

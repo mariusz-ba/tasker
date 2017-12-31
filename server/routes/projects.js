@@ -4,11 +4,18 @@ const express = require('express')
 const authenticate = require('../utils/authenticate');
 const Card = require('../models/card');
 const Project = require('../models/project');
+const Task = require('../models/task');
 
 router
 .get('/', authenticate, function(req, res, next) {
   // Return all projects user is assigned to
-  Project.find({}, function(err, projects) {
+  console.log('Fetching projects for: ', req.user);
+  Project.find({
+    $or: [
+      {users: req.user._id},
+      {teams: { $in: req.user.teams }}
+    ]
+  }, function(err, projects) {
     if(err) return next(err);
     res.status(200).json(projects);
   })
@@ -24,6 +31,8 @@ router
   // Create new project
   Project.create({
     name: req.body.name,
+    description: req.body.description,
+    teams: req.body.teams,
     users: [req.user._id]
   }, function(err, project) {
     if(err) return next(err);
@@ -32,41 +41,25 @@ router
 })
 .delete('/:id', authenticate, function(req, res, next) {
   // Delete project
-  Project.deleteOne({ _id: req.params.id }, function(err, result) {
+  const id = req.params.id;
+  Project.deleteOne({ _id: id }, function(err, projects) {
     if(err) return next(err);
-    res.status(200).json({
-      id: req.params.id,
-      deletedCount: result.deletedCount
-    })
-  })
-})
-/*
-.put('/:id', authenticate, function(req, res, next) {
-  // Create new card
-  Card.create({ name: req.body.name }, function(err, card) {
-    if(err) return next(err);
-    Project.addCard(req.params.id, card._id, function(err, project) {
-      res.status(200).json(project);
-    })
-  })
-})
-.delete('/:id/cards/:card', authenticate, function(req, res, next) {
-  // Delete card
-  Cards.remove({ _id: req.params.card }, function(err) {
-    if(err) return next(err);
-    Project.deleteCard(req.params.id, req.params.card, function(err, project) {
+    // Delete cards and tasks that refer to this project
+    Card.remove({ project: id }, function(err, cards) {
       if(err) return next(err);
-      res.status(200).json(project);
+      Task.remove({ project: id }, function(err, tasks) {
+        if(err) return next(err);
+        res.status(200).json({
+          id,
+          removed: {
+            projects: projects.deletedCount,
+            cards: cards.result.n,
+            tasks: tasks.result.n
+          }
+        })
+      })
     })
   })
 })
-.post('/:id/cards/:card', authenticate, function(req, res, next) {
-  // Add task to card
-  Card.findOneAndUpdate({ _id: req.params.card }, { $push: {tasks: req.body.task}}, {new: true}, function(err, card) {
-    if(err) return next(err);
-    // return project card what ?
-  })
-})
-*/
 
 module.exports = router;

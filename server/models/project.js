@@ -11,6 +11,7 @@ const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema({
   name: { type: String, required: true },
+  description: { type: String },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
   users: [Schema.Types.ObjectId],

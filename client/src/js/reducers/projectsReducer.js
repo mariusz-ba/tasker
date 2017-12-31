@@ -16,6 +16,10 @@ export default function reducer(state = [], action) {
       ]
       break;
     }
+    case 'DELETED_PROJECT': {
+      state = state.filter(project => project._id !== action.id);
+      break;
+    }
     default: {}
   }
   return state;

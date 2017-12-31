@@ -26,13 +26,6 @@ class Project extends Component {
   }
 
   render() {
-    /*
-    const cards = [
-      { _id: 1, name: 'First card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']},
-      { _id: 2, name: 'Second card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']},
-      { _id: 3, name: 'Third card', tasks: ['dfsafdsafdas', 'fdsafsafdasfdsa']}
-    ]
-    */
     const cards = this.props.cards.map(card => {
       const tasks = this.props.tasks.filter(task => task.card === card._id);
       return {

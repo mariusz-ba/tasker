@@ -5,14 +5,14 @@ const authenticate = require('../utils/authenticate');
 const Card = require('../models/card');
 
 router
-.get('/', function(req, res, next) {
+.get('/', authenticate, function(req, res, next) {
   // Get cards for specified project
   Card.find({ project: req.params.project }, function(err, cards) {
     if(err) return next(err);
     res.status(200).json(cards);
   });
 })
-.put('/', function(req, res, next) {
+.put('/', authenticate, function(req, res, next) {
   // Create new card
   Card.create({
     name: req.body.name,
@@ -22,7 +22,7 @@ router
     res.status(201).json(card);
   })
 })
-.delete('/:id', function(req, res, next) {
+.delete('/:id', authenticate, function(req, res, next) {
   // Delete card
   Card.deleteOne({ _id: req.params.id }, function(err, result) {
     if(err) return next(err);
