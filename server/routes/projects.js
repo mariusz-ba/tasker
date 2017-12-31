@@ -32,7 +32,7 @@ router
   Project.create({
     name: req.body.name,
     description: req.body.description,
-    teams: req.body.teams,
+    teams: (req.body.teams.length ? req.body.teams : []),
     users: [req.user._id]
   }, function(err, project) {
     if(err) return next(err);

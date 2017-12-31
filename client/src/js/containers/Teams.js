@@ -1,49 +1,24 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
-  fetchTeams,
-  createTeam,
-  removeTeam
-} from '../actions/teamsActions';
+  Route,
+  Switch,
+  withRouter
+} from 'react-router-dom';
+
+import NewTeam from '../components/teams/NewTeam';
+import TeamsHome from '../components/teams/TeamsHome';
+import Team from '../components/teams/Team';
 
 class Teams extends Component {
-  componentWillMount() {
-    this.props.fetchTeams();
-  }
-
-  onCreate = () => {
-    this.props.createTeam({ name: 'My new team' });
-  }
-
-  onRemove = (e, id) => {
-    this.props.removeTeam(id);
-  }
-
   render() {
     return (
-      <div>
-        <h1>Your teams</h1>
-        {
-          this.props.teams.map(team => (
-            <div key={team._id}>
-              <h1>{team.name} <span className="badge badge-success">{team._id}</span></h1>
-              {
-                team.users.map(user => <h5 key={user}>{user}</h5>)
-              }
-              <button className="btn btn-danger" onClick={(e) => this.onRemove(e, team._id)}>Remove team</button>
-            </div>
-          ))
-        }
-        <button className="btn btn-primary" onClick={this.onCreate}>Create team</button>
-      </div>
+      <Switch>
+        <Route exact path={this.props.match.path} component={TeamsHome}/>
+        <Route path={`${this.props.match.path}/new`} component={NewTeam}/>
+        <Route path={`${this.props.match.path}/:id`} component={Team}/>
+      </Switch>
     )
   }
 }
 
-function mapStateToProps({ teams }) {
-  return {
-    teams
-  }
-}
-
-export default connect( mapStateToProps, { fetchTeams, createTeam, removeTeam } )(Teams);
+export default withRouter(Teams);

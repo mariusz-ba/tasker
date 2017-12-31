@@ -26,7 +26,7 @@ class NewProject extends Component {
     this.props.createProject({
       name,
       description,
-      teams: [team]
+      teams: (team.length ? [team] : [])
     });
     this.props.history.push('/projects');
   }

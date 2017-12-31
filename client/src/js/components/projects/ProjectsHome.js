@@ -26,7 +26,7 @@ class ProjectsHome extends Component {
           projects.map(project => (
             <div className="col-md-4" key={project._id}>
               <div className="card">
-                <img className="card-img-top" src="/img/prv.jpg" alt="Card image"/>
+                <img className="card-img-top" src="/img/team.png" alt="Card image"/>
                 <div className="card-block">
                   <h4 className="card-title">{project.name}</h4>
                   <p>Teams:
