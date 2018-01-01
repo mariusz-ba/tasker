@@ -20,13 +20,13 @@ class ProjectsHome extends Component {
 
     return (
       <div className="container">
-        <Link className="btn btn-primary" to="/projects/new">Create Project</Link>
+        <Link className="btn btn-sm btn-primary" to="/projects/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create Project</Link>
         <div className="row">
         {
           projects.map(project => (
             <div className="col-md-4" key={project._id}>
               <div className="card">
-                <img className="card-img-top" src="/img/team.png" alt="Card image"/>
+                <img className="card-img-top" src="/img/project.png" alt="Card image"/>
                 <div className="card-block">
                   <h4 className="card-title">{project.name}</h4>
                   <p>Teams:
@@ -37,9 +37,9 @@ class ProjectsHome extends Component {
                   { project.users &&
                     project.users.map(user => <span key={user} className="badge badge-danger">{user}</span>)
                   }</p>
-                  <p className="card-text">{project.description}</p>
-                  <Link to={`/projects/${project._id}`} className="btn btn-primary">Browse</Link>
-                  <button className="btn btn-danger" onClick={(e) => this.onDeleteProject(e, project._id)}>Delete</button>
+                  <p className="card-text">{project.description.split(' ').slice(0, 40).join(' ')}...</p>
+                  <Link to={`/projects/${project._id}`} className="btn btn-sm btn-light"><i className="fa fa-search" aria-hidden="true"></i> Browse</Link>&nbsp;
+                  <button className="btn btn-sm btn-danger" onClick={(e) => this.onDeleteProject(e, project._id)}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
                 </div>
               </div>
             </div>

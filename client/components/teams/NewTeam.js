@@ -40,7 +40,7 @@ class NewTeam extends Component {
                       value={name}
                       onChange={this.onNameChange}/>
                   </div>
-                  <button class="btn btn-primary" onClick={this.onCreateTeam}>Create</button>
+                  <button className="btn btn-primary" onClick={this.onCreateTeam}>Create</button>
                 </form>
               </div>
             </div>
