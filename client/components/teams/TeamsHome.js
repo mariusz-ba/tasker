@@ -9,6 +9,8 @@ import {
   removeTeam
 } from '../../actions/teamsActions';
 
+import Card from '../ui/Card';
+
 class TeamsHome extends Component {
   componentWillMount() {
     this.props.fetchTeams();
@@ -20,20 +22,24 @@ class TeamsHome extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h1>Your teams</h1>
-        {
-          this.props.teams.map(team => (
-            <div key={team._id} style={{border: '1px solid black'}}>
-              <h1>{team.name} <span className="badge badge-success">{team._id}</span></h1>
-              {
-                //team.users.map(user => <h5 key={user}>{user}</h5>)
-              }
-              <button className="btn btn-danger" onClick={(e) => this.onRemove(e, team._id)}>Remove team</button>
-            </div>
-          ))
-        }
-        <Link className="btn btn-primary" to="/teams/new">Create team</Link>
+        <Link className="btn btn-sm btn-primary" to="/teams/new"><i className="fa fa-plus" aria-hidden="true"></i> Create team</Link>
+        <div className="row">
+          {
+            this.props.teams.map(team => (
+              <div key={team._id} className="col-md-4">
+                <Card 
+                  image="/img/team.png"
+                  primaryText={team.name}
+                  secondaryText={team._id}>
+                  <Link className="btn btn-sm btn-light" to={`/teams/${team._id}`}><i className="fa fa-search" aria-hidden="true"></i> Browse</Link>&nbsp;
+                  <button className="btn btn-sm btn-danger" onClick={(e) => this.onRemove(e, team._id)}>Remove team</button>
+                </Card>
+              </div>
+            ))
+          }
+        </div>
       </div>
     )
   }
