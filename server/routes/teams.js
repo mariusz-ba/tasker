@@ -24,6 +24,14 @@ router
     })
   })
 })
+.get('/:id', authenticate, (req, res, next) => {
+  Team.findOne({ _id: req.params.id }, (err, team) => {
+    if(err) return next(err);
+    User.find({ teams: req.params.id }, { password: false }, (err, users) => {
+      res.status(200).json({ _id: team._id, name: team.name, users });
+    })
+  })
+})
 .put('/', authenticate, function(req, res, next) {
   // Create new team
   console.log(req.body);

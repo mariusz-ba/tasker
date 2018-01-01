@@ -23,8 +23,7 @@ class TeamsHome extends Component {
   render() {
     return (
       <div className="container">
-        <h1>Your teams</h1>
-        <Link className="btn btn-sm btn-primary" to="/teams/new"><i className="fa fa-plus" aria-hidden="true"></i> Create team</Link>
+        <Link className="btn btn-sm btn-primary" to="/teams/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create team</Link>
         <div className="row">
           {
             this.props.teams.map(team => (

@@ -4,6 +4,15 @@ export default function reducer(state = [], action) {
       state = action.teams;
       break;
     }
+    case 'RECEIVE_TEAM': {
+      state = [
+        ...state.filter(team => team._id !== action.team._id),
+        {
+          ...action.team
+        }
+      ]
+      break;
+    }
     case 'TEAM_CREATED': {
       state = [
         ...state,
