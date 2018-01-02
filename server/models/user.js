@@ -1,8 +1,8 @@
 /**
  * Module dependencies
  */
-const mongoose = require('mongoose')
-  , bcrypt = require('bcrypt');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const saltRounds = 10;
 const Schema = mongoose.Schema;
@@ -27,7 +27,7 @@ UserSchema.pre('save', function(next) {
   let self = this;
   let { password } = this;
 
-  bcrypt.hash(password, saltRounds, function(error, hash) {
+  bcrypt.hash(password, saltRounds, (error, hash) => {
     if(error) return next(error);
 
     self.password = hash;

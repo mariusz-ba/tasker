@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config');
+import jwt from 'jsonwebtoken';
+import config from '../config';
 
-const User = require('../models/user');
+import User from '../models/user';
 
-module.exports = function(req, res, next) {
+export default (req, res, next) => {
   const authorizationHader = req.headers['authorization'];
   let token;
 
@@ -12,11 +12,11 @@ module.exports = function(req, res, next) {
   }
 
   if(token) {
-    jwt.verify(token, config.jwtSecret, function(err, decoded) {
+    jwt.verify(token, config.jwtSecret, (err, decoded) => {
       if(err) {
         res.status(401).json({ error: 'Failed to authenticate' });
       } else {
-        User.findOne({ _id: decoded.id }, function(err, user) {
+        User.findOne({ _id: decoded.id }, (err, user) => {
           if(err) {
             res.status(404).json({ errro: 'No such user' });
           } else {

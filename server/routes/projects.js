@@ -1,13 +1,16 @@
-const express = require('express')
-  , router = express.Router();
+// Module dependencies
+import express from 'express';
+import authenticate from '../utils/authenticate';
 
-const authenticate = require('../utils/authenticate');
-const Card = require('../models/card');
-const Project = require('../models/project');
-const Task = require('../models/task');
+// Models
+import Card from '../models/card';
+import Project from '../models/project';
+import Task from '../models/task';
 
+// Router
+const router = express.Router();
 router
-.get('/', authenticate, function(req, res, next) {
+.get('/', authenticate, (req, res, next) => {
   // Return all projects user is assigned to
   console.log('Fetching projects for: ', req.user);
   Project.find({
@@ -15,39 +18,39 @@ router
       {users: req.user._id},
       {teams: { $in: req.user.teams }}
     ]
-  }, function(err, projects) {
+  }, (err, projects) => {
     if(err) return next(err);
     res.status(200).json(projects);
   })
 })
-.get('/:id', authenticate, function(req, res, next) {
+.get('/:id', authenticate, (req, res, next) => {
   // Return project with specified id
-  Project.findOne({ _id: req.params.id }, function(err, project) {
+  Project.findOne({ _id: req.params.id }, (err, project) => {
     if(err) return next(err);
     res.status(200).json(project);
   })
 })
-.put('/', authenticate, function(req, res, next) {
+.put('/', authenticate, (req, res, next) => {
   // Create new project
   Project.create({
     name: req.body.name,
     description: req.body.description,
     teams: (req.body.teams.length ? req.body.teams : []),
     users: [req.user._id]
-  }, function(err, project) {
+  }, (err, project) => {
     if(err) return next(err);
     res.status(201).json(project);
   })
 })
-.delete('/:id', authenticate, function(req, res, next) {
+.delete('/:id', authenticate, (req, res, next) => {
   // Delete project
   const id = req.params.id;
-  Project.deleteOne({ _id: id }, function(err, projects) {
+  Project.deleteOne({ _id: id }, (err, projects) => {
     if(err) return next(err);
     // Delete cards and tasks that refer to this project
-    Card.remove({ project: id }, function(err, cards) {
+    Card.remove({ project: id }, (err, cards) => {
       if(err) return next(err);
-      Task.remove({ project: id }, function(err, tasks) {
+      Task.remove({ project: id }, (err, tasks) => {
         if(err) return next(err);
         res.status(200).json({
           id,
@@ -62,4 +65,4 @@ router
   })
 })
 
-module.exports = router;
+export default router;

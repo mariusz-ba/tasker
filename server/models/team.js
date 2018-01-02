@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 /**
@@ -24,12 +24,6 @@ TeamSchema.methods = {
 };
 
 TeamSchema.statics = {
-
-  /*
-  findByMemberId: function(_id, callback) {
-    return this.find({ users: _id }, callback).exec();
-  },
-  */
   
 }
 

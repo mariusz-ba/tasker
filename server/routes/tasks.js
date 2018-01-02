@@ -1,21 +1,22 @@
 // Module dependencies
-var express = require('express')
-  , router = express.Router({ mergeParams: true });
+import express from 'express';
+import authenticate from '../utils/authenticate';
 
-const authenticate = require('../utils/authenticate');
-const Task = require('../models/task');
-// Routes
+// Models
+import Task from '../models/task';
 
+// Router
+const router = express.Router({ mergeParams: true });
 router
-.get('/', authenticate, function(req, res, next) {
+.get('/', authenticate, (req, res, next) => {
   // Get all tasks for project
-  Task.find({ project: req.params.project }, function(err, tasks) {
+  Task.find({ project: req.params.project }, (err, tasks) => {
     if(err) return next(err);
 
     res.json(tasks);
   })
 })
-.put('/', authenticate, function(req, res, next) {
+.put('/', authenticate, (req, res, next) => {
   // Create new task
   console.log('Put: ', req.body);
   Task.create({
@@ -24,7 +25,7 @@ router
     author: req.user._id,
     project: req.params.project,
     card: req.body.card
-  }, function(err, task) {
+  }, (err, task) => {
     if(err) return next(err);
     console.log('New task created');
     res.status(201).json(task);
@@ -38,14 +39,14 @@ router
     res.status(200).json(task);
   })
 })
-.delete('/:id', authenticate, function(req, res, next) {
+.delete('/:id', authenticate, (req, res, next) => {
   // Delete task
   console.log('Delete: ', req.params);
 
   const id = req.params.id;
   Task.deleteOne({
     _id: id
-  }, function(err, result) {
+  }, (err, result) => {
     if(err) return next(err);
     console.log('Task deleted: ', id);
     res.status(200).json({
@@ -55,4 +56,4 @@ router
   })
 });
 
-module.exports = router;
+export default router;

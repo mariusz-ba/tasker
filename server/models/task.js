@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 /**
@@ -17,7 +17,6 @@ const TaskSchema = new Schema({
   card: { type: Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
-  //users: [Schema.Types.ObjectId], // Do I really need that ?
   subtasks: [Schema.Types.ObjectId],
   comments: [Schema.Types.ObjectId]
 });
@@ -27,18 +26,6 @@ const TaskSchema = new Schema({
  */
 
 TaskSchema.methods = {
-
-  assignUsers: function(users) { // Do I really need that?
-
-  },
-
-  addSubtasks: function(subtasks) {
-
-  },
-
-  addComments: function(comments) {
-
-  }
 
 };
 

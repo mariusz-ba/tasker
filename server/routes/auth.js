@@ -1,15 +1,16 @@
 // Module dependencies
-var express = require('express')
-  , router = express.Router()
-  , bcrypt = require('bcrypt')
-  , User = require('../models/user')
-  , jwt = require('jsonwebtoken')
-  , config = require('../config');
+import express from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 
-// Middleware
-// Routes
+// Models
+import User from '../models/user';
+
+//Router
+const router = express.Router();
 router
-.post('/', function(req, res, next) {
+.post('/', (req, res, next) => {
 
   const { identifier, password } = req.body;
   console.log({
@@ -22,7 +23,7 @@ router
       { 'username': identifier },
       { 'email': identifier }
     ]
-  }, function(error, user) {
+  }, (error, user) => {
     // if(error) return next(error);
     if(user) {
       if(bcrypt.compareSync(password, user.password)) {
@@ -41,8 +42,8 @@ router
   })
 
 })
-.get('/', function(req, res, next) {
+.get('/', (req, res, next) => {
 
 });
 
-module.exports = router;
+export default router;

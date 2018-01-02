@@ -1,17 +1,18 @@
 // Module dependencies
-var express = require('express')
-  , router = express.Router();
+import express from 'express';
 
-const User = require('../models/user');
-// Middleware
-// Routes
+// Models
+import User from '../models/user';
+
+// Router
+const router = express.Router();
 router
-.get('/', function(req, res) {
-  User.find({}, function(err, users) {
+.get('/', (req, res) => {
+  User.find({}, (err, users) => {
     res.json(users);
   })
 })
-.post('/', function(req, res, next) {
+.post('/', (req, res, next) => {
   // Create new user
   const username = req.body.username;
   const password = req.body.password;
@@ -23,7 +24,7 @@ router
       { username: username },
       { email: email }
     ]
-  }, function(err, user) {
+  }, (err, user) => {
     if(user) {
       // User exists
       res.status(405).json({
@@ -35,7 +36,7 @@ router
         username: username,
         password: password,
         email: email
-      }, function(err, user) {
+      }, (err, user) => {
         if(err) return next(err);
         res.status(201).json({
           info: 'New user created'      
@@ -45,4 +46,4 @@ router
   })
 })
 
-module.exports = router;
+export default router;
