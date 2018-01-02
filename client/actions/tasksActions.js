@@ -37,7 +37,6 @@ export function fetchTasks(project) {
 
     dispatch(requestTasks(project));
 
-    console.log('fetching for project: ', project);
     return axios.get(`/api/projects/${project}/tasks`)
     .then(
       response => dispatch(receiveTasks(project, response.data)),
@@ -54,7 +53,6 @@ export function fetchTasks(project) {
  */
 export function createTask(project, task) {
   return dispatch => {
-    console.log('Creating task');
     return axios.put(`/api/projects/${project}/tasks`, task)
     .then(
       response => dispatch(createdTask(response.data)),

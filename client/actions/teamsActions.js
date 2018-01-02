@@ -18,7 +18,6 @@ export function receiveTeams(teams) {
 // Get team
 export function fetchTeam(id) {
   return dispatch => {
-    console.log('Fetching team');
     return axios.get(`/api/teams/${id}`)
     .then(
       response => dispatch(receiveTeam(response.data)),
@@ -37,7 +36,6 @@ export function receiveTeam(team) {
 // Create team
 export function createTeam(team) {
   return dispatch => {
-    console.log('Creating team');
     return axios.put('/api/teams', team).then(response => dispatch(teamCreated(response.data)), error => console.log('An error occurred', error));
   }
 }
@@ -52,7 +50,6 @@ export function teamCreated(team) {
 // Remove team
 export function removeTeam(id) {
   return dispatch => {
-    console.log('Creating team');
     return axios.delete(`/api/teams/${id}`).then(response => dispatch(teamRemoved(response.data)), error => console.log('An error occurred', error));
   }
 }

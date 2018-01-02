@@ -27,6 +27,5 @@ export default function reducer(state = [], action) {
     }
     default: {}
   }
-  console.log(state);
   return state;
 }

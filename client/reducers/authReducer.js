@@ -35,6 +35,5 @@ export default function authReducer(state = initialState, action) {
 		}
 		default: { }
 	}
-	console.log(state);
 	return state;
 }
