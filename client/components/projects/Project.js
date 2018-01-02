@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTasks, createTask } from '../../actions/tasksActions';
+import { fetchTasks, createTask, updateTask } from '../../actions/tasksActions';
 import { fetchCards, createCard } from '../../actions/cardsActions';
 import { withRouter } from 'react-router-dom';
 
-import Card from './Card';
+import Card from './card/Card';
+import TasksList from './tasks/TasksList';
 
 class Project extends Component {
   componentWillMount() {
@@ -56,20 +57,21 @@ class Project extends Component {
         {
           cards.map(card => (
           <div key={card._id} className="col-md-12">
-            <Card  key={card._id} name={card.name} onCardNameChanged={(name) => {console.log(`Card(${card._id}) name changed to: ${name}`)}}>
+            <Card name={card.name} onCardNameChanged={(name) => {console.log(`Card(${card._id}) name changed to: ${name}`)}}>
               <div className="card-tags">
                 <span className="badge badge-success">Feature</span>
                 <a href="#" className="badge badge-primary">+ Add Tag</a>
               </div>
-              { card.tasks && 
-                card.tasks.map((task, index) => 
-                <div key={index} className="task-row">
-                  <input type="checkbox"/>
-                  <span>{task.description}</span>
-                  <span className="badge badge-secondary"><i className="fa fa-comment-o" aria-hidden="true"></i> 3</span>
-                  <span className="badge badge-primary">Mariusz Baran - Sun, Jul 10</span>
-                </div>)
-              }
+              <TasksList
+                tasks={card.tasks}
+                onTaskToggled={(id, completed) => {
+                  console.log(`Task (${id}) toggled to ${completed}`);
+                  this.props.updateTask(this.props.match.params.id, id, { completed })
+                }}
+                onTaskDescriptionChanged={(id, description) => {
+                  console.log(`Task (${id}) changed name to "${description}"`);
+                  this.props.updateTask(this.props.match.params.id, id, { description })
+                }}/>
               <a href="#" className="btn simple-button" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
             </Card>
           </div>
@@ -88,4 +90,4 @@ function mapStateToProps({ cards, tasks }) {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { fetchTasks, createTask, fetchCards, createCard })(Project));
+export default withRouter(connect(mapStateToProps, { fetchTasks, createTask, updateTask, fetchCards, createCard })(Project));

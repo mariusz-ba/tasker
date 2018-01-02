@@ -21,8 +21,12 @@ export default function reducer(state = [], action) {
       break;
     }
     case 'UPDATED_TASK': {
-      const { id, task } = action;
-      state = state.map(item => (item._id == id ? task : item));
+      state = [
+        ...state.filter(task => task._id !== action.task._id),
+        {
+          ...action.task
+        }
+      ]
       break;
     }
     default: {}

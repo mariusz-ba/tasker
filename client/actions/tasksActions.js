@@ -78,16 +78,17 @@ export function createdTask(task) {
  * This action is used to update existing tasks. User must specify
  * id of the task he wants to update and new task data
  * 
- * @param {String} id 
+ * @param {ObjectId} project
+ * @param {ObjectId} id - Id of a task to update 
  * @param {Object} task 
  */
-export function updateTask(id, task) {
+export function updateTask(project, id, task) {
   return dispatch => {
-    return axios.post('/api/tasks/' + id, {
+    return axios.post(`/api/projects/${project}/tasks/${id}`, {
       task
     })
     .then(
-      response => dispatch(updatedTask(id, response.data)),
+      response => dispatch(updatedTask(response.data)),
       error => console.log('An error occurred.', error)
     );
   }
@@ -96,17 +97,16 @@ export function updateTask(id, task) {
 /**
  * Action dispatched every time task was successfully updated
  * 
- * @param {String} id 
  * @param {Object} task 
  */
-export function updatedTask(id, task) {
+export function updatedTask(task) {
   return {
     type: 'UPDATED_TASK',
-    id,
     task
   }
 }
 
+// FIx that
 export function deleteTask(id) {
   return dispatch => {
     return axios.delete('/api/tasks/' + id)
