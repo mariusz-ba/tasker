@@ -16,6 +16,13 @@ router
     res.json(tasks);
   })
 })
+.get('/:id', authenticate, (req, res, next) => {
+  // Get task with specified id
+  Task.findOne({ _id: req.params.id }, (err, task) => {
+    if(err) return next(err);
+    res.status(200).json(task);
+  })
+})
 .put('/', authenticate, (req, res, next) => {
   // Create new task
   console.log('Put: ', req.body);
@@ -34,7 +41,7 @@ router
 .post('/:id', authenticate, (req, res, next) => {
   // Update task
   console.log(`Post: ${req.body}`);
-  Task.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body.task } }, {new: true}, (err, task) => {
+  Task.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body } }, {new: true}, (err, task) => {
     if(err) return next(err);
     res.status(200).json(task);
   })
@@ -44,13 +51,10 @@ router
   console.log('Delete: ', req.params);
 
   const id = req.params.id;
-  Task.deleteOne({
-    _id: id
-  }, (err, result) => {
+  Task.deleteOne({ _id: id }, (err, result) => {
     if(err) return next(err);
     console.log('Task deleted: ', id);
     res.status(200).json({
-      id: id,
       deletedCount: result.deletedCount 
     })
   })

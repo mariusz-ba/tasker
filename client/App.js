@@ -15,7 +15,6 @@ import Home from './containers/Home';
 import Login from './containers/Login';
 import Projects from './containers/Projects';
 import Register from './containers/Register';
-import Tasks from './containers/Tasks';
 import Teams from './containers/Teams';
 
 export default class App extends Component {
@@ -29,7 +28,6 @@ export default class App extends Component {
           <Route path="/register" component={Register} />
           <AuthRequiredRoute path="/projects" component={Projects}/>
           <AuthRequiredRoute path="/teams" component={Teams}/>
-          <AuthRequiredRoute path="/tasks" component={Tasks}/>
         </div>
       </Router>
     )

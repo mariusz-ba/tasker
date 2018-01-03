@@ -1,6 +1,15 @@
 export default function reducer(state = [], action) {
   console.log(action.type);
   switch(action.type) {
+    case 'RECEIVE_TASK': {
+      state = [
+        ...state.filter(task => task._id !== action.task._id),
+        {
+          ...action.task
+        }
+      ]
+      break;
+    }
     case 'RECEIVE_TASKS': {
       state = action.tasks;
       break;
@@ -16,8 +25,7 @@ export default function reducer(state = [], action) {
       break;
     }
     case 'DELETED_TASK': {
-      const { id } = action.data;
-      state = state.filter(task => task._id != id);
+      state = state.filter(task => task._id !== action.id);
       break;
     }
     case 'UPDATED_TASK': {

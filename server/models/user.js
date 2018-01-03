@@ -15,6 +15,8 @@ const UserSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   email: { type: String, required: true, index: { unique: true } },
+  createdAt: { type: Number, default: Date.now },
+  updatedAt: { type: Number, default: Date.now },
   teams: [Schema.Types.ObjectId]
 });
 

@@ -46,6 +46,52 @@ export function fetchTasks(project) {
 }
 
 /**
+ * This action is dispatched every time a specific
+ * taks is requested from the server
+ * 
+ * @param {ObjectId} project - Project id
+ * @param {ObjectId} task - Task id
+ */
+export function requestTask(project, task) {
+  return {
+    type: 'REQUEST_TASK',
+    project,
+    task
+  }
+}
+
+/**
+ * Use this action to get data about specific task
+ * 
+ * @param {ObjectId} project - Project id
+ * @param {ObjectId} task - Task id
+ */
+export function fetchTask(project, task) {
+  return dispatch => {
+    dispatch(requestTask(project, task));
+
+    return axios.get(`/api/projects/${project}/tasks/${task}`)
+    .then(
+      response => dispatch(receiveTask(response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+/**
+ * This action is dispatched every time task
+ * is received from the server
+ * 
+ * @param {Object} task - Task object received from the server
+ */
+export function receiveTask(task) {
+  return {
+    type: 'RECEIVE_TASK',
+    task
+  }
+}
+
+/**
  * Thunk action responsible for creating new tasks
  * 
  * @param {ObjectId} project
@@ -84,9 +130,7 @@ export function createdTask(task) {
  */
 export function updateTask(project, id, task) {
   return dispatch => {
-    return axios.post(`/api/projects/${project}/tasks/${id}`, {
-      task
-    })
+    return axios.post(`/api/projects/${project}/tasks/${id}`, {...task})
     .then(
       response => dispatch(updatedTask(response.data)),
       error => console.log('An error occurred.', error)
@@ -107,19 +151,19 @@ export function updatedTask(task) {
 }
 
 // FIx that
-export function deleteTask(id) {
+export function deleteTask(project, task) {
   return dispatch => {
-    return axios.delete('/api/tasks/' + id)
+    return axios.delete(`/api/projects/${project}/tasks/${task}`)
     .then(
-      response => dispatch(deletedTask(response.data)),
+      response => dispatch(deletedTask(task)),
       error => console.log('An error occurred.', error)
     );
   }
 }
 
-export function deletedTask(data) {
+export function deletedTask(id) {
   return {
     type: 'DELETED_TASK',
-    data
+    id
   }
 }

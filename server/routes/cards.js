@@ -28,7 +28,7 @@ router
 })
 .post('/:id', authenticate, (req, res, next) => {
   // Update an existing card
-  Card.findOneAndUpdate({ _id: req.params.id }, { $set: { name: req.body.name }}, {new: true}, (err, card) => {
+  Card.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body }}, {new: true}, (err, card) => {
     if(err) return next(err);
     res.status(200).json(card);
   })

@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTasks, createTask, updateTask } from '../../actions/tasksActions';
+import { fetchTasks, createTask, updateTask, deleteTask } from '../../actions/tasksActions';
 import { fetchCards, createCard, updateCard, deleteCard } from '../../actions/cardsActions';
 import { withRouter } from 'react-router-dom';
 
 import Card from './card/Card';
 import TasksList from './tasks/TasksList';
+import TasksListItem from './tasks/TasksListItem';
+
+Object.defineProperty(Array.prototype, 'sortBy', {
+  enumerable: false,
+  value: function(param, asc) { 
+    return this.sort((lhs, rhs) => {
+      if(asc)
+        return lhs[param] > rhs[param];
+      return lhs[param] < rhs[param];
+    })
+  }
+})
 
 class Project extends Component {
   componentWillMount() {
@@ -32,8 +44,7 @@ class Project extends Component {
     const cards = this.props.cards.map(card => {
       const tasks = this.props.tasks.filter(task => task.card === card._id);
       return {
-        _id: card._id,
-        name: card.name,
+        ...card,
         tasks
       }
     });
@@ -55,7 +66,9 @@ class Project extends Component {
         </div>
         <div className="row">
         {
-          cards.map(card => (
+          cards
+          .sortBy('createdAt', false)
+          .map(card => (
           <div key={card._id} className="col-md-12">
             <Card 
               name={card.name} 
@@ -65,16 +78,23 @@ class Project extends Component {
                 <span className="badge badge-success">Feature</span>
                 <a href="#" className="badge badge-primary">+ Add Tag</a>
               </div>
-              <TasksList
-                tasks={card.tasks}
-                onTaskToggled={(id, completed) => {
-                  console.log(`Task (${id}) toggled to ${completed}`);
-                  this.props.updateTask(this.props.match.params.id, id, { completed })
-                }}
-                onTaskDescriptionChanged={(id, description) => {
-                  console.log(`Task (${id}) changed name to "${description}"`);
-                  this.props.updateTask(this.props.match.params.id, id, { description })
-                }}/>
+              
+              <TasksList>
+                {
+                  card.tasks &&
+                  card.tasks
+                  .sortBy('createdAt', true)
+                  .map(task => (
+                    <TasksListItem
+                      key={task._id}
+                      {...task}
+                      onTaskToggled={(completed) => {this.props.updateTask(this.props.match.params.id, task._id, { completed })} }
+                      onDescriptionChanged={(description) => {this.props.updateTask(this.props.match.params.id, task._id, { description })} }
+                      onDescriptionClicked={() => console.log(`Redirect to task (${task._id})`)}
+                      onDeleteClicked={() => this.props.deleteTask(this.props.match.params.id, task._id)}/>
+                  ))
+                }
+              </TasksList>
               <a href="#" className="btn simple-button" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
             </Card>
           </div>
@@ -94,6 +114,6 @@ function mapStateToProps({ cards, tasks }) {
 }
 
 export default withRouter(connect(mapStateToProps, { 
-  fetchTasks, createTask, updateTask,
+  fetchTasks, createTask, updateTask, deleteTask,
   fetchCards, createCard, updateCard, deleteCard
 })(Project));

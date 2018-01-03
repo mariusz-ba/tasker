@@ -25,16 +25,24 @@ export default class TasksListItem extends Component {
   }
 
   onCheckboxChanged = (e) => {
-    const { _id, onTaskToggled } = this.props;
-    onTaskToggled(_id, e.target.checked);
+    const { onTaskToggled } = this.props;
+    onTaskToggled(e.target.checked);
   }
-
-  onDescriptionClicked = () => {
+  
+  onDescriptionChange = (e) => {
+    this.setState({ tempDescription: e.target.value });
+  }
+  
+  onEditClicked = () => {
     this.setState({ edit: true, tempDescription: this.props.description });
   }
 
-  onDescriptionChange = (e) => {
-    this.setState({ tempDescription: e.target.value });
+  onDeleteClicked = () => {
+    this.props.onDeleteClicked();
+  }
+
+  onDescriptionClicked = (e) => {
+    this.props.onDescriptionClicked();
   }
 
   onKeyPress = (e) => {
@@ -42,7 +50,7 @@ export default class TasksListItem extends Component {
       switch(e.which) {
         case 13: 
           this.setState({ edit: false });
-          this.props.onTaskDescriptionChanged(this.props._id, this.state.tempDescription);
+          this.props.onDescriptionChanged(this.state.tempDescription);
           break;
         case 27:
           this.setState({ edit: false, tempDescription: this.props.description });
@@ -69,6 +77,8 @@ export default class TasksListItem extends Component {
         <span onClick={this.onDescriptionClicked}>{description}</span>
         <span className="badge badge-secondary"><i className="fa fa-comment-o" aria-hidden="true"></i> 16</span>
         <span className="badge badge-primary">Mariusz Baran - Sun, Jan 2</span>
+        <button className="btn btn-sm btn-danger pull-right" style={{marginLeft: 5}} onClick={this.onDeleteClicked}>Delete</button>
+        <button className="btn btn-sm btn-light pull-right" onClick={this.onEditClicked}>Edit</button>
       </div>
 
     return (
@@ -82,7 +92,9 @@ export default class TasksListItem extends Component {
 TasksListItem.propTypes = {
   description: PropTypes.string.isRequired,
   onTaskToggled: PropTypes.func.isRequired,
-  onTaskDescriptionChanged: PropTypes.func.isRequired
+  onDescriptionChanged: PropTypes.func.isRequired,
+  onDescriptionClicked: PropTypes.func,
+  onDeleteClicked: PropTypes.func.isRequired
 };
 
 TasksListItem.defaultProps = {

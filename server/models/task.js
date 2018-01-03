@@ -15,8 +15,8 @@ const TaskSchema = new Schema({
   author: { type: Schema.Types.ObjectId, required: true },
   project: { type: Schema.Types.ObjectId, required: true },
   card: { type: Schema.Types.ObjectId, required: true },
-  createdAt: { type: Date, default: Date.now() },
-  updatedAt: { type: Date, default: Date.now() },
+  createdAt: { type: Number, default: Date.now },
+  updatedAt: { type: Number, default: Date.now },
   subtasks: [Schema.Types.ObjectId],
   comments: [Schema.Types.ObjectId]
 });

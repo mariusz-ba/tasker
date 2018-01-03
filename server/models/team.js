@@ -11,8 +11,8 @@ const Schema = mongoose.Schema;
 
 const TeamSchema = new Schema({
   name: { type: String, required: true, index: { unique: true }},
-  createdAt: { type: Date, default: Date.now() },
-  updatedAt: { type: Date, default: Date.now() }
+  createdAt: { type: Number, default: Date.now },
+  updatedAt: { type: Number, default: Date.now }
 });
 
 /**
