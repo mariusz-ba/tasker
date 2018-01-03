@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchTasks, createTask, updateTask } from '../../actions/tasksActions';
-import { fetchCards, createCard } from '../../actions/cardsActions';
+import { fetchCards, createCard, updateCard, deleteCard } from '../../actions/cardsActions';
 import { withRouter } from 'react-router-dom';
 
 import Card from './card/Card';
@@ -57,7 +57,10 @@ class Project extends Component {
         {
           cards.map(card => (
           <div key={card._id} className="col-md-12">
-            <Card name={card.name} onCardNameChanged={(name) => {console.log(`Card(${card._id}) name changed to: ${name}`)}}>
+            <Card 
+              name={card.name} 
+              onCardNameChanged={(name) => {this.props.updateCard(this.props.match.params.id, card._id, { name })}}
+              onCardDelete={() => {this.props.deleteCard(this.props.match.params.id, card._id)}}>
               <div className="card-tags">
                 <span className="badge badge-success">Feature</span>
                 <a href="#" className="badge badge-primary">+ Add Tag</a>
@@ -90,4 +93,7 @@ function mapStateToProps({ cards, tasks }) {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { fetchTasks, createTask, updateTask, fetchCards, createCard })(Project));
+export default withRouter(connect(mapStateToProps, { 
+  fetchTasks, createTask, updateTask,
+  fetchCards, createCard, updateCard, deleteCard
+})(Project));

@@ -18,7 +18,7 @@ export default (req, res, next) => {
       } else {
         User.findOne({ _id: decoded.id }, (err, user) => {
           if(err) {
-            res.status(404).json({ errro: 'No such user' });
+            res.status(404).json({ error: 'No such user' });
           } else {
             req.user = user;
             next();

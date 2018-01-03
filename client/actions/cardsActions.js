@@ -33,3 +33,63 @@ export function createdCard(card) {
     card
   }
 }
+
+/**
+ * Use this action to update existing card inside project.
+ * 
+ * @param {ObjectId} project - Id of a project that contains this card
+ * @param {ObjectId} id - Id of a card to update
+ * @param {Object} card - Object with new card values
+ */
+export function updateCard(project, id, card) {
+  return dispatch => {
+    return axios.post(`/api/projects/${project}/cards/${id}`, {...card})
+    .then(
+      response => dispatch(updatedCard(response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+/**
+ * This action is dispatched every time card id
+ * successfully updated.
+ * 
+ * @param {Object} card - Card object returned from the server
+ */
+export function updatedCard(card) {
+  return {
+    type: 'UPDATED_CARD',
+    card
+  }
+}
+
+/**
+ * Use this action to delete card from an
+ * existing project
+ * 
+ * @param {ObjectId} project - Id of a project card is assigned to
+ * @param {ObjectId} id - Card id
+ */
+export function deleteCard(project, id) {
+  return dispatch => {
+    return axios.delete(`/api/projects/${project}/cards/${id}`)
+    .then(
+      response => dispatch(deletedCard(id)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+/**
+ * This action is dispatched every time card is
+ * successfully deleted
+ * 
+ * @param {ObjectId} id - Deleted card id
+ */
+export function deletedCard(id) {
+  return {
+    type: 'DELETED_CARD',
+    id
+  }
+}

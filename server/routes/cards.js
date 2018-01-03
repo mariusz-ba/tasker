@@ -4,6 +4,7 @@ import authenticate from '../utils/authenticate';
 
 // Models
 import Card from '../models/card';
+import Task from '../models/task';
 
 // Router
 const router = express.Router({ mergeParams: true });
@@ -25,14 +26,25 @@ router
     res.status(201).json(card);
   })
 })
+.post('/:id', authenticate, (req, res, next) => {
+  // Update an existing card
+  Card.findOneAndUpdate({ _id: req.params.id }, { $set: { name: req.body.name }}, {new: true}, (err, card) => {
+    if(err) return next(err);
+    res.status(200).json(card);
+  })
+})
 .delete('/:id', authenticate, (req, res, next) => {
   // Delete card
   Card.deleteOne({ _id: req.params.id }, (err, result) => {
     if(err) return next(err);
-    res.status(200).json({
-      id: req.params.id,
-      deletedCount: result.deletedCount
-    });
+    // Delete all tasks assigned to this card
+    Task.remove({ card: req.params.id }, (err) => {
+      if(err) return next(err);
+      res.status(200).json({
+        id: req.params.id,
+        deletedCount: result.deletedCount
+      });
+    })
   })
 })
 

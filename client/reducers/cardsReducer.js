@@ -16,6 +16,19 @@ export default function reducer(state = [], action) {
       ]
       break;
     }
+    case 'UPDATED_CARD': {
+      state = [
+        ...state.filter(card => card._id !== action.card._id),
+        {
+          ...action.card
+        }
+      ]
+      break;
+    }
+    case 'DELETED_CARD': {
+      state = state.filter(card => card._id !== action.id);
+      break;
+    }
     default: {}
   }
   return state;

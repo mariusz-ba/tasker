@@ -24,7 +24,7 @@ export default class Card extends Component {
     this.nameInput && this.nameInput.focus();
   }
   
-  onHeaderClicked = (e) => {
+  toggleEdit = (e) => {
     this.setState({ edit: true, tempName: this.props.name });
   }
 
@@ -53,12 +53,16 @@ export default class Card extends Component {
 
   render() {
     const { edit, tempName } = this.state;
-    const { name } = this.props;
+    const { name, onCardDelete } = this.props;
 
     const headerComponent = edit ? 
-      <input ref={(input) => { this.nameInput = input; }} type="text" className="card-header form-control" value={tempName} onClick={this.onHeaderClicked} onChange={this.onNameChange}/> :
-      <h6 className="card-header" onClick={this.onHeaderClicked}>{name}</h6>;
-    
+      <input ref={(input) => { this.nameInput = input; }} type="text" className="card-header form-control" value={tempName} onClick={this.toggleEdit} onChange={this.onNameChange}/> :
+      <h6 className="card-header">
+        <span>{name}</span>
+        <button className="btn btn-sm btn-danger pull-right" style={{marginLeft: 5}} onClick={onCardDelete}>Delete</button>
+        <button className="btn btn-sm btn-light pull-right" onClick={this.toggleEdit}>Rename</button>
+      </h6>;
+
     return (
       <div className="card group-card">
         {headerComponent}
