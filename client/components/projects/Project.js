@@ -10,7 +10,7 @@ import TasksListItem from './tasks/TasksListItem';
 
 Object.defineProperty(Array.prototype, 'sortBy', {
   enumerable: false,
-  value: function(param, asc) { 
+  value: function(param, asc = true) { 
     return this.sort((lhs, rhs) => {
       if(asc)
         return lhs[param] > rhs[param];

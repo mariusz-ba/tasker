@@ -150,7 +150,12 @@ export function updatedTask(task) {
   }
 }
 
-// FIx that
+/**
+ * Use this action to delete tasks
+ * 
+ * @param {ObjectId} project - Project id 
+ * @param {ObjectId} task - Task id
+ */
 export function deleteTask(project, task) {
   return dispatch => {
     return axios.delete(`/api/projects/${project}/tasks/${task}`)
@@ -161,6 +166,12 @@ export function deleteTask(project, task) {
   }
 }
 
+/**
+ * This action is dispatched every time 
+ * task is deleted
+ * 
+ * @param {ObjectId} id - Id of a task that has been deleted
+ */
 export function deletedTask(id) {
   return {
     type: 'DELETED_TASK',
