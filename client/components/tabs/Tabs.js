@@ -35,9 +35,11 @@ export default class Tabs extends Component {
           </ul>
         </div>
         <div className="card-body">
-        {
-          tabs[this.state.current].component
-        }
+          <div className="row">
+          {
+            tabs[this.state.current].component
+          }
+          </div>
         </div>
       </div>
     )

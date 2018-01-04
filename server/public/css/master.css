@@ -153,7 +153,47 @@ h6 .badge {
   vertical-align: middle;
 }
 
-.tasks-list-item-description {}
 .tasks-list-item-description:hover {
   cursor: pointer;
+}
+
+/* Profile page */
+.profile-container {
+  position: relative;
+  padding-bottom: 120px;
+}
+.profile-bg {
+  min-height: 150px;
+  background: #333;
+}
+.profile-bg:after {
+  position: absolute;
+  bottom: -120px;
+  left: 15px;
+  right: 15px;
+  content: "";
+  height: 120px;
+  background: rgba(0,0,0,.03);
+  border: 1px solid rgba(0,0,0,.125);
+  border-top: 0;
+}
+.profile-user {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 150px;
+  height: auto;
+  transform: translate(-50%, -50%);
+}
+.profile-picture {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #cacaca;
+  padding: 3px;
+  background: white;
+}
+.profile-description {
+  padding-top: 10px;
+  text-align: center;
 }
