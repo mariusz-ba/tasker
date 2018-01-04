@@ -17,7 +17,7 @@ export function requestTasks(project) {
  * This action is dispatched when tasks are successfully received
  * from the server
  * 
- * @param {Object} tasks 
+ * @param {Array} tasks 
  */
 export function receiveTasks(project, tasks) {
   return {

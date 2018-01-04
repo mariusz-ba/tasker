@@ -10,13 +10,11 @@ export default class Tabs extends Component {
   }
 
   openTab(index) {
-    console.log('Opening tab: ', index)
     this.setState({ current: index });
   }
 
   render() {
     const { tabs } = this.props;
-    console.log(tabs);
 
     return (
       <div className="card">

@@ -1,11 +1,21 @@
 import axios from 'axios';
 
+/**
+ * This action is dispatched every time cards
+ * are requested from the server
+ */
 export function requestCards() {
   return {
     type: 'REQUEST_CARDS'
   }
 }
 
+/**
+ * This action is dispatched every time cards
+ * are successfully received from the server
+ * 
+ * @param {Array} cards 
+ */
 export function receiveCards(cards) {
   return {
     type: 'RECEIVE_CARDS',
@@ -13,20 +23,44 @@ export function receiveCards(cards) {
   }
 }
 
+/**
+ * Use this action to fetch cards from the server
+ * 
+ * @param {ObjectId} project - Project id
+ */
 export function fetchCards(project) {
   return dispatch => {
-    dispatch(requestCards());
-    
-    return axios.get(`/api/projects/${project}/cards`).then(response => dispatch(receiveCards(response.data)), error => console.log('An error occurred: ', error));
+    dispatch(requestCards()); 
+    return axios.get(`/api/projects/${project}/cards`)
+    .then(
+      response => dispatch(receiveCards(response.data)),
+      error => console.log('An error occurred: ', error)
+    );
   }
 }
 
+/**
+ * Use this action to create new cards
+ * 
+ * @param {ObjectId} project 
+ * @param {String} name 
+ */
 export function createCard(project, name) {
   return dispatch => {
-    return axios.put(`/api/projects/${project}/cards`, { name }).then(response => dispatch(createdCard(response.data)), error => console.log('An error occurred: ', error));
+    return axios.put(`/api/projects/${project}/cards`, { name })
+    .then(
+      response => dispatch(createdCard(response.data)),
+      error => console.log('An error occurred: ', error)
+    );
   }
 }
 
+/**
+ * This action is dispatched every time a new
+ * card is created
+ * 
+ * @param {Object} card - Card object received from the server
+ */
 export function createdCard(card) {
   return {
     type: 'CREATED_CARD',

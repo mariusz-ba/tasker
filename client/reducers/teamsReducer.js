@@ -23,7 +23,7 @@ export default function reducer(state = [], action) {
       break;
     }
     case 'TEAM_REMOVED': {
-      state = state.filter(team => team._id !== action.team);
+      state = state.filter(team => team._id !== action.id);
       break;
     }
     default: {}

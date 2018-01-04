@@ -1,11 +1,21 @@
 import axios from 'axios';
 
+/**
+ * This action is dispatched every time 
+ * a project is requested from the server
+ */
 export function requestProjects() {
   return {
     type: 'REQUEST_PROJECTS'
   }
 }
 
+/**
+ * This action is dispatched every time projects
+ * are successfully fetched from the server
+ * 
+ * @param {Array} projects 
+ */
 export function receiveProjects(projects) {
   return {
     type: 'RECEIVE_PROJECTS',
@@ -13,11 +23,18 @@ export function receiveProjects(projects) {
   }
 }
 
+/**
+ * Use this action to fetch all projects
+ * user has access to
+ */
 export function fetchProjects() {
   return dispatch => {
     dispatch(requestProjects());
-
-    return axios.get('/api/projects').then(response => dispatch(receiveProjects(response.data)), error => console.log('An error occurred: ', error));
+    return axios.get('/api/projects')
+    .then(
+      response => dispatch(receiveProjects(response.data)),
+      error => console.log('An error occurred: ', error)
+    );
   }
 }
 
@@ -63,12 +80,27 @@ export function receiveProject(project) {
   }
 }
 
+/**
+ * Use this action to create new projects
+ * 
+ * @param {Object} project - Object with new project data eg. {name: 'test', description: 'test'}
+ */
 export function createProject(project) {
   return dispatch => {
-    return axios.put('/api/projects', { ...project }).then(response => dispatch(createdProject(response.data)), error => console.log('An error occurred: ', error));
+    return axios.put('/api/projects', { ...project })
+    .then(
+      response => dispatch(createdProject(response.data)),
+      error => console.log('An error occurred: ', error)
+    );
   }
 }
 
+/**
+ * This action is dispatched every time project
+ * is created
+ * 
+ * @param {Object} project - Project that has been created
+ */
 export function createdProject(project) {
   return {
     type: 'CREATED_PROJECT',
@@ -76,6 +108,11 @@ export function createdProject(project) {
   }
 }
 
+/**
+ * Use this action to delete projects
+ * 
+ * @param {ObjectId} id - Id of a project to delete
+ */
 export function deleteProject(id) {
   return dispatch => {
     return axios.delete(`/api/projects/${id}`)
@@ -86,6 +123,12 @@ export function deleteProject(id) {
   }
 }
 
+/**
+ * This action is dispatched every time project
+ * is deleted
+ * 
+ * @param {ObjectId} id - Id of a deleted project
+ */
 export function deletedProject(id) {
   return {
     type: 'DELETED_PROJECT',

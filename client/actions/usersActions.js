@@ -39,6 +39,12 @@ export function receiveUsers(users) {
   }
 }
 
+/**
+ * Use this action to fetch data about user
+ * specified by his id
+ * 
+ * @param {ObjectId} id - User id
+ */
 export function fetchUser(id) {
   return dispatch => {
     console.log('id: ', id);
@@ -51,6 +57,12 @@ export function fetchUser(id) {
   }
 }
 
+/**
+ * This action is dispatched every time user
+ * is requested from the server
+ * 
+ * @param {ObjectId} id - User id
+ */
 export function requestUser(id) {
   return {
     type: 'REQUEST_USER',
@@ -58,6 +70,12 @@ export function requestUser(id) {
   }
 }
 
+/**
+ * This action is dispatched every time user
+ * data is received from the server
+ * 
+ * @param {Object} user - User object received from the server
+ */
 export function receiveUser(user) {
   return {
     type: 'RECEIVE_USER',
