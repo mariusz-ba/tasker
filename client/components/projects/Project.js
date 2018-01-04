@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchProject } from '../../actions/projectsActions';
 import { fetchTasks, createTask, updateTask, deleteTask } from '../../actions/tasksActions';
 import { fetchCards, createCard, updateCard, deleteCard } from '../../actions/cardsActions';
 import { withRouter } from 'react-router-dom';
@@ -22,6 +23,7 @@ Object.defineProperty(Array.prototype, 'sortBy', {
 class Project extends Component {
   componentWillMount() {
     const { id } = this.props.match.params;
+    this.props.fetchProject(id);
     this.props.fetchCards(id);
     this.props.fetchTasks(id);
   }
@@ -41,11 +43,14 @@ class Project extends Component {
   }
 
   render() {
-    const cards = this.props.cards.map(card => {
-      const tasks = this.props.tasks.filter(task => task.card === card._id);
+    const { id } = this.props.match.params;
+    const { projects, cards, tasks } = this.props;
+
+    const project = projects.find(project => project._id === id);
+    const uicards = cards.map(card => {
       return {
         ...card,
-        tasks
+        tasks: tasks.filter(task => task.card === card._id)
       }
     });
 
@@ -53,8 +58,8 @@ class Project extends Component {
       <div className="container">
         <div className="row">
           <div className="col">
-            <h4><small><span className="badge badge-pill badge-secondary">123</span></small> Project name</h4>
-            <p className="text-muted">Lorem ipsum dolor sit amet...</p>
+            <h4><small><span className="badge badge-pill badge-secondary">123</span></small> {project && project.name}</h4>
+            <p className="text-muted">{project && project.description}</p>
           </div>
         </div>
         <hr/>
@@ -66,14 +71,14 @@ class Project extends Component {
         </div>
         <div className="row">
         {
-          cards
+          uicards
           .sortBy('createdAt', false)
           .map(card => (
           <div key={card._id} className="col-md-12">
             <Card 
               name={card.name} 
-              onCardNameChanged={(name) => {this.props.updateCard(this.props.match.params.id, card._id, { name })}}
-              onCardDelete={() => {this.props.deleteCard(this.props.match.params.id, card._id)}}>
+              onCardNameChanged={(name) => {this.props.updateCard(id, card._id, { name })}}
+              onCardDelete={() => {this.props.deleteCard(id, card._id)}}>
               <div className="card-tags">
                 <span className="badge badge-success">Feature</span>
                 <a href="#" className="badge badge-primary">+ Add Tag</a>
@@ -88,10 +93,10 @@ class Project extends Component {
                     <TasksListItem
                       key={task._id}
                       {...task}
-                      onTaskToggled={(completed) => {this.props.updateTask(this.props.match.params.id, task._id, { completed })} }
-                      onDescriptionChanged={(description) => {this.props.updateTask(this.props.match.params.id, task._id, { description })} }
+                      onTaskToggled={(completed) => {this.props.updateTask(id, task._id, { completed })} }
+                      onDescriptionChanged={(description) => {this.props.updateTask(id, task._id, { description })} }
                       onDescriptionClicked={() => console.log(`Redirect to task (${task._id})`)}
-                      onDeleteClicked={() => this.props.deleteTask(this.props.match.params.id, task._id)}/>
+                      onDeleteClicked={() => this.props.deleteTask(id, task._id)}/>
                   ))
                 }
               </TasksList>
@@ -106,14 +111,16 @@ class Project extends Component {
   }
 }
 
-function mapStateToProps({ cards, tasks }) {
+function mapStateToProps({ projects, cards, tasks }) {
   return {
+    projects,
     cards,
     tasks
   }
 }
 
 export default withRouter(connect(mapStateToProps, { 
+  fetchProject,
   fetchTasks, createTask, updateTask, deleteTask,
   fetchCards, createCard, updateCard, deleteCard
 })(Project));

@@ -7,6 +7,18 @@ export default function reducer(state = [], action) {
       state = action.projects
       break;
     }
+    case 'REQUEST_PROJECT': {
+      break;
+    }
+    case 'RECEIVE_PROJECT': {
+      state = [
+        ...state.filter(project => project._id !== action.project._id),
+        {
+          ...action.project
+        }
+      ]
+      break;
+    }
     case 'CREATED_PROJECT': {
       state = [
         ...state,
