@@ -74,7 +74,7 @@ export default class TasksListItem extends Component {
       <input ref={(input) => {this.descriptionInput = input}} type="text" className="form-control" value={tempDescription} onChange={this.onDescriptionChange}/> :
       <div>
         <input type="checkbox" onChange={this.onCheckboxChanged} checked={checked}/>
-        <span onClick={this.onDescriptionClicked}>{description}</span>
+        <span className="tasks-list-item-description" onClick={this.onDescriptionClicked}>{description}</span>
         <span className="badge badge-secondary"><i className="fa fa-comment-o" aria-hidden="true"></i> 16</span>
         <span className="badge badge-primary">Mariusz Baran - Sun, Jan 2</span>
         <button className="btn btn-sm btn-danger pull-right" style={{marginLeft: 5}} onClick={this.onDeleteClicked}>Delete</button>

@@ -98,7 +98,7 @@ class Project extends Component {
                       {...task}
                       onTaskToggled={(completed) => {this.props.updateTask(id, task._id, { completed })} }
                       onDescriptionChanged={(description) => {this.props.updateTask(id, task._id, { description })} }
-                      onDescriptionClicked={() => console.log(`Redirect to task (${task._id})`)}
+                      onDescriptionClicked={() => {this.props.history.push(`/projects/${id}/tasks/${task._id}`)}}
                       onDeleteClicked={() => this.props.deleteTask(id, task._id)}/>
                   ))
                 }

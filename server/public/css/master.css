@@ -152,3 +152,8 @@ h6 .badge {
 .card-header span {
   vertical-align: middle;
 }
+
+.tasks-list-item-description {}
+.tasks-list-item-description:hover {
+  cursor: pointer;
+}
