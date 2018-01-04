@@ -45,8 +45,10 @@ class Project extends Component {
   render() {
     const { id } = this.props.match.params;
     const { projects, cards, tasks } = this.props;
+    const { fetching } = projects;
+    const fetchingText = fetching ? <div className="alert alert-success">Fetching...</div> : null;
 
-    const project = projects.find(project => project._id === id);
+    const project = projects.projects.find(project => project._id === id);
     const uicards = cards.map(card => {
       return {
         ...card,
@@ -56,6 +58,7 @@ class Project extends Component {
 
     return (
       <div className="container">
+        { fetchingText }
         <div className="row">
           <div className="col">
             <h4><small><span className="badge badge-pill badge-secondary">123</span></small> {project && project.name}</h4>

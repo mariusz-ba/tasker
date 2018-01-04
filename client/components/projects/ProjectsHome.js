@@ -18,7 +18,7 @@ class ProjectsHome extends Component {
   }
 
   render() {
-    const { projects } = this.props;
+    const { projects } = this.props.projects;
   
     return (
       <div className="container">

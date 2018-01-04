@@ -52,12 +52,13 @@ router
       if(err) return next(err);
       Task.remove({ project: id }, (err, tasks) => {
         if(err) return next(err);
+        console.log(cards, tasks);
         res.status(200).json({
           id,
           removed: {
             projects: projects.deletedCount,
-            cards: cards.result.n,
-            tasks: tasks.result.n
+            cards: cards.n,
+            tasks: tasks.n
           }
         })
       })
