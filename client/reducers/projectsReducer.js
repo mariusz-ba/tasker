@@ -1,16 +1,18 @@
-const initialState = {
+import _ from 'lodash';
+
+const INITIAL_STATE = {
   fetching: false,
-  projects: []
+  projects: {}
 }
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = INITIAL_STATE, action) {
   switch(action.type) {
     case 'REQUEST_PROJECTS': {
       state = { ...state, fetching: true }
       break;
     }
     case 'RECEIVE_PROJECTS': {
-      state = { fetching: false, projects: action.projects }
+      state = { ...state, fetching: false, projects: _.mapKeys(action.projects, '_id') }
       break;
     }
     case 'REQUEST_PROJECT': {
@@ -18,34 +20,15 @@ export default function reducer(state = initialState, action) {
       break;
     }
     case 'RECEIVE_PROJECT': {
-      state = {
-        fetching: false,
-        projects: [
-          ...state.projects.filter(project => project._id !== action.project._id),
-          {
-            ...action.project
-          }
-        ]
-      }
+      state = { ...state, fetching: false, projects: { ...state.projects, [action.project._id]: action.project }};
       break;
     }
-    case 'CREATED_PROJECT': {
-      state = {
-        ...state,
-        projects: [
-          ...state.projects,
-          {
-            ...action.project
-          }
-        ]
-      }
+    case 'CREATE_PROJECT': {
+      state = { ...state, projects: { ...state.projects, [action.project._id]: action.project }};
       break;
     }
-    case 'DELETED_PROJECT': {
-      state = {
-        ...state,
-        projects: state.projects.filter(project => project._id !== action.id)
-      }
+    case 'DELETE_PROJECT': {
+      state = { ...state, projects: _omit(state.projects, action.id)}
       break;
     }
     default: {}

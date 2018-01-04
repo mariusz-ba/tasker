@@ -6,6 +6,8 @@ import {
 import { connect } from 'react-redux';
 import { fetchProjects, deleteProject } from '../../actions/projectsActions';
 
+import { values } from 'lodash';
+
 import Card from '../ui/Card';
 
 class ProjectsHome extends Component {
@@ -25,7 +27,7 @@ class ProjectsHome extends Component {
         <Link className="btn btn-sm btn-primary" to="/projects/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create Project</Link>
         <div className="row">
         {
-          projects.map(project => (
+          values(projects).map(project => (
             <div className="col-md-4" key={project._id}>
               <Card
                 image="/img/project.png"

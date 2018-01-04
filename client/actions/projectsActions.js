@@ -103,7 +103,7 @@ export function createProject(project) {
  */
 export function createdProject(project) {
   return {
-    type: 'CREATED_PROJECT',
+    type: 'CREATE_PROJECT',
     project
   }
 }
@@ -131,7 +131,7 @@ export function deleteProject(id) {
  */
 export function deletedProject(id) {
   return {
-    type: 'DELETED_PROJECT',
+    type: 'DELETE_PROJECT',
     id
   }
 }

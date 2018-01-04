@@ -46,8 +46,8 @@ class Project extends Component {
     const { id } = this.props.match.params;
     const { projects, cards, tasks } = this.props;
     const { fetching } = projects;
-
-    const project = projects.projects.find(project => project._id === id);
+    
+    const project = projects.projects[id];
     const uicards = cards.map(card => {
       return {
         ...card,
