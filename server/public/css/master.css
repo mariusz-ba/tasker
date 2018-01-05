@@ -1,5 +1,6 @@
 body {
   font-size: 14px;
+  background: rgba(0,0,0,.02);
 }
 /* Navbar */
 .navbar {
@@ -15,17 +16,27 @@ body {
 }
 .navbar .navbar-brand,
 .navbar .navbar-nav .nav-item .nav-link {
-  color: #9b9b9b;
+  color: #fff;
 }
 
-.navbar .navbar-nav .nav-item .nav-link:hover {
-  color: black;
+.navbar .navbar-nav .nav-item .nav-link-main:hover {
+  background: #1463e0;
+  border-radius: 3px
 }
 .navbar img {
   width: 36px;
   height: auto;
   border-radius: 50%;
   box-shadow: 0 0 1px 0px white inset, 0 0 1px 0px white;
+}
+.navbar .navbar-toggler,
+.navbar .navbar-toggler:focus {
+  border-color: #fff;
+  color: #fff;
+  outline: 0;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
 .navbar .dropdown-toggle {
   padding: 0;

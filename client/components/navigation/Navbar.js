@@ -91,13 +91,13 @@ class Navbar extends Component {
 
     const guestLinks = (
       <ul className="navbar-nav navbar-right">
-        <li className="nav-item"><Link className="nav-link" to="/login">Sign in</Link></li>
-        <li className="nav-item"><Link className="nav-link" to="/register">Sign up</Link></li>
+        <li className="nav-item"><Link className="nav-link nav-link-main" to="/login">Sign in</Link></li>
+        <li className="nav-item"><Link className="nav-link nav-link-main" to="/register">Sign up</Link></li>
       </ul>
     );
 
     return (
-      <nav className="navbar navbar-expand-md navbar-light">
+      <nav className="navbar navbar-expand-md bg-primary">
         <div className="container">
           <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" onClick={this.toggleCollapse}>
             <span className="navbar-toggler-icon"></span>
@@ -106,9 +106,9 @@ class Navbar extends Component {
 
           <div className={"navbar-collapse " + collapseClass} id="navigation">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item"><Link className="nav-link" to="/projects"><i className="fa fa-bars" aria-hidden="true"></i> Projects</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/teams"><i className="fa fa-users" aria-hidden="true"></i> Team</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/profile"><i className="fa fa-user" aria-hidden="true"></i> Me</Link></li>
+              <li className="nav-item"><Link className="nav-link nav-link-main" to="/projects"><i className="fa fa-bars" aria-hidden="true"></i> Projects</Link></li>
+              <li className="nav-item"><Link className="nav-link nav-link-main" to="/teams"><i className="fa fa-users" aria-hidden="true"></i> Team</Link></li>
+              <li className="nav-item"><Link className="nav-link nav-link-main" to="/profile"><i className="fa fa-user" aria-hidden="true"></i> Me</Link></li>
             </ul>
             { isAuthenticated ? userLinks : guestLinks }
           </div>

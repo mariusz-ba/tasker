@@ -5,6 +5,7 @@ import { fetchTeams } from '../../actions/teamsActions';
 import { createProject } from '../../actions/projectsActions';
 
 import { withRouter } from 'react-router-dom';
+import { values } from 'lodash'; 
 
 class NewProject extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class NewProject extends Component {
     this.setState({ team: e.target.value });
   }
   render() {
-    const { teams } = this.props;
+    const { teams } = this.props.teams;
     const { name, description, team } = this.state;
     return (
       <div className="container">
@@ -78,7 +79,7 @@ class NewProject extends Component {
                     <select id="selectTeams" className="form-control" name="teams" onChange={this.onSelectTeam} value={team}>
                       <option value="">Chose team for this project...</option>
                       { teams &&
-                        teams.map(team => <option key={team._id} value={team._id}>{team.name}</option>)
+                        values(teams).map(team => <option key={team._id} value={team._id}>{team.name}</option>)
                       }
                     </select>
                   </div>
