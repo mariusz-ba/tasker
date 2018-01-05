@@ -29,6 +29,45 @@ export default function reducer(state = INITIAL_STATE, action) {
     case 'DELETE_USER': {
       break;
     }
+    // Friends
+    case 'RECEIVE_FRIENDS': {
+      state = { 
+        ...state,
+        users: {
+          ...state.users,
+          [action.user]: {
+            ...state.users[action.user],
+             friends: _.mapKeys(action.friends, '_id')
+          }
+        } 
+      }
+      break;
+    }
+    case 'ADD_FRIEND': {
+      break;
+    }
+    case 'CONFIRM_FRIEND': {
+      state = {
+        ...state,
+        users: {
+          ...state.users,
+          [action.user]: {
+            ...state.users[action.user],
+            friends: {
+              ...state.users[action.user].friends,
+              [action.friend]: {
+                ...state.users[action.user].friends[action.friend],
+                confirm_user: true
+              }
+            }
+          }
+        }
+      }
+      break;
+    }
+    case 'DELETE_FRIEND': {
+      break;
+    }
     default: {}
   }
   return state;

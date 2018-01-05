@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUser, fetchUsers } from '../../actions/usersActions';
+import { fetchFriends } from '../../actions/friendsActions';
 import { withRouter } from 'react-router-dom';
 
 import { values } from 'lodash';
 
 import Tabs from '../tabs/Tabs';
+import Friends from './pages/Friends';
 
 const Teams = (props) => {
   return values(props.teams).map(team => (
@@ -38,6 +40,7 @@ class User extends Component {
     const { users } = this.props.users;
     const user = users[id];
     const teams = user ? user.teams : [];
+    const friends = user ? user.friends : {};
     console.log('getUserId()', id);
 
     return (
@@ -61,7 +64,7 @@ class User extends Component {
               <Tabs tabs={[
                 {name: 'About'},
                 {name: 'Teams', component: <Teams teams={teams}/>}, 
-                {name: 'Friends', component: <Teams teams={teams}/>}, 
+                {name: 'Friends', component: <Friends user={user && user._id} friends={values(friends)}/>}, 
                 {name: 'Projects', component: <Teams teams={teams}/>}
               ]}/>
             </div>
@@ -76,4 +79,4 @@ function mapStateToProps({ auth, users }) {
   return { auth, users }
 };
 
-export default withRouter(connect(mapStateToProps, { fetchUser, fetchUsers })(User));
+export default withRouter(connect(mapStateToProps, { fetchUser, fetchUsers, fetchFriends })(User));

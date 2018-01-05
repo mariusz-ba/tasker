@@ -17,7 +17,11 @@ const UserSchema = new Schema({
   email: { type: String, required: true, index: { unique: true } },
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: Date.now },
-  teams: [Schema.Types.ObjectId]
+  teams: [Schema.Types.ObjectId],
+  friends: [{
+    _id: Schema.Types.ObjectId,
+    confirmed: Boolean
+  }]
 });
 
 /**

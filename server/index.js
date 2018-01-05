@@ -12,12 +12,14 @@ import webpackConfig from '../webpack.config.dev.js';
 mongoose.connect('mongodb://127.0.0.1:27017/tasker');
 
 // Routers
-import users from './routes/users';
 import auth from './routes/auth';
 import tasks from './routes/tasks';
 import teams from './routes/teams';
 import projects from './routes/projects';
 import cards from './routes/cards';
+
+import users from './routes/users/users'
+import friends from './routes/users/friends'
 
 
 // Create express app
@@ -42,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Configure routes
 app.use('/api/auth', auth);
 app.use('/api/users', users);
+app.use('/api/users/:user/friends', friends);
 app.use('/api/teams', teams);
 app.use('/api/projects', projects);
 app.use('/api/projects/:project/cards', cards);

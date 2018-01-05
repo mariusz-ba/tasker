@@ -2,8 +2,8 @@
 import express from 'express';
 
 // Models
-import User from '../models/user';
-import Team from '../models/team';
+import User from '../../models/user';
+import Team from '../../models/team';
 
 // Router
 const router = express.Router();
@@ -16,6 +16,7 @@ router
 })
 .get('/:id', (req, res, next) => {
   // Find user by id(id or username)
+  console.log('fetching user data');
   const { id } = req.params;
   let query = [{username: id}];
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -25,12 +26,17 @@ router
     $or: query
   }, { password: 0 }, (err, user) => {
     if(err) return next(err);
+    // Teams
     Team.find({ _id: { $in: user.teams }}, (err, teams) => {
       if(err) return next(err);
-      res.status(200).json({
-        ...user._doc,
-        teams
-      });
+      // Friends
+      //User.find({ _id: { $in: user.friends }}, {username: 1}, (err, friends) => {
+        //if(err) return next(err);
+        res.status(200).json({
+          ...user._doc,
+          teams
+        });
+      //})
     })
   })
 })
