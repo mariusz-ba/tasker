@@ -9,7 +9,7 @@ class Team extends Component {
   }
   render() {
     const { id } = this.props.match.params;
-    const team = this.props.teams.find(team => team._id == id);
+    const team = this.props.teams.teams[id];
 
     return (
       <div className="container">

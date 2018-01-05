@@ -115,7 +115,7 @@ export function createTask(project, task) {
  */
 export function createdTask(task) {
   return {
-    type: 'CREATED_TASK',
+    type: 'CREATE_TASK',
     task
   }
 }
@@ -145,7 +145,7 @@ export function updateTask(project, id, task) {
  */
 export function updatedTask(task) {
   return {
-    type: 'UPDATED_TASK',
+    type: 'UPDATE_TASK',
     task
   }
 }
@@ -174,7 +174,7 @@ export function deleteTask(project, task) {
  */
 export function deletedTask(id) {
   return {
-    type: 'DELETED_TASK',
+    type: 'DELETE_TASK',
     id
   }
 }

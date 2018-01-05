@@ -65,7 +65,7 @@ export function createTeam(team) {
   return dispatch => {
     return axios.put('/api/teams', team)
     .then(
-      response => dispatch(teamCreated(response.data)),
+      response => dispatch(createdTeam(response.data)),
       error => console.log('An error occurred', error)
     );
   }
@@ -77,9 +77,9 @@ export function createTeam(team) {
  * 
  * @param {Object} team - Team that has been created
  */
-export function teamCreated(team) {
+export function createdTeam(team) {
   return {
-    type: 'TEAM_CREATED',
+    type: 'CREATE_TEAM',
     team
   }
 }
@@ -90,11 +90,11 @@ export function teamCreated(team) {
  * 
  * @param {ObjectId} id - Id of a team to delete
  */
-export function removeTeam(id) {
+export function deleteTeam(id) {
   return dispatch => {
     return axios.delete(`/api/teams/${id}`)
     .then(
-      response => dispatch(teamRemoved(response.data)),
+      response => dispatch(deletedTeam(response.data)),
       error => console.log('An error occurred', error)
     );
   }
@@ -106,9 +106,9 @@ export function removeTeam(id) {
  * 
  * @param {Object} id - Id of a team that has been deleted
  */
-export function teamRemoved(id) {
+export function deletedTeam(id) {
   return {
-    type: 'TEAM_REMOVED',
+    type: 'DELETE_TEAM',
     id
   }
 }

@@ -4,12 +4,11 @@ import {
   Link,
   withRouter
 } from 'react-router-dom';
-import {
-  fetchTeams,
-  removeTeam
-} from '../../actions/teamsActions';
+import { fetchTeams, deleteTeam } from '../../actions/teamsActions';
 
 import Card from '../ui/Card';
+
+import { values } from 'lodash';
 
 class TeamsHome extends Component {
   componentWillMount() {
@@ -17,16 +16,17 @@ class TeamsHome extends Component {
   }
 
   onRemove = (e, id) => {
-    this.props.removeTeam(id);
+    this.props.deleteTeam(id);
   }
 
   render() {
+    const { teams } = this.props.teams;
     return (
       <div className="container">
         <Link className="btn btn-sm btn-primary" to="/teams/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create team</Link>
         <div className="row">
           {
-            this.props.teams.map(team => (
+            values(teams).map(team => (
               <div key={team._id} className="col-md-4">
                 <Card 
                   image="/img/team.png"
@@ -48,4 +48,4 @@ function mapStateToProps({ teams }) {
   return { teams }
 };
 
-export default withRouter(connect(mapStateToProps, { fetchTeams, removeTeam })(TeamsHome));
+export default withRouter(connect(mapStateToProps, { fetchTeams, deleteTeam })(TeamsHome));

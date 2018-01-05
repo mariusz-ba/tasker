@@ -63,7 +63,7 @@ export function createCard(project, name) {
  */
 export function createdCard(card) {
   return {
-    type: 'CREATED_CARD',
+    type: 'CREATE_CARD',
     card
   }
 }
@@ -93,7 +93,7 @@ export function updateCard(project, id, card) {
  */
 export function updatedCard(card) {
   return {
-    type: 'UPDATED_CARD',
+    type: 'UPDATE_CARD',
     card
   }
 }
@@ -123,7 +123,7 @@ export function deleteCard(project, id) {
  */
 export function deletedCard(id) {
   return {
-    type: 'DELETED_CARD',
+    type: 'DELETE_CARD',
     id
   }
 }

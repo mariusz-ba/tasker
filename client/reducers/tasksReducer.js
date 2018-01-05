@@ -1,40 +1,38 @@
-export default function reducer(state = [], action) {
-  console.log(action.type);
+import _ from 'lodash';
+
+const INITIAL_STATE = {
+  fetching: false,
+  tasks: {}
+}
+
+export default function reducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case 'REQUEST_TASK': {
+      state = { ...state, fetching: true };
+      break;
+    }
     case 'RECEIVE_TASK': {
-      state = [
-        ...state.filter(task => task._id !== action.task._id),
-        {
-          ...action.task
-        }
-      ]
+      state = { ...state, fetching: false, tasks: { ...state.tasks, [action.task._id]: action.task }};
+      break;
+    }
+    case 'REQUEST_TASKS': {
+      state = { ...state, fetching: true };
       break;
     }
     case 'RECEIVE_TASKS': {
-      state = action.tasks;
+      state = { ...state, fetching: false, tasks: _.mapKeys(action.tasks, '_id')};
       break;
     }
-    case 'CREATED_TASK': {
-      const { task } = action;
-      state = [
-        ...state,
-        {
-          ...task
-        }
-      ]
+    case 'CREATE_TASK': {
+      state = { ...state, tasks: { ...state.tasks, [action.task._id]: action.task }};
       break;
     }
-    case 'DELETED_TASK': {
-      state = state.filter(task => task._id !== action.id);
+    case 'UPDATE_TASK': {
+      state = { ...state, tasks: { ...state.tasks, [action.task._id]: action.task }};
       break;
     }
-    case 'UPDATED_TASK': {
-      state = [
-        ...state.filter(task => task._id !== action.task._id),
-        {
-          ...action.task
-        }
-      ]
+    case 'DELETE_TASK': {
+      state = { ...state, tasks: _.omit(state.tasks, action.id)};
       break;
     }
     default: {}

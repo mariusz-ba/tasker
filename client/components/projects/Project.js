@@ -9,6 +9,8 @@ import Card from './card/Card';
 import TasksList from './tasks/TasksList';
 import TasksListItem from './tasks/TasksListItem';
 
+import { values } from 'lodash';
+
 Object.defineProperty(Array.prototype, 'sortBy', {
   enumerable: false,
   value: function(param, asc = true) { 
@@ -48,10 +50,10 @@ class Project extends Component {
     const { fetching } = projects;
     
     const project = projects.projects[id];
-    const uicards = cards.map(card => {
+    const uicards = values(cards.cards).map(card => {
       return {
         ...card,
-        tasks: tasks.filter(task => task.card === card._id)
+        tasks: values(tasks.tasks).filter(task => task.card === card._id)
       }
     });
 

@@ -1,32 +1,30 @@
-export default function reducer(state = [], action) {
+import _ from 'lodash';
+
+const INITIAL_STATE = {
+  fetching: false,
+  cards: {}
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
   switch(action.type) {
     case 'REQUEST_CARDS': {
+      state = { ...state, fetching: true }
       break;
     }
     case 'RECEIVE_CARDS': {
-      state = action.cards
+      state = { ...state, fetching: false, cards: _.mapKeys(action.cards, '_id')};
       break;
     }
-    case 'CREATED_CARD': {
-      state = [
-        ...state,
-        {
-          ...action.card
-        }
-      ]
+    case 'CREATE_CARD': {
+      state = { ...state, cards: { ...state.cards, [action.card._id]: action.card }};
       break;
     }
-    case 'UPDATED_CARD': {
-      state = [
-        ...state.filter(card => card._id !== action.card._id),
-        {
-          ...action.card
-        }
-      ]
+    case 'UPDATE_CARD': {
+      state = { ...state, cards: { ...state.cards, [action.card._id]: action.card }};
       break;
     }
-    case 'DELETED_CARD': {
-      state = state.filter(card => card._id !== action.id);
+    case 'DELETE_CARD': {
+      state = { ...state, cards: _.omit(state.cards, action.id)};
       break;
     }
     default: {}

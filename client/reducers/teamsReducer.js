@@ -1,29 +1,34 @@
-export default function reducer(state = [], action) {
+import _ from 'lodash';
+
+const INITIAL_STATE = {
+  fetching: false,
+  teams: {}
+}
+
+export default function reducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case 'REQUEST_TEAMS': {
+      state = { ...state, fetching: true };
+      break;
+    }
     case 'RECEIVE_TEAMS': {
-      state = action.teams;
+      state = { ...state, fetching: false, teams: _.mapKeys(action.teams, '_id')};
+      break;
+    }
+    case 'REQUEST_TEAM': {
+      state = { ...state, fetching: true };
       break;
     }
     case 'RECEIVE_TEAM': {
-      state = [
-        ...state.filter(team => team._id !== action.team._id),
-        {
-          ...action.team
-        }
-      ]
+      state = { ...state, fetching: false, teams: { ...state.teams, [action.team._id]: action.team }};
       break;
     }
-    case 'TEAM_CREATED': {
-      state = [
-        ...state,
-        {
-          ...action.team
-        }
-      ]
+    case 'CREATE_TEAM': {
+      state = { ...state, teams: { ...state.teams, [action.team._id]: action.team }};
       break;
     }
-    case 'TEAM_REMOVED': {
-      state = state.filter(team => team._id !== action.id);
+    case 'DELETE_TEAM': {
+      state = { ...state, teams: _.omit(state.teams, action.id)};
       break;
     }
     default: {}

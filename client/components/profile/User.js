@@ -8,7 +8,7 @@ import { values } from 'lodash';
 import Tabs from '../tabs/Tabs';
 
 const Teams = (props) => {
-  return props.teams.map(team => (
+  return values(props.teams).map(team => (
     <div key={team._id} className="col-md-6">
       <div className="card" style={{background: 'rgba(0,0,0,.03)', padding: 10}}>
         <h6>{team.name}</h6>
