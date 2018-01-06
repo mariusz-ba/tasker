@@ -39,33 +39,34 @@ router
   //if(req.params.user !== req.user._id) return next(new Error('User match error'));
   // Create new friend for user :user
   console.log('sending friend request');
-  const { user, friend } = req.params;
+  //const { user, friend } = req.params;
   User.findOneAndUpdate(
     { 
-      _id: user, 
-      'friends._id': { $ne: friend }
+      _id: req.params.user, 
+      'friends._id': { $ne: req.params.friend }
     },
     {
-      $addToSet: { friends: { _id: friend, confirmed: true }}
+      $addToSet: { friends: { _id: req.params.friend, confirmed: true }}
     }, {new: true}, (err, user) => {
       if(err) return next(err);
+      if(!user) return next(new Error('Invite already sent'));
       // Update friend and set confirmation to false
       User.findOneAndUpdate(
         { 
-          _id: friend,
-          'friends._id': { $ne: user }
+          _id: req.params.friend,
+          'friends._id': { $ne: req.params.user }
         },
         {
-          $addToSet: { friends: { _id: user, confirmed: false }}
-        }, {new: true}, (err, user) => {
+          $addToSet: { friends: { _id: user._id, confirmed: false }}
+        }, {new: true}, (err, friend) => {
           if(err) return next(err);
           // Friend created (Friend request send to :friend)
           res.status(201).json({
-            _id: friend,
-            username: user.username,
+            _id: friend._id,
+            username: friend.username,
             confirm_user: true,
             confirm_friend: false
-          });
+          }); 
       })
   })
 })
@@ -84,7 +85,7 @@ router
     if(err) return next(err);
     res.status(200).json({
       _id: friend,
-      username: user.username,
+      username: friend.username,
       confirm_user: true,
       confirm_friend: true
     })

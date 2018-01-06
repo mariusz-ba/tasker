@@ -208,3 +208,28 @@ h6 .badge {
   padding-top: 10px;
   text-align: center;
 }
+
+/* Friends */
+.user-card {
+  min-width: 384px;
+  border: 1px solid rgba(0,0,0,.125);
+  background: rgba(0,0,0,.03);
+}
+.user-card-image {
+  height: 128px;
+  width: 128px;
+  margin-right: 16px;
+  float: left;
+}
+.user-card-body {
+  height: 128px;
+  padding: 8px;
+}
+.user-card .user-card-body .user-card-actions {
+  position: absolute;
+  right: 24px;
+  bottom: 8px;
+}
+.user-card .user-card-body .user-card-actions .btn {
+  margin-left: 5px;
+}
