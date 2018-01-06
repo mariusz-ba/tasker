@@ -175,6 +175,7 @@ h6 .badge {
   width: 64px;
   height: 64px;
   margin-bottom: 10px;
+  object-fit: cover;
 }
 .card-block .card-title {
   margin-bottom: 0;
