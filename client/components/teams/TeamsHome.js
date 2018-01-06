@@ -15,7 +15,10 @@ class TeamsHome extends Component {
     this.props.fetchTeams();
   }
 
-  onRemove = (e, id) => {
+  onBrowseTeam = (id) => {
+    this.props.history.push(`/teams/${id}`);
+  }
+  onDeleteTeam = (id) => {
     this.props.deleteTeam(id);
   }
 
@@ -23,7 +26,10 @@ class TeamsHome extends Component {
     const { teams } = this.props.teams;
     return (
       <div className="container">
-        <Link className="btn btn-sm btn-primary" to="/teams/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create team</Link>
+        <header>
+          <Link className="btn btn-sm btn-primary" to="/teams/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create team</Link>
+        </header>
+        <p className="text-muted" style={{marginBottom: 0}}>Teams</p>
         <div className="row">
           {
             values(teams).map(team => (
@@ -31,9 +37,9 @@ class TeamsHome extends Component {
                 <Card 
                   image="/img/team.png"
                   primaryText={team.name}
-                  secondaryText={team._id}>
-                  <Link className="btn btn-sm btn-light" to={`/teams/${team._id}`}><i className="fa fa-search" aria-hidden="true"></i> Browse</Link>&nbsp;
-                  <button className="btn btn-sm btn-danger" onClick={(e) => this.onRemove(e, team._id)}>Remove team</button>
+                  secondaryText={team._id}
+                  onClick={() => this.onBrowseTeam(team._id)}>
+                  <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteTeam(team._id)}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
                 </Card>
               </div>
             ))

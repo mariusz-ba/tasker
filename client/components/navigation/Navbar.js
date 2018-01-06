@@ -71,7 +71,7 @@ class Navbar extends Component {
       <ul className="navbar-nav navbar-right">
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="navbar-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={this.toggleDropdown}>
-            <img ref={this.setPicture} src="https://scontent-dft4-2.cdninstagram.com/t51.2885-19/22277616_340453526415691_8667380059302002688_n.jpg"/>
+            <img ref={this.setPicture} src="/img/profile.jpg"/>
           </a>
           <div ref={this.setWraperRef} className="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-dropdown" style={ this.state.dropdown ? {display: 'block'} : {display: 'none'}}>
             <span className="dropdown-header">Signed in as</span>
@@ -91,25 +91,21 @@ class Navbar extends Component {
 
     const guestLinks = (
       <ul className="navbar-nav navbar-right">
-        <li className="nav-item"><Link className="nav-link nav-link-main" to="/login">Sign in</Link></li>
-        <li className="nav-item"><Link className="nav-link nav-link-main" to="/register">Sign up</Link></li>
+        <li className="nav-item"><Link className="nav-link" to="/login">Sign in</Link></li>
+        <li className="nav-item"><Link className="nav-link" to="/register">Sign up</Link></li>
       </ul>
     );
 
     return (
-      <nav className="navbar navbar-expand-md bg-primary">
+      <nav className="navbar navbar-expand-md">
         <div className="container">
           <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" onClick={this.toggleCollapse}>
             <span className="navbar-toggler-icon"></span>
           </button>
           <Link className="navbar-brand" to="/">Tasker</Link>
-
+          <input className="navbar-search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
           <div className={"navbar-collapse " + collapseClass} id="navigation">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item"><Link className="nav-link nav-link-main" to="/projects"><i className="fa fa-bars" aria-hidden="true"></i> Projects</Link></li>
-              <li className="nav-item"><Link className="nav-link nav-link-main" to="/teams"><i className="fa fa-users" aria-hidden="true"></i> Team</Link></li>
-              <li className="nav-item"><Link className="nav-link nav-link-main" to="/profile"><i className="fa fa-user" aria-hidden="true"></i> Me</Link></li>
-            </ul>
+            <ul className="navbar-nav mr-auto"></ul>
             { isAuthenticated ? userLinks : guestLinks }
           </div>
         </div>

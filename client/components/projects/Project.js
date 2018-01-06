@@ -61,16 +61,14 @@ class Project extends Component {
       return null;
     return (
       <div className="container">
-        <div className="row">
-          <div className="col">
-            <h4><small><span className="badge badge-pill badge-secondary">123</span></small> {project && project.name}</h4>
-            <p className="text-muted">{project && project.description}</p>
-          </div>
-        </div>
+        <header>
+          <h4><small><span className="badge badge-pill badge-secondary">123</span></small> {project && project.name}</h4>
+          <p className="text-muted">{project && project.description}</p>
+        </header>
         <hr/>
         <div className="row" style={{margin: '16px 0'}}>
           <div className="col" style={{padding: '0'}}>
-            <a href="#" className="btn simple-button" onClick={this.onCreateCard}>ADD NEW CARD</a>
+            <a href="#" className="btn btn-sm btn-primary" onClick={this.onCreateCard}>Add new card</a>
             <input style={{width: '200px'}} type="text" placeholder="Filter cards by label" className="form-control pull-right"/>
           </div>
         </div>
@@ -105,7 +103,9 @@ class Project extends Component {
                   ))
                 }
               </TasksList>
-              <a href="#" className="btn simple-button" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
+              <div style={{marginTop: 10}}>
+                <a href="#" className="btn btn-sm btn-primary" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
+              </div>
             </Card>
           </div>
           ))

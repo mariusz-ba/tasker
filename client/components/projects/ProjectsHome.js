@@ -15,7 +15,10 @@ class ProjectsHome extends Component {
     this.props.fetchProjects();
   }
   
-  onDeleteProject = (e, id) => {
+  onBrowseProject = (id) => {
+    this.props.history.push(`/projects/${id}`);
+  }
+  onDeleteProject = (id) => {
     this.props.deleteProject(id);
   }
 
@@ -24,7 +27,10 @@ class ProjectsHome extends Component {
   
     return (
       <div className="container">
-        <Link className="btn btn-sm btn-primary" to="/projects/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create Project</Link>
+        <header>
+          <Link className="btn btn-sm btn-primary" to="/projects/new" style={{marginTop: 10}}><i className="fa fa-plus" aria-hidden="true"></i> Create Project</Link>
+        </header>
+        <p className="text-muted" style={{marginBottom: 0}}>Your Projects</p>
         <div className="row">
         {
           values(projects).map(project => (
@@ -32,17 +38,9 @@ class ProjectsHome extends Component {
               <Card
                 image="/img/project.png"
                 primaryText={project.name}
-                secondaryText={`${project.description.split(' ').slice(0, 40).join(' ')}...`}>
-                <p>Teams:
-                { project.teams &&
-                  project.teams.map(team => <span key={team} className="badge badge-success">{team}</span>)
-                }</p>
-                <p>Users:
-                { project.users &&
-                  project.users.map(user => <span key={user} className="badge badge-danger">{user}</span>)
-                }</p>
-                <Link to={`/projects/${project._id}`} className="btn btn-sm btn-light"><i className="fa fa-search" aria-hidden="true"></i> Browse</Link>&nbsp;
-                <button className="btn btn-sm btn-danger" onClick={(e) => this.onDeleteProject(e, project._id)}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                secondaryText={`${project.description.split(' ').slice(0, 40).join(' ')}...`}
+                onClick={() => this.onBrowseProject(project._id)}>
+                <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteProject(project._id)}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
               </Card>
             </div>
           ))
