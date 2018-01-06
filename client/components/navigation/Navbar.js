@@ -77,9 +77,9 @@ class Navbar extends Component {
             <span className="dropdown-header">Signed in as</span>
             <h6 className="dropdown-header"><b>{username}</b></h6>
             <div className="dropdown-divider"></div>
-            <Link className="dropdown-item" to={`/profile/${id}`}>Your profile</Link>
-            <Link className="dropdown-item" to="/projects">Your projects</Link>
-            <Link className="dropdown-item" to="/teams">Your teams</Link>
+            <Link className="dropdown-item" to={`/profile/${id}`} onClick={this.toggleDropdown}>Your profile</Link>
+            <Link className="dropdown-item" to="/projects" onClick={this.toggleDropdown}>Your projects</Link>
+            <Link className="dropdown-item" to="/teams" onClick={this.toggleDropdown}>Your teams</Link>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Help</a>
             <a className="dropdown-item" href="#">Settings</a>

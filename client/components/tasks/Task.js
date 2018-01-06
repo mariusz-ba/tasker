@@ -26,8 +26,8 @@ class Task extends Component {
                 <p className="card-text text-muted">{task && task.author}</p>
               { task &&
                 task.completed ?
-                  (<button className="btn btn-sm btn-primary"><span class="fa fa-check" aria-hidden="true"></span> Completed</button>) :
-                  (<button className="btn btn-sm btn-warning"><span class="fa fa-times" aria-hidden="true"></span> Not Completed</button>)
+                  (<button className="btn btn-sm btn-primary"><span className="fa fa-check" aria-hidden="true"></span> Completed</button>) :
+                  (<button className="btn btn-sm btn-warning"><span className="fa fa-times" aria-hidden="true"></span> Not Completed</button>)
               }
               </div>
             </div>

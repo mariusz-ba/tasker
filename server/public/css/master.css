@@ -1,5 +1,5 @@
 body {
-  font-size: 14px;
+ /* font-size: 14px;*/
   background: rgba(0,0,0,.02);
   padding-top: 71px;
 }
@@ -195,7 +195,61 @@ h6 .badge {
 }
 
 /* Profile page */
-.profile-container {
+.profile-row {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.profile-picture {
+  width: 50%;
+  height: auto;
+  border-radius: 50%;
+}
+.profile-header h1 {
+  font-weight: 300;
+}
+.profile-overview {
+  list-style-type: none;
+  padding: 0;
+  font-size: 16px;
+}
+.profile-overview li {
+  display: inline;
+  margin-right: 40px;
+}
+.profile-description h6 {
+  display: inline;
+}
+.profile-description h6 span {
+  font-weight: normal;
+}
+
+/* Tabs */
+.profile-tabs {
+  border-top: 1px solid rgba(0,0,0,.125);
+  margin-bottom: 20px;
+}
+.profile-tabs .nav-item .nav-link {
+  border-radius: 0;
+  color: rgba(0,0,0,.224);
+}
+.profile-tabs .nav-item .nav-link:hover {
+  border: 0;
+  border-top: 1px solid black;
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+.profile-tabs .nav-item .nav-link {
+  border: 0;
+  box-sizing: border-box;
+}
+.profile-tabs .nav-item .active {
+  background: none;
+  border-top: 1px solid black;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  color: black;
+}
+/* .profile-container {
   position: relative;
   padding-bottom: 120px;
 }
@@ -233,13 +287,13 @@ h6 .badge {
 .profile-description {
   padding-top: 10px;
   text-align: center;
-}
+} */
 
 /* Friends */
 .user-card {
   min-width: 384px;
   border: 1px solid rgba(0,0,0,.125);
-  background: rgba(0,0,0,.03);
+  background: #fff;
 }
 .user-card-image {
   height: 128px;

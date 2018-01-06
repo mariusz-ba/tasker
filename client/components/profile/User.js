@@ -41,19 +41,25 @@ class User extends Component {
     const user = users[id];
     const teams = user ? user.teams : [];
     const friends = user ? user.friends : {};
-    console.log('getUserId()', id);
 
     return (
       <div>
-        <div className="profile-container">
-          <div className="container">
-            <div className="row" style={{marginTop: 0}}>
-              <div className="col">
-                <div className="profile-bg"></div>
-                <div className="profile-user">
-                  <img className="profile-picture" src="https://scontent-dft4-2.cdninstagram.com/t51.2885-19/22277616_340453526415691_8667380059302002688_n.jpg" alt="image"/>
-                  <div className="profile-description"><h5>{user && user.username}</h5></div>
-                </div>
+        <div className="container">
+          <div className="row profile-row">
+            <div className="col-md-4 text-center">
+              <img className="profile-picture" src="/img/profile.jpg" alt="Profile picture"/>
+            </div>
+            <div className="col-md-8">
+              <div className="profile-header">
+                <h1>{user && user.username}</h1>
+              </div>
+              <ul className="profile-overview">
+                <li><b>7</b> projects</li>              
+                <li><b>2</b> teams</li>              
+                <li><b>20</b> friends</li>              
+              </ul>
+              <div className="profile-description">
+                <h6>Mariusz Baran ·<span> Last Web Developer you will ever need</span></h6>
               </div>
             </div>
           </div>
@@ -62,9 +68,8 @@ class User extends Component {
           <div className="row">
             <div className="col">
               <Tabs tabs={[
-                {name: 'About'},
+                {name: 'Friends', component: <Friends user={id} friends={values(friends)}/>}, 
                 {name: 'Teams', component: <Teams teams={teams}/>}, 
-                {name: 'Friends', component: <Friends user={user && user._id} friends={values(friends)}/>}, 
                 {name: 'Projects', component: <Teams teams={teams}/>}
               ]}/>
             </div>
