@@ -50,19 +50,21 @@ router
     }, {new: true}, (err, user) => {
       if(err) return next(err);
       // Update friend and set confirmation to false
-      User.updateOne(
+      User.findOneAndUpdate(
         { 
           _id: friend,
           'friends._id': { $ne: user }
         },
         {
           $addToSet: { friends: { _id: user, confirmed: false }}
-        }, (err, user) => {
+        }, {new: true}, (err, user) => {
           if(err) return next(err);
           // Friend created (Friend request send to :friend)
           res.status(201).json({
             _id: friend,
-            confirmed: false
+            username: user.username,
+            confirm_user: true,
+            confirm_friend: false
           });
       })
   })
@@ -70,7 +72,7 @@ router
 .post('/:friend', (req, res, next) => {
   // Confirm friend
   const { user, friend } = req.params;
-  User.updateOne({
+  User.findOneAndUpdate({
     _id: user,
     'friends._id': friend
   },
@@ -78,11 +80,13 @@ router
     $set: {
       'friends.$.confirmed': true
     }
-  }, (err) => {
+  }, {new: true}, (err, user) => {
     if(err) return next(err);
     res.status(200).json({
-      user,
-      friend
+      _id: friend,
+      username: user.username,
+      confirm_user: true,
+      confirm_friend: true
     })
   })
 })
@@ -95,8 +99,7 @@ router
     User.updateOne({ _id: friend }, { $pull: { friends: { _id: user }}}, (err) => {
       if(err) return next(err);
       res.status(200).json({
-        user,
-        friend
+        _id: friend
       })
     })
   })

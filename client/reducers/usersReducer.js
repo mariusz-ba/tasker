@@ -44,6 +44,19 @@ export default function reducer(state = INITIAL_STATE, action) {
       break;
     }
     case 'ADD_FRIEND': {
+      state = {
+        ...state,
+        users: {
+          ...state.users,
+          [action.user]: {
+            ...state.users[action.user],
+            friends: {
+              ...state.users[action.user].friends,
+              [action.friend._id]: action.friend
+            }
+          }
+        }
+      }
       break;
     }
     case 'CONFIRM_FRIEND': {
@@ -55,9 +68,9 @@ export default function reducer(state = INITIAL_STATE, action) {
             ...state.users[action.user],
             friends: {
               ...state.users[action.user].friends,
-              [action.friend]: {
-                ...state.users[action.user].friends[action.friend],
-                confirm_user: true
+              [action.friend._id]: {
+                ...state.users[action.user].friends[action.friend._id],
+                ...action.friend
               }
             }
           }
@@ -66,6 +79,16 @@ export default function reducer(state = INITIAL_STATE, action) {
       break;
     }
     case 'DELETE_FRIEND': {
+      state = {
+        ...state,
+        users: {
+          ...state.users,
+          [action.user]: {
+            ...state.users[action.user],
+            friends: _.omit(state.users[action.user].friends, action.friend._id)
+          }
+        }
+      }
       break;
     }
     default: {}
