@@ -28,7 +28,7 @@ export default function reducer(state = INITIAL_STATE, action) {
       break;
     }
     case 'DELETE_PROJECT': {
-      state = { ...state, projects: _omit(state.projects, action.id)}
+      state = { ...state, projects: _.omit(state.projects, action.id)}
       break;
     }
     default: {}

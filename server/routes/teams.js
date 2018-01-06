@@ -36,21 +36,23 @@ router
 })
 .put('/', authenticate, (req, res, next) => {
   // Create new team
+  // req.body.users = [id, id, id]
   console.log(req.body);
   Team.create({
-    name: req.body.name,
-    //users: [req.user._id]
+    name: req.body.name
   }, (err, team) => {
     if(err) return next(err);
     console.log('New team created');
-    // Ad user to this team
-    User.findOneAndUpdate({ _id: req.user._id }, { $push: { teams: team._id }}, {new: true}, (err, user) => {
+    // Ad creator and req.body.users to this team
+    User.update({
+      _id: { $in: [...req.body.users, req.user._id] }
+    }, { $push: { teams: team._id }}, {multi: true}, (err) => {
       if(err) return next(err);
       res.status(201).json({
         _id: team._id,
         name: team.name,
-        users: [user._id]
-      });
+        users: [...req.body.users, req.user._id]
+      })
     })
   })
 })
@@ -64,7 +66,7 @@ router
   Team.deleteOne({ _id: req.params.id }, (err) => {
     if(err) return next(err);
     // Remove users from that team
-    User.update({ teams: req.params.id }, { $pull: { teams: req.params.id }}, (err) => {
+    User.update({ teams: req.params.id }, { $pull: { teams: req.params.id }}, {multi: true}, (err) => {
       if(err) return next(err);
       // Remove that team from projects
       Project.update({ teams: req.params.id }, { $pull: { teams: req.params.id }}, (err) => {
