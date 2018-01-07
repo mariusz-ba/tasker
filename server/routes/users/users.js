@@ -6,8 +6,6 @@ import authenticate from '../../utils/authenticate';
 import User from '../../models/user';
 import Team from '../../models/team';
 
-import { mapKeys } from 'lodash';
-
 // Router
 const router = express.Router();
 router

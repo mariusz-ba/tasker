@@ -40,7 +40,6 @@ class Friends extends Component {
     if(user)
       friends = user.friends;
 
-    console.log('Friends: ', friends);
     return (
       <div className="col-md-12">
         <div className="row">
