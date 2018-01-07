@@ -54,7 +54,14 @@ class User extends Component {
             </div>
             <div className="col-md-8">
               <div className="profile-header">
-                <h1>{user && user.username} <small><Link className="btn btn-sm btn-dark" to="/settings">Edit</Link></small></h1>
+                <h1>
+                  {user && user.username}&nbsp;
+                  <small>
+                    { user && user._id === this.props.auth.user._id &&
+                      (<Link className="btn btn-sm btn-dark" to="/settings">Edit</Link>)
+                    }
+                  </small>
+                </h1>
               </div>
               <ul className="profile-overview">
                 <li><b>7</b> projects</li>
