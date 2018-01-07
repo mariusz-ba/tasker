@@ -4,7 +4,7 @@ import { fetchUser, fetchUsers } from '../../actions/usersActions';
 import { fetchFriends } from '../../actions/friendsActions';
 import { Link, withRouter } from 'react-router-dom';
 
-import { values } from 'lodash';
+import { keys, values } from 'lodash';
 
 import Tabs from './tabs/Tabs';
 import Friends from './pages/Friends';
@@ -43,6 +43,7 @@ class User extends Component {
     const { users } = this.props.users;
     const user = users[this.id];
     const teams = user ? user.teams : [];
+    const friends = (user && user.friends) ? keys(user.friends).length : 0;
 
     return (
       <div>
@@ -56,9 +57,9 @@ class User extends Component {
                 <h1>{user && user.username} <small><Link className="btn btn-sm btn-dark" to="/settings">Edit</Link></small></h1>
               </div>
               <ul className="profile-overview">
-                <li><b>7</b> <Link to="/profile/5a5019ef1f65c6126ccf5e66">projects</Link></li>              
-                <li><b>2</b> teams</li>              
-                <li><b>20</b> friends</li>              
+                <li><b>7</b> projects</li>
+                <li><b>{teams.length}</b> teams</li>              
+                <li><b>{friends}</b> friends</li>              
               </ul>
               <div className="profile-description">
                 <h6>{user && user.fullName && `${user.fullName} · `}<span>Last Web Developer you will ever need</span></h6>
