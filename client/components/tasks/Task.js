@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTask } from '../../actions/tasksActions';
+import { fetchTask, updateTask } from '../../actions/tasksActions';
 import Card from '../ui/Card';
 
 class Task extends Component {
   componentDidMount() {
     const { id, task } = this.props.match.params;
     this.props.fetchTask(id, task);
+  }
+
+  setCompleted = (completed) => {
+    const { id, task } = this.props.match.params;
+    this.props.updateTask(id, task, { completed });
   }
 
   render() {
@@ -26,8 +31,8 @@ class Task extends Component {
                 <p className="card-text text-muted">{task && task.author}</p>
               { task &&
                 task.completed ?
-                  (<button className="btn btn-sm btn-primary"><span className="fa fa-check" aria-hidden="true"></span> Completed</button>) :
-                  (<button className="btn btn-sm btn-warning"><span className="fa fa-times" aria-hidden="true"></span> Not Completed</button>)
+                  (<button className="btn btn-sm btn-primary" onClick={() => this.setCompleted(!task.completed)}><span className="fa fa-check" aria-hidden="true"></span> Completed</button>) :
+                  (<button className="btn btn-sm btn-warning" onClick={() => this.setCompleted(!task.completed)}><span className="fa fa-times" aria-hidden="true"></span> Not Completed</button>)
               }
               </div>
             </div>
@@ -56,4 +61,4 @@ function mapStateToProps({ tasks }) {
   return { tasks }
 };
 
-export default connect(mapStateToProps, { fetchTask })(Task);
+export default connect(mapStateToProps, { fetchTask, updateTask })(Task);
