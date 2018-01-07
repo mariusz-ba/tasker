@@ -43,7 +43,7 @@ class User extends Component {
     const { users } = this.props.users;
     const user = users[this.id];
     const teams = user ? user.teams : [];
-    const friends = (user && user.friends) ? keys(user.friends).length : 0;
+    const friends = (user && user.friends) ? keys(user.friends) : [];
 
     return (
       <div>
@@ -59,7 +59,7 @@ class User extends Component {
               <ul className="profile-overview">
                 <li><b>7</b> projects</li>
                 <li><b>{teams.length}</b> teams</li>              
-                <li><b>{friends}</b> friends</li>              
+                <li><b>{friends.length}</b> friends</li>              
               </ul>
               <div className="profile-description">
                 <h6>{user && user.fullName && `${user.fullName} · `}<span>Last Web Developer you will ever need</span></h6>
