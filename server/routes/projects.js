@@ -1,6 +1,7 @@
 // Module dependencies
 import express from 'express';
 import authenticate from '../utils/authenticate';
+import { accessProject } from '../utils/permissions';
 
 // Models
 import Card from '../models/card';
@@ -23,7 +24,7 @@ router
     res.status(200).json(projects);
   })
 })
-.get('/:id', authenticate, (req, res, next) => {
+.get('/:id', authenticate, accessProject, (req, res, next) => {
   // Return project with specified id
   Project.findOne({ _id: req.params.id }, (err, project) => {
     if(err) return next(err);
@@ -42,7 +43,7 @@ router
     res.status(201).json(project);
   })
 })
-.delete('/:id', authenticate, (req, res, next) => {
+.delete('/:id', authenticate, accessProject, (req, res, next) => {
   // Delete project
   const id = req.params.id;
   Project.deleteOne({ _id: id }, (err, projects) => {
@@ -65,7 +66,7 @@ router
     })
   })
 })
-.post('/:id', authenticate, (req, res, next) => {
+.post('/:id', authenticate, accessProject, (req, res, next) => {
   // Update project
   Project.findOneAndUpdate(
     {
