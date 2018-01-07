@@ -58,8 +58,8 @@ class User extends Component {
               </div>
               <ul className="profile-overview">
                 <li><b>7</b> projects</li>
-                <li><b>{teams.length}</b> teams</li>              
-                <li><b>{friends.length}</b> friends</li>              
+                <li><b>{teams && teams.length}</b> teams</li>              
+                <li><b>{friends && friends.length}</b> friends</li>              
               </ul>
               <div className="profile-description">
                 <h6>{user && user.fullName && `${user.fullName} · `}<span>Last Web Developer you will ever need</span></h6>
