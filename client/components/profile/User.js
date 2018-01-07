@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { values } from 'lodash';
 
-import Tabs from '../tabs/Tabs';
+import Tabs from './tabs/Tabs';
 import Friends from './pages/Friends';
 
 const Teams = (props) => {

@@ -65,5 +65,18 @@ router
     })
   })
 })
-
+.post('/:id', authenticate, (req, res, next) => {
+  // Update project
+  Project.findOneAndUpdate(
+    {
+      _id: req.params.id
+    },
+    {
+      $set: { ...req.body }
+    },
+    {new: true}, (err, project) => {
+      if(err) return next(err);
+      res.status(200).json(project);
+  })
+})
 export default router;

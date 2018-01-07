@@ -135,3 +135,32 @@ export function deletedProject(id) {
     id
   }
 }
+
+/**
+ * Use this action to update project data
+ * 
+ * @param {ObjectId} id - Project id
+ * @param {Object} project - Object with new project data
+ */
+export function updateProject(id, project) {
+  return dispatch => {
+    return axios.post(`/api/projects/${id}`, project)
+    .then(
+      response => dispatch(updatedProject(response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+/**
+ * This action is dispatched every time project
+ * is updated
+ * 
+ * @param {Object} project - Project returned from the server
+ */
+export function updatedProject(project) { 
+  return {
+    type: 'UPDATE_PROJECT',
+    project
+  }
+}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchProject } from '../../actions/projectsActions';
 import { fetchTasks, createTask, updateTask, deleteTask } from '../../actions/tasksActions';
 import { fetchCards, createCard, updateCard, deleteCard } from '../../actions/cardsActions';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import Card from './card/Card';
 import TasksList from './tasks/TasksList';
@@ -64,6 +64,7 @@ class Project extends Component {
         <header>
           <h4><small><span className="badge badge-pill badge-secondary">123</span></small> {project && project.name}</h4>
           <p className="text-muted">{project && project.description}</p>
+          <Link className="btn btn-secondary" to={`/projects/${this.props.match.params.id}/edit`}>Edit</Link>
         </header>
         <hr/>
         <div className="row" style={{margin: '16px 0'}}>
