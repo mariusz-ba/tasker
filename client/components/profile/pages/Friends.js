@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchFriends, addFriend, confirmFriend, deleteFriend } from '../../../actions/friendsActions';
 
+import { values } from 'lodash';
+
 class Friends extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,12 @@ class Friends extends Component {
     }
   }
   componentDidMount() {
+    console.log('Fetching friends for user: ', this.props.user);
     this.props.fetchFriends(this.props.user);
+  }
+  componentDidUpdate(prevProps) {
+    if(this.props.user !== prevProps.user)
+      this.props.fetchFriends(this.props.user);
   }
   onUsernameChange = (e) => {
     this.setState({ username: e.target.value });
@@ -28,7 +35,12 @@ class Friends extends Component {
     this.props.addFriend(this.props.user, this.state.username);
   }
   render() {
-    const { friends } = this.props;
+    const user = this.props.users.users[this.props.user];
+    let friends = [];
+    if(user)
+      friends = user.friends;
+
+    console.log('Friends: ', friends);
     return (
       <div className="col-md-12">
         <div className="row">
@@ -42,8 +54,8 @@ class Friends extends Component {
           </div>
         </div>
         <div className="row"> 
-        {
-          friends.map(friend => {
+        { friends && 
+          values(friends).map(friend => {
             const confirmed = friend.confirm_user === friend.confirm_friend;
             return (
               <div key={friend._id} className="col-md-6">
@@ -78,9 +90,12 @@ class Friends extends Component {
   }
 }
 
-Friends.propTypes = {
-  user: PropTypes.string.isRequired,
-  friends: PropTypes.array.isRequired
+function mapStateToProps({ users }) {
+  return { users }
 };
 
-export default connect(null, { fetchFriends, addFriend, confirmFriend, deleteFriend })(Friends);
+Friends.propTypes = {
+  user: PropTypes.string.isRequired
+};
+
+export default connect(mapStateToProps, { fetchFriends, addFriend, confirmFriend, deleteFriend })(Friends);

@@ -18,6 +18,8 @@ import Projects from './containers/Projects';
 import Register from './containers/Register';
 import Teams from './containers/Teams';
 
+import Settings from './containers/Settings';
+
 export default class App extends Component {
   render() {
     return (
@@ -29,6 +31,7 @@ export default class App extends Component {
           <Route path="/register" component={Register} />
           <AuthRequiredRoute path="/profile" component={Profile} />
           <AuthRequiredRoute path="/projects" component={Projects}/>
+          <AuthRequiredRoute path="/settings" component={Settings}/>
           <AuthRequiredRoute path="/teams" component={Teams}/>
         </div>
       </Router>

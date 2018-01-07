@@ -33,6 +33,10 @@ export default function authReducer(state = initialState, action) {
 			}
 			break;
 		}
+		case 'UPDATE_USER': {
+			state = { ...state, user: { ...action.user, id: action.user._id }}
+			break;
+		}
 		default: { }
 	}
 	return state;

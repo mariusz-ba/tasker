@@ -4,6 +4,8 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
+import { mapKeys } from 'lodash';
+
 const saltRounds = 10;
 const Schema = mongoose.Schema;
 
@@ -15,6 +17,7 @@ const UserSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   email: { type: String, required: true, index: { unique: true } },
+  fullName: { type: String, default: '' },
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: Date.now },
   teams: [Schema.Types.ObjectId],
@@ -74,6 +77,27 @@ UserSchema.statics = {
    */
   removeFromTeam: function(user, team, callback) {
     return this.findOneAndUpdate({ _id: user }, { $pull: {teams: team} }, callback).exec();
+  },
+
+  getUserFriends: function(user, callback) {
+    return this.findOne({ _id: user }, (err, user) => {
+      this.find({ _id: { $in: user.friends }}, { username: 1, friends: 1 }, (err, friends) => {
+        if(err) callback(err);
+        const right = mapKeys(friends, '_id');
+        let result = [];
+        user.friends.forEach((friend, index) => {
+          if(right[friend._id]) {
+            result.push({
+              _id: friend._id,
+              username: right[friend._id].username,
+              confirm_user: friend.confirmed,
+              confirm_friend: mapKeys(right[friend._id].friends, '_id')[user._id].confirmed
+            })
+          }
+        })
+        callback(null, result);
+      })
+    }).exec();
   }
 
 };

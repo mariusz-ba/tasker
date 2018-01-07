@@ -13,25 +13,9 @@ const router = express.Router({mergeParams: true});
 router
 .get('/', (req, res, next) => {
   // Get all :user friends (with details)
-  User.findOne({ _id: req.params.user }, { friends: 1 }, (err, user) => {
+  User.getUserFriends(req.params.user, (err, friends) => {
     if(err) return next(err);
-
-    User.find({ _id: { $in: user.friends }}, { username: 1, friends: 1 }, (err, friends) => {
-      if(err) return next(err);
-      const right = mapKeys(friends, '_id');
-      let result = [];
-      user.friends.forEach((friend, index) => {
-        if(right[friend._id]) {
-          result.push({
-            _id: friend._id,
-            username: right[friend._id].username,
-            confirm_user: friend.confirmed,
-            confirm_friend: mapKeys(right[friend._id].friends, '_id')[user._id].confirmed
-          })
-        }
-      })
-      res.status(200).json(result);
-    })
+    res.status(200).json(friends);
   })
 })
 .put('/:friend', (req, res, next) => { // Send friend request

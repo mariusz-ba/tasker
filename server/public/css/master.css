@@ -313,3 +313,35 @@ h6 .badge {
 .user-card .user-card-body .user-card-actions .btn {
   margin-left: 5px;
 }
+
+/* Settings */
+.settings .row { 
+  margin: 0;
+}
+.settings ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border-right: 1px solid rgba(0,0,0,.125);
+}
+.settings li {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
+}
+.settings .settings-active {
+  border-left: 2px solid black !important;
+  font-weight: bolder;
+  margin-left: -1px;
+  padding-left: 9px;
+}
+.settings li:hover {
+  cursor: pointer;
+  background: rgba(0,0,0,.02);
+  border-left: 2px solid rgba(0,0,0,.125);
+  margin-left: -1px;
+  padding-left: 9px;
+}
+.settings-content {
+  padding: 15px;
+}

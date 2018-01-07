@@ -59,7 +59,7 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
-    const { username, id } = this.props.auth.user;
+    const { username, _id } = this.props.auth.user;
     const renderNavbar = !(this.props.location.pathname == '/login' || this.props.location.pathname =='/register');
 
     if(!renderNavbar)
@@ -77,7 +77,7 @@ class Navbar extends Component {
             <span className="dropdown-header">Signed in as</span>
             <h6 className="dropdown-header"><b>{username}</b></h6>
             <div className="dropdown-divider"></div>
-            <Link className="dropdown-item" to={`/profile/${id}`} onClick={this.toggleDropdown}>Your profile</Link>
+            <Link className="dropdown-item" to={`/profile`} onClick={this.toggleDropdown}>Your profile</Link>
             <Link className="dropdown-item" to="/projects" onClick={this.toggleDropdown}>Your projects</Link>
             <Link className="dropdown-item" to="/teams" onClick={this.toggleDropdown}>Your teams</Link>
             <div className="dropdown-divider"></div>

@@ -53,3 +53,20 @@ export function logout() {
     dispatch(setCurrentUser({}));
   }
 }
+
+export function updateUser(id, user) {
+  return dispatch => {
+    return axios.post(`/api/users/${id}`, user)
+    .then(
+      response => dispatch(updatedUser(response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+export function updatedUser(user) {
+  return {
+    type: 'UPDATE_USER',
+    user
+  }
+}

@@ -27,10 +27,9 @@ router
     // if(error) return next(error);
     if(user) {
       if(bcrypt.compareSync(password, user.password)) {
+        delete user.password;
         const token = jwt.sign({
-          id: user._id,
-          username: user.username,
-          email: user.email
+          ...user._doc
         }, config.jwtSecret);
         res.json({ token });
       } else {

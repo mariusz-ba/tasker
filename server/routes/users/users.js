@@ -1,9 +1,12 @@
 // Module dependencies
 import express from 'express';
+import authenticate from '../../utils/authenticate';
 
 // Models
 import User from '../../models/user';
 import Team from '../../models/team';
+
+import { mapKeys } from 'lodash';
 
 // Router
 const router = express.Router();
@@ -29,13 +32,15 @@ router
     // Teams
     Team.find({ _id: { $in: user.teams }}, (err, teams) => {
       if(err) return next(err);
-      // Friends
-      //User.find({ _id: { $in: user.friends }}, {username: 1}, (err, friends) => {
-        //if(err) return next(err);
+
+      User.getUserFriends(user._id, (err, friends) => {
+        if(err) return next(err);
         res.status(200).json({
           ...user._doc,
+          friends,
           teams
         });
+      })
       //})
     })
   })
@@ -71,6 +76,13 @@ router
         });
       })
     }
+  })
+})
+.post('/:id', authenticate, (req, res, next) => {
+  // Update user data
+  User.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body }}, {new: true}, (err, user) => {
+    if(err) return next(err);
+    res.status(200).json(user);
   })
 })
 
