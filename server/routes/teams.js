@@ -57,9 +57,45 @@ router
     })
   })
 })
-.post('/:id', authenticate, (req, res) => {
+.post('/:id', authenticate, (req, res, next) => {
   // Update team
-
+  Team.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: {
+      name: req.body.name,
+      updatedAt: Date.now()
+    }},
+    {new: true}, (err, team) => {
+      if(err) return next(err);
+      if(team) {
+        // Add users to team
+        User.update(
+          { _id: { $in: req.body.users }},
+          { $addToSet: { teams: team._id }},
+          {multi: true}, (err) => {
+            if(err) return next(err);
+            // Remove other users from team
+            User.update(
+              { _id: { $nin: req.body.users }},
+              { $pull: { teams: team._id }},
+              {multi: true}, (err, users_removed) => {
+                if(err) return next(err);
+                User.find({ _id: req.body.users }, (err, users) => {
+                  if(err) return next(err);
+                  res.status(200).json({
+                    ...team._doc,
+                    users
+                  })
+                })
+              }
+            )
+          }
+        )
+      } else {
+        res.status(404).json({ error: 'No such team' });
+      }
+    }
+  )
 })
 .delete('/:id', authenticate, (req, res, next) => {
   // Delete team

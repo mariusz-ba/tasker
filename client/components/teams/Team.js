@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchTeam } from '../../actions/teamsActions';
 
@@ -16,7 +17,11 @@ class Team extends Component {
         <div className="row">
           <div className="col">
             <div className="card">
-              <h5 className="card-header">{team && team.name} <span className="badge badge-success">{team && team._id}</span></h5>
+              <h5 className="card-header">
+                {team && team.name}
+                <span className="badge badge-success">{team && team._id}</span>
+                <Link className="btn btn-small btn-dark" to={`/teams/${id}/edit`}>Edit</Link>
+              </h5>
               <div className="card-body">
                 <ul>
                 { team && team.users && 

@@ -31,6 +31,10 @@ export default function reducer(state = INITIAL_STATE, action) {
       state = { ...state, teams: _.omit(state.teams, action.id)};
       break;
     }
+    case 'UPDATE_TEAM': {
+      state = { ...state, teams: { ...state.teams, [action.team._id]: action.team }};
+      break;
+    }
     default: {}
   }
   return state;

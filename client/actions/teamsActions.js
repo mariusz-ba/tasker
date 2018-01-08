@@ -112,3 +112,29 @@ export function deletedTeam(id) {
     id
   }
 }
+
+/**
+ * Use this action to modify existing project data
+ * 
+ * @param {ObjectId} id - Team id
+ * @param {Object} team - Object with new team data
+ */
+export function updateTeam(id, team) {
+  return dispatch => {
+    return axios.post(`/api/teams/${id}`, team)
+    .then(
+      response => dispatch(updatedTeam(response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+/**
+ * This action is dispatched every time team is updated
+ * 
+ * @param {Object} team - Updated team object
+ */
+export const updatedTeam = (team) => ({
+  type: 'UPDATE_TEAM',
+  team
+})
