@@ -1,14 +1,15 @@
 // Module dependencies
 import express from 'express';
-import authenticate from '../utils/authenticate';
+import authenticate from '../../utils/authenticate';
 
 // Models
-import Task from '../models/task';
+import Task from '../../models/task';
 
 // Router
 const router = express.Router({ mergeParams: true });
 router
 .get('/', authenticate, (req, res, next) => {
+  console.log('fetching tasks');
   // Get all tasks for project
   Task.find({ project: req.params.project }, (err, tasks) => {
     if(err) return next(err);

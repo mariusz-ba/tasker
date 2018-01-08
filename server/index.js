@@ -13,7 +13,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/tasker');
 
 // Routers
 import auth from './routes/auth';
-import tasks from './routes/tasks';
 import teams from './routes/teams';
 import projects from './routes/projects';
 import cards from './routes/cards';
@@ -21,6 +20,8 @@ import cards from './routes/cards';
 import users from './routes/users/users'
 import friends from './routes/users/friends'
 
+import tasks from './routes/tasks/tasks';
+import comments from './routes/tasks/comments';
 
 // Create express app
 let app = express();
@@ -49,6 +50,7 @@ app.use('/api/teams', teams);
 app.use('/api/projects', projects);
 app.use('/api/projects/:project/cards', cards);
 app.use('/api/projects/:project/tasks', tasks);
+app.use('/api/projects/:project/tasks/:task/comments', comments);
 
 
 // Main application route
