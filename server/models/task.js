@@ -22,7 +22,7 @@ const TaskSchema = new Schema({
     _id: { type: Schema.Types.ObjectId, required: true, index: true, auto: true },
     author: { type: Schema.Types.ObjectId, required: true},
     createdAt: { type: Number, default: Date.now },
-    updaetdAt: { type: Number, default: Date.now },
+    updatedAt: { type: Number, default: Date.now },
     content: { type: String, required: true }
   }]
 });

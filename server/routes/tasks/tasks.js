@@ -4,6 +4,7 @@ import authenticate from '../../utils/authenticate';
 
 // Models
 import Task from '../../models/task';
+import User from '../../models/user';
 
 // Router
 const router = express.Router({ mergeParams: true });
@@ -21,7 +22,13 @@ router
   // Get task with specified id
   Task.findOne({ _id: req.params.id }, (err, task) => {
     if(err) return next(err);
-    res.status(200).json(task);
+    User.findOne({ _id: task.author }, {username: 1, fullName: 1}, (err, author) => {
+      if(err) return next(err);
+      res.status(200).json({
+        ...task._doc,
+        author
+      });
+    })
   })
 })
 .put('/', authenticate, (req, res, next) => {
@@ -44,7 +51,13 @@ router
   console.log(`Post: ${req.body}`);
   Task.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body } }, {new: true}, (err, task) => {
     if(err) return next(err);
-    res.status(200).json(task);
+    User.findOne({ _id: task.author }, {username: 1, fullName: 1}, (err, author) => {
+      if(err) return next(err);
+      res.status(200).json({
+        ...task._doc,
+        author
+      });
+    })
   })
 })
 .delete('/:id', authenticate, (req, res, next) => {

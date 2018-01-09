@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchTask, updateTask, addComment, deleteComment } from '../../actions/tasksActions';
 import Card from '../ui/Card';
+import { prettyDate } from '../../utils/date';
 
 class Task extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class Task extends Component {
       comment: ''
     }
   }
-  componentDidMount() {
+  componentWillMount() {
     const { id, task } = this.props.match.params;
     this.props.fetchTask(id, task);
   }
@@ -48,7 +49,20 @@ class Task extends Component {
               <img className="card-img-top" src="/img/task.png"/>
               <div className="card-block">
                 <h6 className="card-title">Author</h6>
-                <p className="card-text text-muted">{task && task.author}</p>
+                <p className="card-text text-muted">
+                { task  && (
+                  task.author.fullName ?
+                    (task.author.fullName) :
+                    (task.author.username)
+                  ) 
+                }
+                </p>
+                <h6 className="card-title">Created at</h6>
+                <p className="card-text text-muted">
+                { task &&
+                  prettyDate(new Date(task.createdAt))
+                }
+                </p>
               { task &&
                 task.completed ?
                   (<button className="btn btn-sm btn-primary" onClick={() => this.setCompleted(!task.completed)}><span className="fa fa-check" aria-hidden="true"></span> Completed</button>) :

@@ -82,12 +82,7 @@ class Project extends Component {
             <Card 
               name={card.name} 
               onCardNameChanged={(name) => {this.props.updateCard(id, card._id, { name })}}
-              onCardDelete={() => {this.props.deleteCard(id, card._id)}}>
-              <div className="card-tags">
-                <span className="badge badge-success">Feature</span>
-                <a href="#" className="badge badge-primary">+ Add Tag</a>
-              </div>
-              
+              onCardDelete={() => {this.props.deleteCard(id, card._id)}}>             
               <TasksList>
                 {
                   card.tasks &&
