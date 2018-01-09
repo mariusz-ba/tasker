@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTask, updateTask } from '../../actions/tasksActions';
+import { fetchTask, updateTask, addComment, deleteComment } from '../../actions/tasksActions';
 import Card from '../ui/Card';
 
 class Task extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comment: ''
+    }
+  }
   componentDidMount() {
     const { id, task } = this.props.match.params;
     this.props.fetchTask(id, task);
@@ -12,6 +18,20 @@ class Task extends Component {
   setCompleted = (completed) => {
     const { id, task } = this.props.match.params;
     this.props.updateTask(id, task, { completed });
+  }
+
+  onChangeComment = (e) => {
+    this.setState({ comment: e.target.value });
+  }
+
+  onPublishComment = () => {
+    const { id, task } = this.props.match.params;
+    this.props.addComment(id, task, { content: this.state.comment });
+  }
+
+  onDeleteComment = (comment) => {
+    const { id, task } = this.props.match.params;
+    this.props.deleteComment(id, task, comment);
   }
 
   render() {
@@ -47,7 +67,15 @@ class Task extends Component {
             <p className="text-muted" style={{marginBottom: 8}}>Comments</p>
             <div className="card">
               <div className="card-body">
-                <p>[Comments here]</p>
+              { task &&
+                task.comments.length ?
+                ( task.comments.map(comment => ( <div key={comment._id}><p>{comment.content}</p><button className="btn btn-sm btn-danger" onClick={() => this.onDeleteComment(comment._id)}>Delete</button></div> ))) :
+                ( <p>No comments.</p> )
+              }
+              </div>
+              <div className="card-footer">
+                <input type="text" className="form-control" placeholder="Comment" value={this.state.comment} onChange={this.onChangeComment}/>
+                <button className="btn btn-primary" onClick={this.onPublishComment}>Publish</button>
               </div>
             </div>
           </div>
@@ -61,4 +89,4 @@ function mapStateToProps({ tasks }) {
   return { tasks }
 };
 
-export default connect(mapStateToProps, { fetchTask, updateTask })(Task);
+export default connect(mapStateToProps, { fetchTask, updateTask, addComment, deleteComment })(Task);

@@ -39,7 +39,7 @@ router
   // Deleting comment
 
   Task.deleteComment(req.params.task, req.params.id)
-  .then(task => res.status(200).json({ comment: req.params.id }))
+  .then(task => res.status(200).json({ _id: req.params.id }))
   .catch(err => next(err));
 })
 

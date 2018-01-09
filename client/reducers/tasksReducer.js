@@ -35,6 +35,57 @@ export default function reducer(state = INITIAL_STATE, action) {
       state = { ...state, tasks: _.omit(state.tasks, action.id)};
       break;
     }
+
+    // Comments - change to use object instead of array
+    case 'ADD_COMMENT': {
+      state = {
+        ...state,
+        tasks: {
+          ...state.tasks,
+          [action.task]: {
+            ...state.tasks[action.task],
+            comments: [
+              ...state.tasks[action.task].comments,
+              {
+                ...action.comment
+              }
+            ]
+          }
+        }
+      }
+      break;
+    }
+    case 'DELETE_COMMENT': {
+      state = {
+        ...state,
+        tasks: {
+          ...state.tasks,
+          [action.task]: {
+            ...state.tasks[action.task],
+            comments: state.tasks[action.task].comments.filter(comment => comment._id != action.comment._id)
+          }
+        }
+      }
+      break;
+    }
+    case 'UPDATE_COMMENT': {
+      state = {
+        ...state,
+        tasks: {
+          ...state.tasks,
+          [action.task]: {
+            ...state.tasks[action.task],
+            comments: [
+              ...state.tasks[action.task].comments.filter(comment => comment._id != action.comment._id),
+              {
+                ...action.comment
+              }
+            ]
+          }
+        }
+      }
+      break;
+    }
     default: {}
   }
   return state;

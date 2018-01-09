@@ -178,3 +178,51 @@ export function deletedTask(id) {
     id
   }
 }
+
+export function addComment(project, task, comment) {
+  return dispatch => {
+    return axios.put(`/api/projects/${project}/tasks/${task}/comments`, comment)
+    .then(
+      response => dispatch(addedComment(task, response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+export const addedComment = (task, comment) => ({
+  type: 'ADD_COMMENT',
+  task,
+  comment
+});
+
+export function deleteComment(project, task, comment) {
+  return dispatch => {
+    return axios.delete(`/api/projects/${project}/tasks/${task}/comments/${comment}`)
+    .then(
+      response => dispatch(deletedComment(task, response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+export const deletedComment = (task, comment) => ({
+  type: 'DELETE_COMMENT',
+  task,
+  comment
+});
+
+export function updateComment(project, task, comment, data) {
+  return dispatch => {
+    return axios.post(`/api/projects/${project}tasks/${task}/comments/${comment}`, data)
+    .then(
+      response => dispatch(updatedComment(task, response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+export const updatedComment = (task, comment) => ({
+  type: 'UPDATE_COMMENT',
+  task,
+  comment
+});
