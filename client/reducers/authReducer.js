@@ -1,4 +1,5 @@
 const initialState = {
+	fetching: false,
 	isAuthenticated: false,
 	user: {},
 	errors: {}
@@ -14,9 +15,14 @@ function isEmpty(obj) {
 
 export default function authReducer(state = initialState, action) {
 	switch (action.type) {
+		case 'REQUEST_LOGIN': {
+			state = { ...state, fetching: true }
+			break;
+		}
 		case 'SET_CURRENT_USER': {
 			state = {
 				...state,
+				fetching: false,
 				isAuthenticated: !isEmpty(action.user),
 				user: action.user,
 				errors: {}

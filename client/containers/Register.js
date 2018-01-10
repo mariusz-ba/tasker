@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {
-  Link
+  Link,
+  withRouter
 } from 'react-router-dom';
 import axios from 'axios';
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +16,8 @@ export default class Register extends Component {
         email: ''
       },
       errors: {},
-      info: ''
+      info: '',
+      created: false
     }
 
     this.onUsernameChanged = this.onUsernameChanged.bind(this);
@@ -23,6 +25,11 @@ export default class Register extends Component {
     this.onConfirmChanged = this.onConfirmChanged.bind(this);
     this.onEmailChanged = this.onEmailChanged.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidUpdate() {
+    if(this.state.created)
+      this.props.history.push('/login');
   }
 
   onUsernameChanged(e) {
@@ -52,14 +59,13 @@ export default class Register extends Component {
       error => self.setState({ errors: error.response.data.errors })
     )
     .then(data => {
-      if(data) self.setState({ errors: {}, info: data.info })
+      if(data) self.setState({ errors: {}, info: data.info, created: true })
     })
   }
 
   render() {
     const { username, password, confirm, email } = this.state.user;
     const { errors } = this.state;
-    console.log(password, confirm);
 
     const usernameValid = errors.username ? 'is-invalid' : '';
     const emailValid = errors.email ? 'is-invalid' : '';
@@ -113,3 +119,5 @@ export default class Register extends Component {
     )
   }
 }
+
+export default withRouter(Register);

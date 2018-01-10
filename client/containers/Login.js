@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Link
+  Link,
+  withRouter
 } from 'react-router-dom';
 
 import * as AuthActions from '../actions/authActions';
@@ -16,8 +17,15 @@ class Login extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if(this.props.auth.isAuthenticated)
+      this.props.history.push('/projects');
+  }
+
   onSubmit(e) {
     e.preventDefault();
+    if(this.props.auth.fetching) return;
+
     const { identifier, password } = this.state;
     this.props.actions.requestLogin({
       identifier,
@@ -36,7 +44,8 @@ class Login extends Component {
   }
 
   render() {
-    const { errors } = this.props.auth;
+    const { errors, fetching, isAuthenticated } = this.props.auth;
+    const disabled = fetching ? 'disabled' : '';
 
     return (
       <div className="container">
@@ -59,7 +68,11 @@ class Login extends Component {
                 <input id="password" name="password" type="password" className="form-control" value={this.state.password} onChange={this.onPasswordChange.bind(this)} />
                 <small className="form-text text-muted"><a href="#">Forgot your password?</a></small>
               </div>
-              <button type="submit" className="btn btn-success btn-login" onClick={(e) => this.onSubmit(e)}>Sign in</button>
+              <button type="submit" className={`btn btn-success btn-login ${disabled}`} onClick={(e) => this.onSubmit(e)}>
+              {
+                fetching ? 'Signing in...' : 'Sign in'
+              }
+              </button>
             </form>
             <div className="login-form text-center">
               New to tasker? <Link to="/register">Create an account</Link>.
@@ -83,4 +96,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

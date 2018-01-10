@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export function loginRequested(user) {
   return {
-    type: 'LOGIN_REQUESTED'
+    type: 'REQUEST_LOGIN'
   }
 }
 
