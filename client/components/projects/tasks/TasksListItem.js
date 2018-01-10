@@ -76,7 +76,7 @@ export default class TasksListItem extends Component {
     const descriptionComponent = edit ?
       <input ref={(input) => {this.descriptionInput = input}} type="text" className="form-control" value={tempDescription} onChange={this.onDescriptionChange}/> :
       <div>
-        <input type="checkbox" onChange={this.onCheckboxChanged} checked={checked}/>
+        <input className="task-checkbox" type="checkbox" onChange={this.onCheckboxChanged} checked={checked}/>
         <span className="tasks-list-item-description" onClick={this.onDescriptionClicked}>{description}</span>
         { comments.length > 0 &&
           <span className="badge badge-secondary"><i className="fa fa-comment-o" aria-hidden="true"></i> {comments.length} Comments - {prettyDate(new Date(lastComment.updatedAt))}</span>
