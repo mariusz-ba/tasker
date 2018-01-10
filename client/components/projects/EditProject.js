@@ -10,7 +10,8 @@ class EditProject extends Component {
       name: '',
       description: '',
       team: '',
-      teams: []
+      teams: [],
+      options: []
     }
   }
   componentDidMount() {
@@ -20,9 +21,20 @@ class EditProject extends Component {
       response => {
         this.setState({
           name: response.data.name,
-          description: response.data.description,
-          teams: response.data.teams
+          description: response.data.description
         })
+
+        axios.get(`/api/teams`, { params: { teams: response.data.teams }})
+        .then(
+          response => this.setState({ teams: response.data }),
+          error => console.log('An error occurred: ', error)
+        );
+
+        axios.get(`/api/teams`)
+        .then(
+          response => this.setState({ options: response.data, team: response.data[0]._id }),
+          error => console.log('An error occurred: ', error)
+        );
       },
       error => console.log('An error occurred: ', error)
     )
@@ -37,7 +49,7 @@ class EditProject extends Component {
     this.setState({ team: e.target.value })
   }
   onAddTeam = () => {
-    this.setState({ teams: [...this.state.teams, this.state.team], team: ''})
+    this.setState({ teams: [...this.state.teams, this.state.options.find(option => option._id == this.state.team)], team: ''})
   }
   onDeleteTeam = (team) => {
     const teams = this.state.teams.slice();
@@ -53,7 +65,7 @@ class EditProject extends Component {
     this.props.updateProject(this.props.match.params.id, {
       name: this.state.name,
       description: this.state.description,
-      teams: this.state.teams
+      teams: this.state.teams.map(team => team._id)
     });
   }
   render() {
@@ -90,27 +102,39 @@ class EditProject extends Component {
                 <div className="form-row">
                   <div className="form-group col-md-9">
                     <label htmlFor="team">Teams</label>
-                    <input
-                      className="form-control"
-                      placeholder="Add team name"
-                      name="team"
-                      id="team"
-                      type="text"
-                      value={team}
-                      onChange={this.onChangeTeam}/>
+                    <select className="form-control" onChange={this.onChangeTeam}>
+                    { this.state.options &&
+                      this.state.options.map(option => (
+                        <option key={option._id} value={option._id}>{option.name}</option>
+                      ))
+                    }
+                    </select>
                   </div>
                   <div className="form-group col-md-3">
                     <label htmlFor="button-add">&nbsp;</label>  
                     <button id="button-add" className="btn btn-primary" style={{width: '100%'}} onClick={this.onAddTeam}>Add</button>
                   </div>
                 </div>
-                <ul>
+                <table className="table table-bordered">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th>Team name</th>
+                      <th>Team id</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
                   {
                     teams.map(team => (
-                      <li key={team}>{team} <button onClick={() => this.onDeleteTeam(team)}>X</button></li>
+                      <tr key={team._id}>
+                        <td>{team.name}</td>
+                        <td><span className="badge badge-primary">{team._id}</span></td>
+                        <td><button className="btn btn-sm btn-danger" onClick={() => this.onDeleteTeam(team)}>Delete</button></td>
+                      </tr>
                     ))
                   }
-                </ul>
+                  </tbody>
+                </table>
                 <button className="btn btn-primary" onClick={this.onUpdateProject}>Update</button>
               </div>
             </div>
