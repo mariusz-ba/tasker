@@ -38,7 +38,7 @@ TaskSchema.methods = {
 TaskSchema.statics = {
 
   getComments: function(task, filter = {}) {
-    return this.findOne({ _id: task, ...filter }).exec();
+    return this.findOne({ _id: task }).exec();
   },
 
   addComment: function(task, author, content) {

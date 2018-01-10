@@ -10,10 +10,17 @@ import Team from '../../models/team';
 const router = express.Router();
 router
 .get('/', (req, res, next) => {
-  User.find({}, { password: 0 }, (err, users) => {
-    if(err) return next(err);
-    res.json(users);
-  })
+  if(req.query.users) { // Get users from by array of ids
+    User.find({_id: { $in: req.query.users }}, { password: 0 }, (err, users) => {
+      if(err) return next(err);
+      res.json(users);
+    })
+  } else { // Get all users
+    User.find({}, { password: 0 }, (err, users) => {
+      if(err) return next(err);
+      res.json(users);
+    })
+  }
 })
 .get('/:id', (req, res, next) => {
   // Find user by id(id or username)

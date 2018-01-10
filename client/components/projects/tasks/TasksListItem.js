@@ -78,7 +78,7 @@ export default class TasksListItem extends Component {
       <div>
         <input type="checkbox" onChange={this.onCheckboxChanged} checked={checked}/>
         <span className="tasks-list-item-description" onClick={this.onDescriptionClicked}>{description}</span>
-        { comments.length &&
+        { comments.length > 0 &&
           <span className="badge badge-secondary"><i className="fa fa-comment-o" aria-hidden="true"></i> {comments.length} Comments - {prettyDate(new Date(lastComment.updatedAt))}</span>
         }
         <button className="btn btn-sm btn-danger pull-right" style={{marginLeft: 5}} onClick={this.onDeleteClicked}>Delete</button>

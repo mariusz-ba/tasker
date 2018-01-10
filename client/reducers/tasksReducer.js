@@ -37,6 +37,19 @@ export default function reducer(state = INITIAL_STATE, action) {
     }
 
     // Comments - change to use object instead of array
+    case 'RECEIVE_COMMENTS': {
+      state = {
+        ...state,
+        tasks: {
+          ...state.tasks,
+          [action.task]: {
+            ...state.tasks[action.task],
+            comments: action.comments
+          }
+        }
+      }
+      break;
+    }
     case 'ADD_COMMENT': {
       state = {
         ...state,

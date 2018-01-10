@@ -179,6 +179,22 @@ export function deletedTask(id) {
   }
 }
 
+export function fetchComments(project, task) {
+  return dispatch => {
+    return axios.get(`/api/projects/${project}/tasks/${task}/comments`)
+    .then(
+      response => dispatch(receiveComments(task, response.data)),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+}
+
+export const receiveComments = (task, comments) => ({
+  type: 'RECEIVE_COMMENTS',
+  task,
+  comments
+});
+
 export function addComment(project, task, comment) {
   return dispatch => {
     return axios.put(`/api/projects/${project}/tasks/${task}/comments`, comment)

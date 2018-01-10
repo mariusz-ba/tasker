@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProject } from '../../actions/projectsActions';
-import { fetchTasks, createTask, updateTask, deleteTask } from '../../actions/tasksActions';
-import { fetchCards, createCard, updateCard, deleteCard } from '../../actions/cardsActions';
+import { fetchProjectPage } from '../../actions/pages/project';
+import { createTask, updateTask, deleteTask } from '../../actions/tasksActions';
+import { createCard, updateCard, deleteCard } from '../../actions/cardsActions';
 import { withRouter, Link } from 'react-router-dom';
 
 import Card from './card/Card';
@@ -25,9 +25,7 @@ Object.defineProperty(Array.prototype, 'sortBy', {
 class Project extends Component {
   componentWillMount() {
     const { id } = this.props.match.params;
-    this.props.fetchProject(id);
-    this.props.fetchCards(id);
-    this.props.fetchTasks(id);
+    this.props.fetchProjectPage(id);
   }
 
   onCreateCard = (e) => {
@@ -46,7 +44,7 @@ class Project extends Component {
 
   render() {
     const { id } = this.props.match.params;
-    const { projects, cards, tasks } = this.props;
+    const { teams, projects, cards, tasks } = this.props;
     const { fetching } = projects;
     
     const project = projects.projects[id];
@@ -62,9 +60,34 @@ class Project extends Component {
     return (
       <div className="container">
         <header>
-          <h4><small><span className="badge badge-pill badge-secondary">123</span></small> {project && project.name}</h4>
-          <p className="text-muted">{project && project.description}</p>
-          <Link className="btn btn-secondary" to={`/projects/${this.props.match.params.id}/edit`}>Edit</Link>
+          <div className="row">
+            <div className="col-md-9">
+              <h4>
+                <small>
+                  <span className="badge badge-pill badge-secondary">
+                    {tasks && Object.keys(tasks.tasks).length}
+                  </span>
+                </small>&nbsp;
+                {project && project.name}
+              </h4>
+              <p className="text-muted">{project && project.description}</p>
+              <Link className="btn btn-secondary" to={`/projects/${this.props.match.params.id}/edit`}>Edit</Link>
+            </div>
+            <div className="col-md-3">
+              <div className="card">
+                <h6 className="card-header">Teams</h6>
+                <div>
+                  <ul className="list-group teams-list">
+                  { teams &&
+                    values(teams.teams).map(team => (
+                      <li key={team._id} className="list-group-item">{team.name}</li>
+                    ))
+                  }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </header>
         <hr/>
         <div className="row" style={{margin: '16px 0'}}>
@@ -112,8 +135,9 @@ class Project extends Component {
   }
 }
 
-function mapStateToProps({ projects, cards, tasks }) {
+function mapStateToProps({ teams, projects, cards, tasks }) {
   return {
+    teams,
     projects,
     cards,
     tasks
@@ -121,7 +145,7 @@ function mapStateToProps({ projects, cards, tasks }) {
 }
 
 export default withRouter(connect(mapStateToProps, { 
-  fetchProject,
-  fetchTasks, createTask, updateTask, deleteTask,
-  fetchCards, createCard, updateCard, deleteCard
+  fetchProjectPage,
+  createTask, updateTask, deleteTask,
+  createCard, updateCard, deleteCard
 })(Project));

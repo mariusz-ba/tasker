@@ -2,12 +2,12 @@ import axios from 'axios';
 /**
  * Use this action to fetch users
  * 
- * @param {Object} filter - Filter eg. { username: /\.*john/ }
+ * @param {Array} users - Array with users ids [1, 2, 3]...
  */
-export function fetchUsers(filter) {
+export function fetchUsers(users) {
   return dispatch => {
     dispatch(requestUsers());
-    return axios.get('/api/users', ...filter)
+    return axios.get('/api/users', { params: { users }})
     .then(
       response => dispatch(receiveUsers(response.data)),
       error => console.log('An error occurred: ', error)

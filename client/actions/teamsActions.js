@@ -4,9 +4,9 @@ import axios from 'axios';
  * Use this action to fetch teams
  * from database
  */
-export function fetchTeams() {
+export function fetchTeams(teams) {
   return dispatch => {
-    return axios.get('/api/teams')
+    return axios.get('/api/teams', { params: { teams }})
     .then(
       response => dispatch(receiveTeams(response.data)),
       error => console.log('An error occurred', error)

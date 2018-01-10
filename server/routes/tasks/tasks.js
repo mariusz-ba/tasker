@@ -14,7 +14,6 @@ router
   // Get all tasks for project
   Task.find({ project: req.params.project }, (err, tasks) => {
     if(err) return next(err);
-
     res.json(tasks);
   })
 })
@@ -22,13 +21,7 @@ router
   // Get task with specified id
   Task.findOne({ _id: req.params.id }, (err, task) => {
     if(err) return next(err);
-    User.findOne({ _id: task.author }, {username: 1, fullName: 1}, (err, author) => {
-      if(err) return next(err);
-      res.status(200).json({
-        ...task._doc,
-        author
-      });
-    })
+    res.status(200).json(task);
   })
 })
 .put('/', authenticate, (req, res, next) => {
@@ -51,13 +44,7 @@ router
   console.log(`Post: ${req.body}`);
   Task.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body } }, {new: true}, (err, task) => {
     if(err) return next(err);
-    User.findOne({ _id: task.author }, {username: 1, fullName: 1}, (err, author) => {
-      if(err) return next(err);
-      res.status(200).json({
-        ...task._doc,
-        author
-      });
-    })
+    res.status(200).json(task);
   })
 })
 .delete('/:id', authenticate, (req, res, next) => {

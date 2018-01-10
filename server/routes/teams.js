@@ -20,10 +20,22 @@ router
   */
   User.findOne({ _id: req.user._id }, (err, user) => {
     if(err) return next(err);
-    Team.find({ _id: { $in: user.teams }}, (err, teams) => {
-      if(err) return next(err);
-      res.status(200).json(teams);
-    })
+    if(req.query.teams) {
+      Team.find({
+        $and: [
+          { _id: { $in: user.teams }},
+          { _id: { $in: req.query.teams }}
+        ]
+      }, (err, teams) => {
+        if(err) return next(err);
+        res.status(200).json(teams);
+      })
+    } else {
+      Team.find({ _id: { $in: user.teams }}, (err, teams) => {
+        if(err) return next(err);
+        res.status(200).json(teams);
+      })
+    }
   })
 })
 .get('/:id', authenticate, (req, res, next) => {
