@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { fetchFriends, addFriend, confirmFriend, deleteFriend } from '../../../actions/friendsActions';
-
+import Card from '../../ui/Card';
 import { values } from 'lodash';
 
 class Friends extends Component {
@@ -40,45 +40,44 @@ class Friends extends Component {
     if(user)
       friends = user.friends;
 
+    const self = user && this.props.auth.user._id == user._id;
+
     return (
       <div className="col-md-12">
-        <div className="row">
-          <div className="col">
-            <div className="input-group mb-2">
-              <div className="input-group-append">  
-                <button className="btn btn-light" onClick={this.onAddFriend} style={{borderRadius: 0}}>Add friend</button>
+        { self &&
+          <div className="row">
+            <div className="col">
+              <div className="input-group mb-2">
+                <div className="input-group-append">  
+                  <button className="btn btn-light" onClick={this.onAddFriend} style={{borderRadius: 0}}>Add friend</button>
+                </div>
+                <input name="username" className="form-control" placeholder="user ID!" type="text" value={this.state.username} onChange={this.onUsernameChange}/>
               </div>
-              <input name="username" className="form-control" placeholder="user ID!" type="text" value={this.state.username} onChange={this.onUsernameChange}/>
             </div>
           </div>
-        </div>
+        }
         <div className="row"> 
         { friends && 
           values(friends).map(friend => {
             const confirmed = friend.confirm_user === friend.confirm_friend;
+            const secondaryText = self ? (confirmed ? '' : 'Not confirmed') : '';
             return (
               <div key={friend._id} className="col-md-6">
-                <div className="user-card">
-                  <img className="user-card-image" src="/img/profile.jpg" alt="User profile picture"/>
-                  <div className="user-card-body">
-                    <h5 className="user-card-text-primary">{friend.username}</h5>
-                    <p style={{marginBottom: 0}}>{friend._id}</p>
-                    { confirmed == false &&
-                      <p>Not confirmed</p>
-                    }
-                    <div className="user-card-actions">
-                      { friend.confirm_user === true &&
-                        <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id)}>Delete</button>
-                      }
-                      { friend.confirm_user === false &&
-                        <div>
-                          <button className="btn btn-sm btn-primary" onClick={() => this.onAcceptInvite(friend._id)}>Accept invite</button>
-                          <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id)}>Decline invite</button>
-                        </div>
-                      }
+                <Card
+                  image="/img/profile.jpg"
+                  primaryText={friend.username}
+                  secondaryText={secondaryText}
+                  clickable={false}>
+                  { self && friend.confirm_user === true &&
+                    <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id)}>Delete</button>
+                  }
+                  { self && friend.confirm_user === false &&
+                    <div>
+                      <button className="btn btn-sm btn-primary" onClick={() => this.onAcceptInvite(friend._id)}>Accept invite</button>&nbsp;
+                      <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id)}>Decline invite</button>
                     </div>
-                  </div>
-                </div>
+                  }
+                </Card>
               </div>
             )
           })
@@ -89,8 +88,8 @@ class Friends extends Component {
   }
 }
 
-function mapStateToProps({ users }) {
-  return { users }
+function mapStateToProps({ auth, users }) {
+  return { auth, users }
 };
 
 Friends.propTypes = {

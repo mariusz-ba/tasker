@@ -4,29 +4,26 @@ import { fetchUser, fetchUsers } from '../../actions/usersActions';
 import { fetchFriends } from '../../actions/friendsActions';
 import { Link, withRouter } from 'react-router-dom';
 
-import { keys, values } from 'lodash';
+import { keys } from 'lodash';
 
 import Tabs from './tabs/Tabs';
 import Friends from './pages/Friends';
+import Teams from './pages/Teams';
+import Projects from './pages/Projects';
 
-const Teams = (props) => {
-  return values(props.teams).map(team => (
-    <div key={team._id} className="col-md-6">
-      <div className="card" style={{background: 'rgba(0,0,0,.03)', padding: 10}}>
-        <h6>{team.name}</h6>
-        <p className="badge badge-primary">{team._id}</p>
-      </div>
-    </div>
-  ))
-};
+import axios from 'axios';
 
 class User extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      projects: []
+    }
     this.id = this.props.match.params.id ? this.props.match.params.id : this.props.auth.user._id;
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchUser(this.id);
+    this.getProjects(this.id);
   }
   componentDidUpdate(prevProps) {
     if(this.props.location !== prevProps.location)
@@ -37,7 +34,15 @@ class User extends Component {
     if(id !== this.id) {
       this.id = id;
       this.props.fetchUser(this.id);
+      this.getProjects(this.id);
     }
+  }
+  getProjects = (id) => {
+    axios.get(`/api/projects`, { params: { user: id }})
+    .then(
+      response => this.setState({ projects: response.data }),
+      error => console.log('An error occurred: ', error)
+    )
   }
   render() {
     const { users } = this.props.users;
@@ -80,7 +85,7 @@ class User extends Component {
               <Tabs tabs={[
                 {name: 'Friends', component: <Friends user={this.id}/>}, 
                 {name: 'Teams', component: <Teams teams={teams}/>}, 
-                {name: 'Projects', component: <Teams teams={teams}/>}
+                {name: 'Projects', component: <Projects projects={this.state.projects}/>}
               ]}/>
             </div>
           </div>

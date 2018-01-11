@@ -44,6 +44,7 @@ router
           $addToSet: { friends: { _id: user._id, confirmed: false }}
         }, {new: true}, (err, friend) => {
           if(err) return next(err);
+          if(!friend) return next(new Error('Cannot perform this operation'));
           // Friend created (Friend request send to :friend)
           res.status(201).json({
             _id: friend._id,

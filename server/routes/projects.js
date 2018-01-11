@@ -7,22 +7,40 @@ import { accessProject } from '../utils/permissions';
 import Card from '../models/card';
 import Project from '../models/project';
 import Task from '../models/task';
+import User from '../models/user';
 
 // Router
 const router = express.Router();
 router
 .get('/', authenticate, (req, res, next) => {
-  // Return all projects user is assigned to
-  console.log('Fetching projects for: ', req.user);
-  Project.find({
-    $or: [
-      {users: req.user._id},
-      {teams: { $in: req.user.teams }}
-    ]
-  }, (err, projects) => {
-    if(err) return next(err);
-    res.status(200).json(projects);
-  })
+  // Return projects for user by body id
+  if(req.query.user) {
+    User.findOne({ _id: req.query.user })
+    .then(user => {
+      Project.find({
+        $or: [
+          {users: user._id},
+          {teams: { $in: user.teams }}
+        ]
+      }, (err, projects) => {
+        if(err) return next(err);
+        res.status(200).json(projects);
+      })
+    })
+    .catch(err => next(err));
+  } else {
+    // Return all projects user is assigned to
+    console.log('Fetching projects for: ', req.user._id);
+    Project.find({
+      $or: [
+        {users: req.user._id},
+        {teams: { $in: req.user.teams }}
+      ]
+    }, (err, projects) => {
+      if(err) return next(err);
+      res.status(200).json(projects);
+    })
+  }
 })
 .get('/:id', authenticate, accessProject, (req, res, next) => {
   // Return project with specified id
