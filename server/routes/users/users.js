@@ -22,7 +22,7 @@ router
         {username: regex},
         {fullName: regex}
       ]
-    }, (err, users) => {
+    }, {username: 1, fullName: 1}, (err, users) => {
       if(err) return next(err);
       res.json(users);
     })
