@@ -15,6 +15,17 @@ router
       if(err) return next(err);
       res.json(users);
     })
+  } else if(req.query.text) { // Get users by text (username, name)
+    const regex = new RegExp(`${req.query.text}`);
+    User.find({
+      $or: [
+        {username: regex},
+        {fullName: regex}
+      ]
+    }, (err, users) => {
+      if(err) return next(err);
+      res.json(users);
+    })
   } else { // Get all users
     User.find({}, { password: 0 }, (err, users) => {
       if(err) return next(err);

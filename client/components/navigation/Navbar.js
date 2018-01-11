@@ -6,12 +6,16 @@ import {
 import { connect } from 'react-redux';
 import { logout } from '../../actions/authActions';
 
+import axios from 'axios';
+
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       collapsed: true,
-      dropdown: false
+      dropdown: false,
+      search: '',
+      searchUsers: []
     }
 
     this.toggleCollapse = this.toggleCollapse.bind(this);
@@ -57,6 +61,19 @@ class Navbar extends Component {
     this.props.logout();
   }
 
+  onChangeSearch = (e) => {
+    this.setState({ search: e.target.value });
+    if(e.target.value.length == 0) {
+      this.setState({ searchUsers: []});
+      return;
+    }
+    axios.get(`/api/users`, { params: { text: e.target.value }})
+    .then(
+      response => this.setState({ searchUsers: response.data }),
+      error => console.log('An error occurred: ', error)
+    )
+  }
+
   render() {
     const { isAuthenticated } = this.props.auth;
     const { username, _id } = this.props.auth.user;
@@ -96,6 +113,8 @@ class Navbar extends Component {
       </ul>
     );
 
+    const searchResult = this.state.searchUsers.length > 0 && this.state.search.length > 0 ? 'block' : 'none';
+
     return (
       <nav className="navbar navbar-expand-md">
         <div className="container">
@@ -103,7 +122,45 @@ class Navbar extends Component {
             <span className="navbar-toggler-icon"></span>
           </button>
           <Link className="navbar-brand" to="/">Tasker</Link>
-          <input className="navbar-search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+            <input className="navbar-search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onChange={this.onChangeSearch}/>
+            <div className="navbar-search-result" style={{display: searchResult}}>
+              <ul>
+                {
+                  this.state.searchUsers.map(user => (
+                    <li>
+                      <span className="navbar-search-result-button fa fa-user-plus"></span>
+                      <img src="/img/profile.jpg"/>
+                      <h6>{ user.fullName ? user.fullName : user.username }</h6>
+                      <span className="text-muted">@{user.username}</span>
+                    </li>
+                  ))
+                }
+                {/* <li>
+                  <span className="navbar-search-result-button fa fa-user-plus"></span>
+                  <img src="/img/profile.jpg"/>
+                  <h6>Mariusz Baran</h6>
+                  <span className="text-muted">@mariusz</span>
+                </li>
+                <li>
+                  <span className="navbar-search-result-button fa fa-user-times"></span>
+                  <img src="/img/profile.jpg"/>
+                  <h6>Mariusz Baran</h6>
+                  <span className="text-muted">@mariusz</span>
+                </li>
+                <li>
+                  <span className="navbar-search-result-button fa fa-user-plus"></span>
+                  <img src="/img/profile.jpg"/>
+                  <h6>Mariusz Baran</h6>
+                  <span className="text-muted">@mariusz</span>
+                </li>
+                <li>
+                  <span className="navbar-search-result-button fa fa-user-times"></span>
+                  <img src="/img/profile.jpg"/>
+                  <h6>Mariusz Baran</h6>
+                  <span className="text-muted">@mariusz</span>
+                </li> */}
+              </ul>
+            </div>
           <div className={"navbar-collapse " + collapseClass} id="navigation">
             <ul className="navbar-nav mr-auto"></ul>
             { isAuthenticated ? userLinks : guestLinks }

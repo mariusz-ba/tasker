@@ -456,3 +456,52 @@ h6 .badge {
   color: #fff;
   text-align: center;
 }
+
+/* Search */
+.navbar-search-result {
+  z-index: 10;
+  position: absolute;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: scroll;
+  top: 100%;
+  left: 50%;
+  padding-top: 10px;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.125);
+}
+.navbar-search-result ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.navbar-search-result li {
+  position: relative;
+  padding-left: 64px;
+  box-sizing: border-box;
+  margin-top: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.navbar-search-result li:nth-of-type(2n) {
+  border-top: 1px solid rgba(0,0,0,.125);
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.navbar-search-result li h6 {
+  margin-bottom: 0;
+}
+.navbar-search-result li img{
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 10px;
+}
+.navbar-search-result li .navbar-search-result-button {
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+.navbar-search-result li .fa-user-plus { color: green; }
+.navbar-search-result li .fa-user-times { color: red; }
