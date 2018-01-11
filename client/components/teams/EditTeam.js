@@ -3,13 +3,16 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { updateTeam } from '../../actions/teamsActions';
 
+import { unionBy } from 'lodash';
+
 class EditTeam extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       user: '',
-      users: []
+      users: [],
+      friends: []
     }
   }
   componentDidMount() {
@@ -19,12 +22,20 @@ class EditTeam extends Component {
       response => {
         this.setState({
           name: response.data.name,
-          users: response.data.users.map(user => user._id)
+          users: response.data.users
         })
+
+        axios.get(`/api/users/${this.props.auth.user._id}/friends`)
+        .then(
+          response => this.setState({ 
+            friends: response.data, 
+            user: (response.data.length ? response.data[0]._id : null) }),
+          error => console.log('An error occurred: ', error)
+        )
       },
       error => console.log('An error occurred: ', error)
     )
-  }
+  } 
   onChangeName = (e) => {
     this.setState({ name: e.target.value });
   }
@@ -32,7 +43,11 @@ class EditTeam extends Component {
     this.setState({ user: e.target.value })
   }
   onAddUser = () => {
-    this.setState({ users: [...this.state.users, this.state.user], user: ''})
+    if(!this.state.user) return;
+    const user = this.state.friends.find(friend => friend._id == this.state.user);
+    console.log('this.state.user: ', this.state.user);
+    console.log('adding user: ', user);
+    this.setState({ users: unionBy([...this.state.users, this.state.friends.find(friend => friend._id == this.state.user)], '_id')})
   }
   onDeleteUser = (user) => {
     const users = this.state.users.slice();
@@ -43,15 +58,16 @@ class EditTeam extends Component {
     })
   }
   onUpdateTeam = () => {
-    // call action for updating project
+    // call action for updating team
     console.log(this.state);
     this.props.updateTeam(this.props.match.params.id, {
       name: this.state.name,
-      users: this.state.users
+      users: this.state.users.map(user => user._id)
     });
   }
   render() {
-    const { name, user, users } = this.state;
+    const { name, user, users, friends } = this.state;
+    const disabled = user ? '' : 'disabled';
 
     return (
       <div className="container">
@@ -73,27 +89,47 @@ class EditTeam extends Component {
                 <div className="form-row">
                   <div className="form-group col-md-9">
                     <label htmlFor="team">Users</label>
-                    <input
+                    {/* <input
                       className="form-control"
                       placeholder="Add user name"
                       name="user"
                       id="user"
                       type="text"
                       value={user}
-                      onChange={this.onChangeUser}/>
+                      onChange={this.onChangeUser}/> */}
+                    <select className="form-control" onChange={this.onChangeUser}>
+                    {
+                      friends.map(friend => (
+                        <option key={friend._id} value={friend._id}>{friend.username}</option>
+                      ))
+                    }
+                    </select>
                   </div>
                   <div className="form-group col-md-3">
                     <label htmlFor="button-add">&nbsp;</label>  
-                    <button id="button-add" className="btn btn-primary" style={{width: '100%'}} onClick={this.onAddUser}>Add</button>
+                    <button id="button-add" className={`btn btn-primary ${disabled}`} style={{width: '100%'}} onClick={this.onAddUser}>Add</button>
                   </div>
                 </div>
-                <ul>
-                  {
-                    users.map(user => (
-                      <li key={user}>{user} <button onClick={() => this.onDeleteUser(user)}>X</button></li>
-                    ))
-                  }
-                </ul>
+                  <table className="table table-bordered">
+                    <thead className="thead-dark">
+                      <tr>
+                        <th>User name</th>
+                        <th>User id</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {
+                      users.map(user => (
+                        <tr key={user._id}>
+                          <td>{user.username}</td>
+                          <td><span className="badge badge-primary">{user._id}</span></td>
+                          <td><button className="btn btn-sm btn-danger" onClick={() => this.onDeleteUser(user)}>Delete</button></td>
+                        </tr>
+                      ))
+                    }
+                    </tbody>
+                  </table>
                 <button className="btn btn-primary" onClick={this.onUpdateTeam}>Update</button>
               </div>
             </div>
@@ -104,4 +140,6 @@ class EditTeam extends Component {
   }
 }
 
-export default connect(null, { updateTeam })(EditTeam);
+const mapStateToProps = ({ auth }) => ({ auth });
+
+export default connect(mapStateToProps, { updateTeam })(EditTeam);
