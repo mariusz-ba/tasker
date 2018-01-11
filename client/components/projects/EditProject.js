@@ -3,6 +3,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { updateProject } from '../../actions/projectsActions';
 
+import { unionBy } from 'lodash';
+
 class EditProject extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +34,7 @@ class EditProject extends Component {
 
         axios.get(`/api/teams`)
         .then(
-          response => this.setState({ options: response.data, team: response.data[0]._id }),
+          response => this.setState({ options: response.data, team: (response.data.length ? response.data[0]._id : null)}),
           error => console.log('An error occurred: ', error)
         );
       },
@@ -49,7 +51,8 @@ class EditProject extends Component {
     this.setState({ team: e.target.value })
   }
   onAddTeam = () => {
-    this.setState({ teams: [...this.state.teams, this.state.options.find(option => option._id == this.state.team)], team: ''})
+    if(!this.state.team) return;
+    this.setState({ teams: unionBy([...this.state.teams, this.state.options.find(option => option._id == this.state.team)], '_id')})
   }
   onDeleteTeam = (team) => {
     const teams = this.state.teams.slice();
@@ -70,6 +73,7 @@ class EditProject extends Component {
   }
   render() {
     const { name, description, team, teams } = this.state;
+    const disabled = team ? '' : 'disabled';
 
     return (
       <div className="container">
@@ -112,7 +116,7 @@ class EditProject extends Component {
                   </div>
                   <div className="form-group col-md-3">
                     <label htmlFor="button-add">&nbsp;</label>  
-                    <button id="button-add" className="btn btn-primary" style={{width: '100%'}} onClick={this.onAddTeam}>Add</button>
+                    <button id="button-add" className={`btn btn-primary ${disabled}`} style={{width: '100%'}} onClick={this.onAddTeam}>Add</button>
                   </div>
                 </div>
                 <table className="table table-bordered">
