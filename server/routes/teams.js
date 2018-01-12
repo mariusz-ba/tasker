@@ -7,68 +7,21 @@ import Team from '../models/team';
 import Project from '../models/project';
 import User from '../models/user';
 
+import * as TeamsController from '../controllers/teamsController';
+
 // Router
 const router = express.Router();
 router
 .get('/', authenticate, (req, res, next) => {
-  // Get all teams user is assigned to
-  /*Team.findByMemberId(req.user._id, function(err, teams) {
-    if(err) return next(err);
-    console.log('Searching teams', teams);
-    res.json(teams);
-  })
-  */
-  User.findOne({ _id: req.user._id }, (err, user) => {
-    if(err) return next(err);
-    if(req.query.teams) {
-      Team.find({
-        $and: [
-          { _id: { $in: user.teams }},
-          { _id: { $in: req.query.teams }}
-        ]
-      }, (err, teams) => {
-        if(err) return next(err);
-        res.status(200).json(teams);
-      })
-    } else {
-      Team.find({ _id: { $in: user.teams }}, (err, teams) => {
-        if(err) return next(err);
-        res.status(200).json(teams);
-      })
-    }
-  })
+  // Fetching teams user is assigned to. If query.teams
+  // param is specified only specified teams are returned.
+  if(req.query.teams)
+    TeamsController.getTeams(req, res, next);
+  else
+    TeamsController.getUserTeams(req, res, next);
 })
-.get('/:id', authenticate, (req, res, next) => {
-  Team.findOne({ _id: req.params.id }, (err, team) => {
-    if(err) return next(err);
-    if(!team) return next(new Error('Team does not exist'));
-    User.find({ teams: req.params.id }, { password: false }, (err, users) => {
-      res.status(200).json({ _id: team._id, name: team.name, users });
-    })
-  })
-})
-.put('/', authenticate, (req, res, next) => {
-  // Create new team
-  // req.body.users = [id, id, id]
-  console.log(req.body);
-  Team.create({
-    name: req.body.name
-  }, (err, team) => {
-    if(err) return next(err);
-    console.log('New team created');
-    // Ad creator and req.body.users to this team
-    User.update({
-      _id: { $in: [...req.body.users, req.user._id] }
-    }, { $push: { teams: team._id }}, {multi: true}, (err) => {
-      if(err) return next(err);
-      res.status(201).json({
-        _id: team._id,
-        name: team.name,
-        users: [...req.body.users, req.user._id]
-      })
-    })
-  })
-})
+.get('/:id', authenticate, TeamsController.getTeam)
+.put('/', authenticate, TeamsController.createTeam)
 .post('/:id', authenticate, (req, res, next) => {
   // Update team
   Team.findOneAndUpdate(
