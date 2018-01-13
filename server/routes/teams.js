@@ -2,11 +2,6 @@
 import express from 'express';
 import authenticate from '../utils/authenticate';
 
-// Models
-import Team from '../models/team';
-import Project from '../models/project';
-import User from '../models/user';
-
 import * as TeamsController from '../controllers/teamsController';
 
 // Router
@@ -20,24 +15,9 @@ router
   else
     TeamsController.getUserTeams(req, res, next);
 })
-.get  ('/:id' , authenticate, TeamsController.getTeam)
-.put  ('/'    , authenticate, TeamsController.createTeam)
-.post ('/:id' , authenticate, TeamsController.updateTeam)
-.delete('/:id', authenticate, TeamsController.deleteTeam)//(req, res, next) => {
-//   // Delete team
-//   console.log('Remove team: ', req.params.id);
-//   Team.deleteOne({ _id: req.params.id }, (err) => {
-//     if(err) return next(err);
-//     // Remove users from that team
-//     User.update({ teams: req.params.id }, { $pull: { teams: req.params.id }}, {multi: true}, (err) => {
-//       if(err) return next(err);
-//       // Remove that team from projects
-//       Project.update({ teams: req.params.id }, { $pull: { teams: req.params.id }}, (err) => {
-//         if(err) return next(err);
-//         res.status(200).json(req.params.id);
-//       })
-//     })
-//   })
-// })
+.get    ('/:id' , authenticate, TeamsController.getTeam)
+.put    ('/'    , authenticate, TeamsController.createTeam)
+.post   ('/:id' , authenticate, TeamsController.updateTeam)
+.delete ('/:id' , authenticate, TeamsController.deleteTeam)
 
 export default router;

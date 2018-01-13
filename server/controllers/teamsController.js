@@ -110,6 +110,10 @@ export const updateTeam = (req, res, next) => {
   .catch(err => next(err));
 }
 
+/**
+ * Delete team and remove its connections with 
+ * users and projects.
+ */
 export const deleteTeam = (req, res, next) => {
   // Delete team with specified id
   Team.deleteOne({ _id: req.params.id })
