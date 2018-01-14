@@ -20,14 +20,14 @@ const FriendSchema = new Schema({
  * Methods
  */
 
-FriendsSchema.statics = {
+FriendSchema.statics = {
 
   addFriends: function(user1, user2) {
-    return this.create({ user1, user2 }).exec();
+    return this.create({ user1, user2 });
   },
 
   confirmFriend: function(user1, user2) {
-    return this.findOneAndUpdate({ user1, user2 }, { $set: { confirm2: true }}).exec();
+    return this.findOneAndUpdate({ $or: [{user1, user2}, {user1: user2, user2: user1}] }, { $set: { confirm2: true }}, {new: true}).exec();
   },
 
   deleteFriend: function(user1, user2) {
@@ -40,6 +40,6 @@ FriendsSchema.statics = {
   }
 };
 
-let Friend = mongoose.model('Friend', FriendsSchema);
+let Friend = mongoose.model('Friend', FriendSchema);
 
 module.exports = Friend;
