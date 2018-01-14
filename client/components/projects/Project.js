@@ -9,6 +9,8 @@ import Card from './card/Card';
 import TasksList from './tasks/TasksList';
 import TasksListItem from './tasks/TasksListItem';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 import { values } from 'lodash';
 
 Object.defineProperty(Array.prototype, 'sortBy', {
@@ -55,6 +57,12 @@ class Project extends Component {
       }
     });
 
+    const cardsTransitionOptions = {
+      transitionName: 'fade',
+      transitionEnterTimeout: 500,
+      transitionLeaveTimeout: 500
+    };
+
     if(fetching)
       return null;
     return (
@@ -97,38 +105,41 @@ class Project extends Component {
           </div>
         </div>
         <div className="row">
-        {
-          uicards
-          .sortBy('createdAt', false)
-          .map(card => (
-          <div key={card._id} className="col-md-12">
-            <Card 
-              name={card.name} 
-              onCardNameChanged={(name) => {this.props.updateCard(id, card._id, { name })}}
-              onCardDelete={() => {this.props.deleteCard(id, card._id)}}>             
-              <TasksList>
-                {
-                  card.tasks &&
-                  card.tasks
-                  .sortBy('createdAt', true)
-                  .map(task => (
-                    <TasksListItem
-                      key={task._id}
-                      {...task}
-                      onTaskToggled={(completed) => {this.props.updateTask(id, task._id, { completed })} }
-                      onDescriptionChanged={(description) => {this.props.updateTask(id, task._id, { description })} }
-                      onDescriptionClicked={() => {this.props.history.push(`/projects/${id}/tasks/${task._id}`)}}
-                      onDeleteClicked={() => this.props.deleteTask(id, task._id)}/>
-                  ))
-                }
-              </TasksList>
-              <div style={{marginTop: 10}}>
-                <a href="#" className="btn btn-sm btn-primary" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
-              </div>
-            </Card>
+          <div className="col-md-12">
+          <ReactCSSTransitionGroup {...cardsTransitionOptions}>
+          {
+            uicards
+            .sortBy('createdAt', false)
+            .map(card => (
+              <Card 
+                key={card._id}
+                name={card.name} 
+                onCardNameChanged={(name) => {this.props.updateCard(id, card._id, { name })}}
+                onCardDelete={() => {this.props.deleteCard(id, card._id)}}>             
+                <TasksList>
+                  {
+                    card.tasks &&
+                    card.tasks
+                    .sortBy('createdAt', true)
+                    .map(task => (
+                      <TasksListItem
+                        key={task._id}
+                        {...task}
+                        onTaskToggled={(completed) => {this.props.updateTask(id, task._id, { completed })} }
+                        onDescriptionChanged={(description) => {this.props.updateTask(id, task._id, { description })} }
+                        onDescriptionClicked={() => {this.props.history.push(`/projects/${id}/tasks/${task._id}`)}}
+                        onDeleteClicked={() => this.props.deleteTask(id, task._id)}/>
+                    ))
+                  }
+                </TasksList>
+                <div style={{marginTop: 10}}>
+                  <a href="#" className="btn btn-sm btn-primary" onClick={(e) => this.onCreateTask(e, card._id)}>Add a task</a>
+                </div>
+              </Card>
+            ))
+          }
+          </ReactCSSTransitionGroup>
           </div>
-          ))
-        }
         </div>
       </div>
     )

@@ -505,3 +505,26 @@ h6 .badge {
 }
 .navbar-search-result li .fa-user-plus { color: green; }
 .navbar-search-result li .fa-user-times { color: red; }
+
+/* Card animations */
+.fade-enter {
+  top: -20px;
+  opacity: 0;
+}
+
+.fade-enter-active {
+  top: 0px;
+  opacity: 1;
+  transition: .5s cubic-bezier(.71,1.83,.63,.48) all;
+}
+
+.fade-leave {
+  opacity: 1;
+  transform: rotateX(0deg);
+}
+
+.fade-leave-active {
+  opacity: 0;
+  transform: rotateX(90deg);
+  transition: .5s ease-out all;
+}
