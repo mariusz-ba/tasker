@@ -27,9 +27,15 @@ class EditTeam extends Component {
 
         axios.get(`/api/users/${this.props.auth.user._id}/friends`)
         .then(
-          response => this.setState({ 
-            friends: response.data, 
-            user: (response.data.length ? response.data[0]._id : null) }),
+          response => {
+            const friends = response.data.filter(friend => friend.confirm1 === friend.confirm2).map(friend => {
+              return (friend.user1._id === this.props.auth.user._id ? friend.user2 : friend.user1);
+            });
+            this.setState({ 
+              friends, 
+              user: (friends.length ? friends[0]._id : null)
+            })
+          },
           error => console.log('An error occurred: ', error)
         )
       },

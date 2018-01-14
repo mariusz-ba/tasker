@@ -85,7 +85,7 @@ export default function reducer(state = INITIAL_STATE, action) {
           ...state.users,
           [action.user]: {
             ...state.users[action.user],
-            friends: _.omit(state.users[action.user].friends, action.friend._id)
+            friends: _.omit(state.users[action.user].friends, action.friend)
           }
         }
       }

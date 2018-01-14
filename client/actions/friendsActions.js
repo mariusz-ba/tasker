@@ -116,9 +116,10 @@ export function addedFriend(user, friend) {
  */
 export function deleteFriend(user, friend) {
   return dispatch => {
-    return axios.delete(`/api/users/${user}/friends/${friend}`)
+    console.log('deleting friend: ', friend);
+    return axios.delete(`/api/users/${user}/friends/${friend.friend_id}`)
     .then(
-      response => dispatch(deletedFriend(user, response.data)),
+      response => dispatch(deletedFriend(user, friend.friendship_id, response.data)),
       error => console.log('An error occurred: ', error)
     )
   }
@@ -130,11 +131,13 @@ export function deleteFriend(user, friend) {
  * 
  * @param {ObjectId} user - User id
  * @param {Object} friend - Friend object
+ * @param {Object} confirm - Data returned from the server
  */
-export function deletedFriend(user, friend) {
+export function deletedFriend(user, friend, confirm) {
   return {
     type: 'DELETE_FRIEND',
     user,
-    friend
+    friend,
+    confirm
   }
 }

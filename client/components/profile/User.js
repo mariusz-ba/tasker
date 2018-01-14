@@ -21,7 +21,7 @@ class User extends Component {
     }
     this.id = this.props.match.params.id ? this.props.match.params.id : this.props.auth.user._id;
   }
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchUser(this.id);
     this.getProjects(this.id);
   }

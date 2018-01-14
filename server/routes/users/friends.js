@@ -32,9 +32,16 @@ router
     ]
   })
   .then(friend => {
-    if(!friend)
-      return Friend.addFriends(req.params.user, req.params.friend);
-    throw new Error('Those users are already friends');
+    if(!friend) {
+      return Friend.addFriends(req.params.user, req.params.friend)
+      .then(created => {
+        return Friend.findById(created._id)
+        .populate({ path: 'user1', select: ['_id', 'username', 'fullName'] })
+        .populate({ path: 'user2', select: ['_id', 'username', 'fullName'] })
+      })
+    } else {
+      throw new Error('Those users are already friends');
+    }
   })
   .then(friend => res.status(201).json(friend))
   .catch(err => next(err));
@@ -51,9 +58,18 @@ router
   })
   .then(data => {
     // Check if i can confirm that
-    if(data.user2 == user)
+    if(!data)
+      throw new Error('Friendship not found');
+    if(data.user2 == user) {
       return Friend.confirmFriend(user, friend)
-    throw new Error('You can\'t confirm that');
+      .then(friendship => {
+        return Friend.findById(friendship._id)
+        .populate({ path: 'user1', select: ['_id', 'username', 'fullName'] })
+        .populate({ path: 'user2', select: ['_id', 'username', 'fullName'] })
+      })
+    } else {
+      throw new Error('You can\'t confirm that');
+    }
   })
   .then(friend => res.status(200).json(friend))
   .catch(err => next(err));

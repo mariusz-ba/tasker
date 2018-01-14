@@ -24,11 +24,11 @@ class Friends extends Component {
   onUsernameChange = (e) => {
     this.setState({ username: e.target.value });
   }
-  onAcceptInvite = (friend) => {
+  onAcceptInvite = (friend, friend_data) => {
     this.props.confirmFriend(this.props.user, friend);
   }
-  onDeleteFriend = (friend) => {
-    this.props.deleteFriend(this.props.user, friend);
+  onDeleteFriend = (friend, friend_data) => {
+    this.props.deleteFriend(this.props.user, { friendship_id: friend, friend_id: friend_data });
   }
   onAddFriend = () => {
     console.log('Add friend: [user id]');
@@ -59,22 +59,29 @@ class Friends extends Component {
         <div className="row"> 
         { friends && 
           values(friends).map(friend => {
-            const confirmed = friend.confirm_user === friend.confirm_friend;
+            const confirmed = friend.confirm1 === friend.confirm2;
             const secondaryText = self ? (confirmed ? '' : 'Not confirmed') : '';
+
+            let friend_data;
+            if(user && friend.user1 && user._id == friend.user1._id)
+              friend_data = friend.user2;
+            else
+              friend_data = friend.user1;
+
             return (
               <div key={friend._id} className="col-md-6">
                 <Card
                   image="/img/profile.jpg"
-                  primaryText={friend.username}
+                  primaryText={friend_data.username}
                   secondaryText={secondaryText}
                   clickable={false}>
-                  { self && friend.confirm_user === true &&
-                    <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id)}>Delete</button>
+                  { self && (confirmed === true || user._id === friend.user1._id) &&
+                    <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id, friend_data._id)}>Delete</button>
                   }
-                  { self && friend.confirm_user === false &&
+                  { self && confirmed === false && user._id === friend.user2._id &&
                     <div>
-                      <button className="btn btn-sm btn-primary" onClick={() => this.onAcceptInvite(friend._id)}>Accept invite</button>&nbsp;
-                      <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id)}>Decline invite</button>
+                      <button className="btn btn-sm btn-primary" onClick={() => this.onAcceptInvite(friend_data._id)}>Accept invite</button>&nbsp;
+                      <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteFriend(friend._id, friend_data._id)}>Decline invite</button>
                     </div>
                   }
                 </Card>

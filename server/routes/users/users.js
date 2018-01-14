@@ -48,16 +48,10 @@ router
     // Teams
     Team.find({ _id: { $in: user.teams }}, (err, teams) => {
       if(err) return next(err);
-
-      User.getUserFriends(user._id, (err, friends) => {
-        if(err) return next(err);
-        res.status(200).json({
-          ...user._doc,
-          friends,
-          teams
-        });
+      res.status(200).json({
+        ...user._doc,
+        teams
       })
-      //})
     })
   })
 })
