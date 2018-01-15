@@ -23,9 +23,9 @@ export const fetchProjectPage = (project) => {
   return (dispatch, getState) => {
     return dispatch(fetchProject(project)).then(() => {
       const fetchedProject = getState().projects.projects[project];
-      console.log(fetchedProject.teams);
       //Get teams
-      dispatch(fetchTeams(fetchedProject.teams))
+      const teams = fetchedProject.teams.length ? fetchedProject.teams : ['000000000000000000000000']; //XD
+      dispatch(fetchTeams(teams))
       //Get cards
       dispatch(fetchCards(project));
       //Get tasks

@@ -18,7 +18,7 @@ export function accessProject(req, res, next) {
         _id: req.params.id, 
         $or: [
           {teams: {$in: user.teams}}, 
-          {users: user._id}
+          {author: user._id}
         ] 
       }, (err, project) => {
         if(err) return next(err);

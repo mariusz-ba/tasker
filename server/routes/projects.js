@@ -19,7 +19,7 @@ router
     .then(user => {
       Project.find({
         $or: [
-          {users: user._id},
+          {author: user._id},
           {teams: { $in: user.teams }}
         ]
       }, (err, projects) => {
@@ -33,7 +33,7 @@ router
     console.log('Fetching projects for: ', req.user._id);
     Project.find({
       $or: [
-        {users: req.user._id},
+        {author: req.user._id},
         {teams: { $in: req.user.teams }}
       ]
     }, (err, projects) => {
@@ -55,7 +55,7 @@ router
     name: req.body.name,
     description: req.body.description,
     teams: (req.body.teams.length ? req.body.teams : []),
-    users: [req.user._id]
+    author: req.user._id
   }, (err, project) => {
     if(err) return next(err);
     res.status(201).json(project);

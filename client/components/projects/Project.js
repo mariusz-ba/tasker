@@ -88,8 +88,11 @@ class Project extends Component {
                   <ul className="list-group teams-list">
                   { teams &&
                     values(teams.teams).map(team => (
-                      <li key={team._id} className="list-group-item">{team.name}</li>
+                      <li key={team._id} className="list-group-item"><span class="fa fa-users" aria-hidden="true"></span> {team.name}</li>
                     ))
+                  }
+                  { values(teams.teams).length == 0 &&
+                    <li className="list-group-item"><span class="fa fa-lock" aria-hidden="true"></span> This is your private project</li>
                   }
                   </ul>
                 </div>

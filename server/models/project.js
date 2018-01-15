@@ -14,7 +14,7 @@ const ProjectSchema = new Schema({
   description: { type: String },
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: Date.now },
-  users: [Schema.Types.ObjectId],
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   teams: [Schema.Types.ObjectId]
 });
 
