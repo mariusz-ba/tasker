@@ -5,6 +5,8 @@ import { updateTeam } from '../../actions/teamsActions';
 
 import { unionBy } from 'lodash';
 
+import UsersTable from './UsersTable';
+
 class EditTeam extends Component {
   constructor(props) {
     super(props);
@@ -95,14 +97,6 @@ class EditTeam extends Component {
                 <div className="form-row">
                   <div className="form-group col-md-9">
                     <label htmlFor="team">Users</label>
-                    {/* <input
-                      className="form-control"
-                      placeholder="Add user name"
-                      name="user"
-                      id="user"
-                      type="text"
-                      value={user}
-                      onChange={this.onChangeUser}/> */}
                     <select className="form-control" onChange={this.onChangeUser}>
                     {
                       friends.map(friend => (
@@ -116,26 +110,7 @@ class EditTeam extends Component {
                     <button id="button-add" className={`btn btn-primary ${disabled}`} style={{width: '100%'}} onClick={this.onAddUser}>Add</button>
                   </div>
                 </div>
-                  <table className="table table-bordered">
-                    <thead className="thead-dark">
-                      <tr>
-                        <th>User name</th>
-                        <th>User id</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {
-                      users.map(user => (
-                        <tr key={user._id}>
-                          <td>{user.username}</td>
-                          <td><span className="badge badge-primary">{user._id}</span></td>
-                          <td><button className="btn btn-sm btn-danger" onClick={() => this.onDeleteUser(user)}>Delete</button></td>
-                        </tr>
-                      ))
-                    }
-                    </tbody>
-                  </table>
+                <UsersTable users={users} onDelete={this.onDeleteUser} />
                 <button className="btn btn-primary" onClick={this.onUpdateTeam}>Update</button>
               </div>
             </div>
