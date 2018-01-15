@@ -8,7 +8,7 @@ import Friend from '../../models/friend';
 // Router
 const router = express.Router({mergeParams: true});
 router
-.get('/', (req, res, next) => {
+.get('/', authenticate, (req, res, next) => {
   // Get all :user friends (with details)
   Friend.find({
     $or: [
@@ -21,10 +21,19 @@ router
   .then(friends => res.status(200).json(friends))
   .catch(err => next(err));
 })
-.put('/:friend', (req, res, next) => { 
+.put('/:friend', authenticate, (req, res, next) => { 
   // Send friend request
-  // Compare authenticated user id and :user - Must be the same!
-  //if(req.params.user !== req.user._id) return next(new Error('User match error'));
+  
+  if(req.params.user === req.params.friend) { //Sorry cannot add yourself
+    res.status(403).json({ error: 'Sorry you cannot add yourself' });
+    return;
+  }
+
+  if(req.params.user !== req.user._id) {
+    res.status(403).json({ error: 'You can\'t perform this operation' });
+    return;
+  }
+
   Friend.findOne({
     $or: [
       { user1: req.params.user, user2: req.params.friend },
@@ -46,7 +55,7 @@ router
   .then(friend => res.status(201).json(friend))
   .catch(err => next(err));
 })
-.post('/:friend', (req, res, next) => {
+.post('/:friend', authenticate, (req, res, next) => {
   // Confirm friend
   const { user, friend } = req.params;
 
@@ -74,7 +83,7 @@ router
   .then(friend => res.status(200).json(friend))
   .catch(err => next(err));
 })
-.delete('/:friend', (req, res, next) => {
+.delete('/:friend', authenticate, (req, res, next) => {
   // Delete friend
   const { user, friend } = req.params;
 
