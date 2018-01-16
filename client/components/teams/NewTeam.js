@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import {
   createTeam,
   removeTeam
@@ -56,6 +57,7 @@ class NewTeam extends Component {
       name: this.state.name, 
       users: this.state.users
     });
+    this.props.history.goBack();
   }
 
   render() {
@@ -111,4 +113,4 @@ class NewTeam extends Component {
 
 const mapStateToProps = ({ auth }) => ({ auth });
 
-export default connect(mapStateToProps, { createTeam, removeTeam })(NewTeam);
+export default withRouter(connect(mapStateToProps, { createTeam, removeTeam })(NewTeam));

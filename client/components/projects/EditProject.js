@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { updateProject } from '../../actions/projectsActions';
+import { withRouter } from 'react-router-dom'
 
+import axios from 'axios';
+import { updateProject } from '../../actions/projectsActions';
 import { unionBy } from 'lodash';
 
 class EditProject extends Component {
@@ -70,6 +71,7 @@ class EditProject extends Component {
       description: this.state.description,
       teams: this.state.teams.map(team => team._id)
     });
+    this.props.history.goBack();
   }
   render() {
     const { name, description, team, teams } = this.state;
@@ -149,4 +151,4 @@ class EditProject extends Component {
   }
 }
 
-export default connect(null, { updateProject })(EditProject);
+export default withRouter(connect(null, { updateProject })(EditProject));

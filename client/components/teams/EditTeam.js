@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { updateTeam } from '../../actions/teamsActions';
 
 import { unionBy } from 'lodash';
@@ -72,6 +73,7 @@ class EditTeam extends Component {
       name: this.state.name,
       users: this.state.users.map(user => user._id)
     });
+    this.props.history.goBack();
   }
   render() {
     const { name, user, users, friends } = this.state;
@@ -123,4 +125,4 @@ class EditTeam extends Component {
 
 const mapStateToProps = ({ auth }) => ({ auth });
 
-export default connect(mapStateToProps, { updateTeam })(EditTeam);
+export default withRouter(connect(mapStateToProps, { updateTeam })(EditTeam));
