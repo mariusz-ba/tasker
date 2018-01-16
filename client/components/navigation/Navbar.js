@@ -57,6 +57,7 @@ class Navbar extends Component {
 
   logout(e) {
     e.preventDefault();
+    this.setState({ dropdown: false });
     this.props.logout();
   }
 
