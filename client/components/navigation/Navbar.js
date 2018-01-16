@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/authActions';
-
 import axios from 'axios';
 
 class Navbar extends Component {
@@ -67,11 +66,25 @@ class Navbar extends Component {
       this.setState({ searchUsers: []});
       return;
     }
-    axios.get(`/api/users`, { params: { text: e.target.value }})
+    axios.get(`/api/users`, { params: { text: e.target.value, isFriend: true }})
     .then(
       response => this.setState({ searchUsers: response.data }),
       error => console.log('An error occurred: ', error)
     )
+  }
+
+  addFriend = (id) => {
+    axios.put(`/api/users/${this.props.auth.user._id}/friends/${id}`)
+    .then(response => { this.onChangeSearch({ target: { value: this.state.search }}) })
+    .catch(err => console.log('An error occurred: ', err));
+  }
+
+  deleteFriend = (id) => {
+    console.log('deleting: ', id);
+    console.log('deleting');
+    axios.delete(`/api/users/${this.props.auth.user._id}/friends/${id}`)
+    .then(response => { this.onChangeSearch({ target: { value: this.state.search }}) })
+    .catch(err => console.log('An error occurred: ', err));
   }
 
   render() {
@@ -113,7 +126,7 @@ class Navbar extends Component {
       </ul>
     );
 
-    const searchResult = this.state.searchUsers.length > 0 && this.state.search.length > 0 ? 'block' : 'none';
+    const searchResult = this.state.searchUsers.length > 0 && this.state.search.length > 0 ? '' : 'none';
 
     return (
       <nav className="navbar navbar-expand-md">
@@ -127,38 +140,19 @@ class Navbar extends Component {
               <ul>
                 {
                   this.state.searchUsers.map(user => (
-                    <li>
-                      <span className="navbar-search-result-button fa fa-user-plus"></span>
+                    <li key={user._id}>
+                      { _id !== user._id && user.isFriend === false &&
+                        <span className="navbar-search-result-button fa fa-user-plus" onClick={() => this.addFriend(user._id)}></span>
+                      }
+                      { _id !== user._id && user.isFriend === true &&
+                        <span className="navbar-search-result-button fa fa-user-times" onClick={() => this.deleteFriend(user._id)}></span>
+                      }
                       <img src="/img/profile.jpg"/>
                       <h6>{ user.fullName ? user.fullName : user.username }</h6>
                       <span className="text-muted">@{user.username}</span>
                     </li>
                   ))
                 }
-                {/* <li>
-                  <span className="navbar-search-result-button fa fa-user-plus"></span>
-                  <img src="/img/profile.jpg"/>
-                  <h6>Mariusz Baran</h6>
-                  <span className="text-muted">@mariusz</span>
-                </li>
-                <li>
-                  <span className="navbar-search-result-button fa fa-user-times"></span>
-                  <img src="/img/profile.jpg"/>
-                  <h6>Mariusz Baran</h6>
-                  <span className="text-muted">@mariusz</span>
-                </li>
-                <li>
-                  <span className="navbar-search-result-button fa fa-user-plus"></span>
-                  <img src="/img/profile.jpg"/>
-                  <h6>Mariusz Baran</h6>
-                  <span className="text-muted">@mariusz</span>
-                </li>
-                <li>
-                  <span className="navbar-search-result-button fa fa-user-times"></span>
-                  <img src="/img/profile.jpg"/>
-                  <h6>Mariusz Baran</h6>
-                  <span className="text-muted">@mariusz</span>
-                </li> */}
               </ul>
             </div>
           <div className={"navbar-collapse " + collapseClass} id="navigation">

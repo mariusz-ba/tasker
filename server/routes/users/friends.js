@@ -29,7 +29,8 @@ router
     return;
   }
 
-  if(req.params.user !== req.user._id) {
+  console.log(req.params.user, req.user._id);
+  if(req.params.user !== req.user._id.toString()) {
     res.status(403).json({ error: 'You can\'t perform this operation' });
     return;
   }

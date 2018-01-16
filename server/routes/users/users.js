@@ -5,27 +5,61 @@ import authenticate from '../../utils/authenticate';
 // Models
 import User from '../../models/user';
 import Team from '../../models/team';
+import Friend from '../../models/friend';
 
 // Router
 const router = express.Router();
 router
-.get('/', (req, res, next) => {
+.get('/', authenticate, (req, res, next) => {
   if(req.query.users) { // Get users from by array of ids
     User.find({_id: { $in: req.query.users }}, { password: 0 }, (err, users) => {
       if(err) return next(err);
       res.json(users);
     })
   } else if(req.query.text) { // Get users by text (username, name)
+    // if req.query.isFriend isset check if that user is a friend of req.user
+    const { isFriend } = req.query;
     const regex = new RegExp(`${req.query.text}`);
     User.find({
       $or: [
         {username: regex},
         {fullName: regex}
       ]
-    }, {username: 1, fullName: 1}, (err, users) => {
-      if(err) return next(err);
-      res.json(users);
+    }, {username: 1, fullName: 1})
+    .then(users => {
+      if(isFriend) {
+        console.log('taking user ids');
+        // Take users ids
+        const ids = users.map(user => user._id);
+        return Friend.find({
+          $or: [
+            { user1: req.user._id, user2: { $in: ids }},
+            { user2: req.user._id, user1: { $in: ids }}
+          ]
+        })
+        .then(friends => {
+          const result = users.map(user => {
+            if(friends.find(friend => friend.user1.equals(user._id) || friend.user2.equals(user._id))) {
+              console.log('they are friends');
+              // They are friends or invitation have been sent
+              return {
+                ...user._doc,
+                isFriend: true
+              }
+            }
+            return {
+              ...user._doc,
+              isFriend: false
+            };
+          });
+          res.status(200).json(result);
+        })
+        .catch(err => next(err));
+      }
+      else
+        res.json(users);
     })
+    .then(err => next(err));
   } else { // Get all users
     User.find({}, { password: 0 }, (err, users) => {
       if(err) return next(err);

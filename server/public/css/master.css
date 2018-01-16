@@ -458,7 +458,11 @@ h6 .badge {
 }
 
 /* Search */
+.navbar-search:focus ~ .navbar-search-result {
+  display: block;
+}
 .navbar-search-result {
+  display: none;
   z-index: 10;
   position: absolute;
   width: 300px;
@@ -470,6 +474,9 @@ h6 .badge {
   transform: translateX(-50%);
   background: #fff;
   border: 1px solid rgba(0,0,0,.125);
+}
+.navbar-search-result:hover {
+  display: block;
 }
 .navbar-search-result ul {
   margin: 0;
