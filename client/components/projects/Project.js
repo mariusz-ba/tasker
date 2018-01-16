@@ -28,6 +28,9 @@ class Project extends Component {
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchProjectPage(id);
+    this.state = {
+      cardFilter: ''
+    }
   }
 
   onCreateCard = (e) => {
@@ -42,6 +45,10 @@ class Project extends Component {
       completed: false,
       card
     });
+  }
+
+  onChangeFilter = (e) => {
+    this.setState({ cardFilter: e.target.value });
   }
 
   render() {
@@ -88,11 +95,11 @@ class Project extends Component {
                   <ul className="list-group teams-list">
                   { teams &&
                     values(teams.teams).map(team => (
-                      <li key={team._id} className="list-group-item"><span class="fa fa-users" aria-hidden="true"></span> {team.name}</li>
+                      <li key={team._id} className="list-group-item"><span className="fa fa-users" aria-hidden="true"></span> {team.name}</li>
                     ))
                   }
                   { values(teams.teams).length == 0 &&
-                    <li className="list-group-item"><span class="fa fa-lock" aria-hidden="true"></span> This is your private project</li>
+                    <li className="list-group-item"><span className="fa fa-lock" aria-hidden="true"></span> This is your private project</li>
                   }
                   </ul>
                 </div>
@@ -104,7 +111,13 @@ class Project extends Component {
         <div className="row" style={{margin: '16px 0'}}>
           <div className="col" style={{padding: '0'}}>
             <a href="#" className="btn btn-sm btn-primary" onClick={this.onCreateCard}>Add new card</a>
-            <input style={{width: '200px'}} type="text" placeholder="Filter cards by label" className="form-control pull-right"/>
+            <input 
+              style={{width: '200px'}} 
+              type="text" 
+              placeholder="Filter cards by label" 
+              className="form-control pull-right" 
+              value={this.state.cardFilter} 
+              onChange={this.onChangeFilter}/>
           </div>
         </div>
         <div className="row">
@@ -113,6 +126,10 @@ class Project extends Component {
           {
             uicards
             .sortBy('createdAt', false)
+            .filter(card => {
+              const regex = new RegExp(this.state.cardFilter, 'i');
+              return (regex.exec(card.name) || card.tasks.find(task => regex.exec(task.description)));
+            })
             .map(card => (
               <Card 
                 key={card._id}
