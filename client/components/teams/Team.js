@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTeam } from '../../actions/teamsActions';
+import { fetchTeam, deleteTeam } from '../../actions/teamsActions';
+
+import Dropdown from '../ui/Dropdown';
+import Card from '../ui/Card';
 
 class Team extends Component {
   componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchTeam(id);
   }
+
+  onUserClicked = (id) => {
+    this.props.history.push(`/profile/${id}`);
+  }
+
   render() {
     const { id } = this.props.match.params;
     const team = this.props.teams.teams[id];
@@ -15,22 +23,24 @@ class Team extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col">
-            <div className="card">
-              <h5 className="card-header">
-                {team && team.name}
-                <span className="badge badge-success">{team && team._id}</span>
-                <Link className="btn btn-small btn-dark" to={`/teams/${id}/edit`}>Edit</Link>
-              </h5>
-              <div className="card-body">
-                <ul>
-                { team && team.users && 
-                  team.users.map(user => <li key={user._id}>{user.username}</li>)
-                }
-                </ul>
-              </div>
-            </div>
+          <div className="col-md-12">
+            <h4>{team && team.name}</h4>
+            <Dropdown className="btn btn-dark" label="Options" options={[
+              { action: () => {this.props.history.push(`/teams/${id}/edit`)}, label: 'Edit' },
+              { action: () => {this.props.deleteTeam(id); this.props.history.push('/teams')}, label: 'Delete' }
+            ]}/>
+            <hr/> 
           </div>
+          { team && team.users &&
+            team.users.map(user => (
+              <div key={user._id} className="col-md-4">
+                <Card 
+                  image="/img/profile.jpg"
+                  primaryText={user.fullName ? user.fullName : user.username}
+                  onClick={() => this.onUserClicked(user._id)}/>
+              </div>
+            ))
+          }
         </div>
       </div>
     )
@@ -41,4 +51,4 @@ function mapStateToProps({ teams }) {
   return { teams }
 };
 
-export default connect(mapStateToProps, { fetchTeam })(Team);
+export default withRouter(connect(mapStateToProps, { fetchTeam, deleteTeam })(Team));

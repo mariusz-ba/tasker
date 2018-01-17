@@ -18,9 +18,6 @@ class ProjectsHome extends Component {
   onBrowseProject = (id) => {
     this.props.history.push(`/projects/${id}`);
   }
-  onDeleteProject = (id) => {
-    this.props.deleteProject(id);
-  }
 
   render() {
     const { projects } = this.props.projects;
@@ -40,7 +37,6 @@ class ProjectsHome extends Component {
                 primaryText={project.name}
                 secondaryText={`${project.description.split(' ').slice(0, 40).join(' ')}...`}
                 onClick={() => this.onBrowseProject(project._id)}>
-                <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteProject(project._id)}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
               </Card>
             </div>
           ))

@@ -71,7 +71,7 @@ export default class Dropdown extends Component {
                     </div>
                   );
                 }
-                case undefined: return <a key={index} className="dropdown-item" href="#">{option.label}</a>;
+                case undefined: return <a key={index} className="dropdown-item" href="#" onClick={(e) => this.onActionClicked(e, option.action)}>{option.label}</a>;
               }
             })
           }

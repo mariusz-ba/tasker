@@ -18,10 +18,6 @@ class TeamsHome extends Component {
   onBrowseTeam = (id) => {
     this.props.history.push(`/teams/${id}`);
   }
-  onDeleteTeam = (id) => {
-    this.props.deleteTeam(id);
-  }
-
   render() {
     const { teams } = this.props.teams;
     return (
@@ -37,9 +33,7 @@ class TeamsHome extends Component {
                 <Card 
                   image="/img/team.png"
                   primaryText={team.name}
-                  secondaryText={team._id}
                   onClick={() => this.onBrowseTeam(team._id)}>
-                  <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteTeam(team._id)}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
                 </Card>
               </div>
             ))

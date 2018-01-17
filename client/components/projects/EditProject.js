@@ -27,8 +27,6 @@ class EditProject extends Component {
           description: response.data.description
         })
 
-        console.log(response.data);
-
         axios.get(`/api/teams`, { params: { teams: response.data.teams.length ? response.data.teams : ['000000000000000000000000'] }})
         .then(
           response => this.setState({ teams: response.data }),
