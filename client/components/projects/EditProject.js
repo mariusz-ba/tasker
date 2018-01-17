@@ -27,7 +27,9 @@ class EditProject extends Component {
           description: response.data.description
         })
 
-        axios.get(`/api/teams`, { params: { teams: response.data.teams }})
+        console.log(response.data);
+
+        axios.get(`/api/teams`, { params: { teams: response.data.teams.length ? response.data.teams : ['000000000000000000000000'] }})
         .then(
           response => this.setState({ teams: response.data }),
           error => console.log('An error occurred: ', error)
