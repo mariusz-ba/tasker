@@ -37,7 +37,7 @@ export default class Password extends Component {
           <input
             id="password"
             className="form-control"
-            type="text"
+            type="password"
             value={password}
             onChange={this.onChangePassword}/>
         </div>
@@ -46,7 +46,7 @@ export default class Password extends Component {
           <input
             id="confirm"
             className={`form-control ${isValidPassword}`}
-            type="text"
+            type="password"
             value={confirm}
             onChange={this.onChangeConfirm}/>
           { password !== confirm ? <div className="invalid-feedback">Incorrect password</div> : null }
