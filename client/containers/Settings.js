@@ -28,7 +28,7 @@ class Settings extends Component {
             <div className="card settings">
               <SettingsTabs tabs={[
                 { name: 'Edit Profile', component: <Profile onSave={(user) => this.onSaveProfile(user)} {...this.props.auth.user}/>},
-                { name: 'Change Password', component: <Password/>}
+                { name: 'Change Password', component: <Password onSave={(user) => this.onSaveProfile(user)} />}
               ]}/>
             </div>
           </div>

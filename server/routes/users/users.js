@@ -1,11 +1,13 @@
 // Module dependencies
 import express from 'express';
 import authenticate from '../../utils/authenticate';
+import bcrypt from 'bcrypt';
 
 // Models
 import User from '../../models/user';
 import Team from '../../models/team';
 import Friend from '../../models/friend';
+import config from '../../config';
 
 // Router
 const router = express.Router();
@@ -124,10 +126,28 @@ router
 })
 .post('/:id', authenticate, (req, res, next) => {
   // Update user data
-  User.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body }}, {new: true}, (err, user) => {
-    if(err) return next(err);
-    res.status(200).json(user);
-  })
+  if(req.user._id.toString() !== req.params.id) {
+    res.status(403).json({ error: 'Action not allowed' });
+    return;
+  }
+
+  if(!req.body.password) { // Dont chagne password
+    User.findOneAndUpdate({ _id: req.params.id }, { $set: { ...req.body }}, {new: true}, (err, user) => {
+      if(err) return next(err);
+      delete user.password;
+      res.status(200).json(user);
+    })
+  } else { // Change user password
+    bcrypt.hash(req.body.password, config.saltRounds, (error, hash) => {
+      if(error) return next(error);
+      User.findOneAndUpdate({ _id: req.params.id }, { $set: { password: hash }}, {new: true})
+      .then(user => {
+        delete user.password;
+        res.status(200).json(user);
+      })
+      .catch(err => next(err));
+    })
+  }
 })
 
 export default router;

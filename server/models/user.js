@@ -5,8 +5,9 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
 import { mapKeys } from 'lodash';
+import config from '../config';
+const { saltRounds } = config;
 
-const saltRounds = 10;
 const Schema = mongoose.Schema;
 
 /**

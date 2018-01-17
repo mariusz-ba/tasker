@@ -1,3 +1,4 @@
 export default {
-  jwtSecret: 'somesecretkeyforjsonwebtokenxD123$'
+  jwtSecret: 'somesecretkeyforjsonwebtokenxD123$',
+  saltRounds: 10
 }
