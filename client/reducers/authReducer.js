@@ -32,6 +32,7 @@ export default function authReducer(state = initialState, action) {
 		case 'SET_AUTH_ERRORS': {
 			state = {
 				...state,
+				fetching: false,
 				errors: {
 					...state.errors,
 					...action.errors
