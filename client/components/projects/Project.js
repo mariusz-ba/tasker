@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProjectPage } from '../../actions/pages/project';
+import { deleteProject } from '../../actions/projectsActions';
 import { createTask, updateTask, deleteTask } from '../../actions/tasksActions';
 import { createCard, updateCard, deleteCard } from '../../actions/cardsActions';
 import { withRouter, Link } from 'react-router-dom';
@@ -8,10 +9,12 @@ import { withRouter, Link } from 'react-router-dom';
 import Card from './card/Card';
 import TasksList from './tasks/TasksList';
 import TasksListItem from './tasks/TasksListItem';
+import Dropdown from '../ui/Dropdown';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import { values } from 'lodash';
+
 
 Object.defineProperty(Array.prototype, 'sortBy', {
   enumerable: false,
@@ -25,12 +28,15 @@ Object.defineProperty(Array.prototype, 'sortBy', {
 })
 
 class Project extends Component {
-  componentWillMount() {
-    const { id } = this.props.match.params;
-    this.props.fetchProjectPage(id);
+  constructor(props) {
+    super(props);
     this.state = {
       cardFilter: ''
     }
+  }
+  componentWillMount() {
+    const { id } = this.props.match.params;
+    this.props.fetchProjectPage(id);
   }
 
   onCreateCard = (e) => {
@@ -86,7 +92,16 @@ class Project extends Component {
                 {project && project.name}
               </h4>
               <p className="text-muted">{project && project.description}</p>
-              <Link className="btn btn-secondary" to={`/projects/${this.props.match.params.id}/edit`}>Edit</Link>
+              <Dropdown className="btn btn-dark" label="Manage" options={[
+                { 
+                  type: 'group', 
+                  label: 'Options',
+                  items: [
+                    { action: () => {this.props.history.push(`/projects/${id}/edit`)}, label: 'Edit' },
+                    { action: () => {this.props.deleteProject(id); this.props.history.goBack()}, label: 'Delete' }
+                  ]
+                }
+              ]}/>
             </div>
             <div className="col-md-3">
               <div className="card">
@@ -176,6 +191,7 @@ function mapStateToProps({ teams, projects, cards, tasks }) {
 }
 
 export default withRouter(connect(mapStateToProps, { 
+  deleteProject,
   fetchProjectPage,
   createTask, updateTask, deleteTask,
   createCard, updateCard, deleteCard
