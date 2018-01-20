@@ -112,8 +112,7 @@ class Navbar extends Component {
             <Link className="dropdown-item" to="/projects" onClick={this.toggleDropdown}>Your projects</Link>
             <Link className="dropdown-item" to="/teams" onClick={this.toggleDropdown}>Your teams</Link>
             <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Help</a>
-            <a className="dropdown-item" href="#">Settings</a>
+            <Link className="dropdown-item" to="/settings" onClick={this.toggleDropdown}>Settings</Link>
             <a className="dropdown-item" href="#" onClick={this.logout}>Sign out</a>
           </div>
         </li>
