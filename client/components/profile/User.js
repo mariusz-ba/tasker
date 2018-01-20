@@ -69,7 +69,7 @@ class User extends Component {
                 </h1>
               </div>
               <ul className="profile-overview">
-                <li><b>7</b> projects</li>
+                <li><b>{this.state.projects.length}</b> projects</li>
                 <li><b>{teams && teams.length}</b> teams</li>              
                 <li><b>{friends && friends.length}</b> friends</li>              
               </ul>
