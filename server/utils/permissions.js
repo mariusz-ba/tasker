@@ -30,3 +30,19 @@ export function accessProject(req, res, next) {
     )
   })
 }
+
+export function accessTeam(req, res, next) {
+  User.findOne(
+    {
+      _id: req.user._id, 
+      teams: req.params.id 
+    }
+  )
+  .then(user => {
+    if(user)
+      next();
+    else
+      res.status(403).json({ error: "You dont't have access to this team"});
+  })
+  .catch(err => next(err));
+}

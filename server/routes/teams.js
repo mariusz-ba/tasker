@@ -1,6 +1,7 @@
 // Module dependencies
 import express from 'express';
 import authenticate from '../utils/authenticate';
+import { accessTeam } from '../utils/permissions';
 
 import * as TeamsController from '../controllers/teamsController';
 
@@ -15,9 +16,9 @@ router
   else
     TeamsController.getUserTeams(req, res, next);
 })
-.get    ('/:id' , authenticate, TeamsController.getTeam)
+.get    ('/:id' , authenticate, accessTeam, TeamsController.getTeam)
 .put    ('/'    , authenticate, TeamsController.createTeam)
-.post   ('/:id' , authenticate, TeamsController.updateTeam)
-.delete ('/:id' , authenticate, TeamsController.deleteTeam)
+.post   ('/:id' , authenticate, accessTeam, TeamsController.updateTeam)
+.delete ('/:id' , authenticate, accessTeam, TeamsController.deleteTeam)
 
 export default router;
