@@ -7,33 +7,24 @@ import Card from '../../ui/Card';
 import { values } from 'lodash';
 
 class Friends extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: ''
-    }
-  }
   componentDidMount() {
     console.log('Fetching friends for user: ', this.props.user);
     this.props.fetchFriends(this.props.user);
   }
+
   componentDidUpdate(prevProps) {
     if(this.props.user !== prevProps.user)
       this.props.fetchFriends(this.props.user);
   }
-  onUsernameChange = (e) => {
-    this.setState({ username: e.target.value });
-  }
+
   onAcceptInvite = (friend, friend_data) => {
     this.props.confirmFriend(this.props.user, friend);
   }
+
   onDeleteFriend = (friend, friend_data) => {
     this.props.deleteFriend(this.props.user, { friendship_id: friend, friend_id: friend_data });
   }
-  onAddFriend = () => {
-    console.log('Add friend: [user id]');
-    this.props.addFriend(this.props.user, this.state.username);
-  }
+  
   render() {
     const user = this.props.users.users[this.props.user];
     let friends = [];
@@ -44,18 +35,6 @@ class Friends extends Component {
 
     return (
       <div className="col-md-12">
-        { self &&
-          <div className="row">
-            <div className="col">
-              <div className="input-group mb-2">
-                <div className="input-group-append">  
-                  <button className="btn btn-light" onClick={this.onAddFriend} style={{borderRadius: 0}}>Add friend</button>
-                </div>
-                <input name="username" className="form-control" placeholder="user ID!" type="text" value={this.state.username} onChange={this.onUsernameChange}/>
-              </div>
-            </div>
-          </div>
-        }
         <div className="row"> 
         { friends && 
           values(friends).map(friend => {
