@@ -20,8 +20,9 @@ mongoose.connect('mongodb://your-mongodb-server-address/your-collection-name')
 ### Running
 
 1. To run project make sure you have both NodeJS installed and MongoDB server running.
-2. Navigate to tasker root directory and execute following command to run application:
+2. Navigate to tasker root directory and execute following commands to run application:
 ```
+npm install
 npm run server
 ```
 
