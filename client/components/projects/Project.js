@@ -41,13 +41,13 @@ class Project extends Component {
 
   onCreateCard = (e) => {
     e.preventDefault();
-    this.props.createCard(this.props.match.params.id, 'new cards heheh');
+    this.props.createCard(this.props.match.params.id, 'Card');
   }
 
   onCreateTask = (e, card) => {
     e.preventDefault();
     this.props.createTask(this.props.match.params.id, {
-      description: 'Noweeee',
+      description: 'New task',
       completed: false,
       card
     });
